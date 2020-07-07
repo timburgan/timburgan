@@ -109,6 +109,12 @@ jobs:
                 path: GAME_DATA_PATH
               )&.content
               raise StandardError.new 'game_content is blank' if game_content.blank?
+
+              puts '******** [133] game_content.to_s ***********'
+              puts game_content.to_s
+              puts '********************************************'
+
+
           rescue StandardError => e
               if CHESS_GAME_CMD == 'move'
                 comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be found: #{GAME_DATA_PATH}"
@@ -119,12 +125,21 @@ jobs:
                 # no file exists... so no game... so... go ahead and create it
                 # ---------------------------------------
 
+                puts '******** [149] game_content.to_s ***********'
+                puts 'no file exists... so no game... so... go ahead and create it'
+                puts '********************************************'
+
                 game = Chess::Game.new
               end
           else            
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------
+
+              puts '******** [159] game_content.to_s ***********'
+              puts 'Game is in progress. Load the game board.'
+              puts '********************************************'
+
               begin
                   filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
                   File.write filename, game_content

@@ -36,6 +36,8 @@ jobs:
           require 'active_support/core_ext/object'
           require 'active_support/core_ext/array'
           require 'octokit'
+          require 'chess'
+
           @preview_headers = [
             ::Octokit::Preview::PREVIEW_TYPES[:reactions],
             ::Octokit::Preview::PREVIEW_TYPES[:integrations]
@@ -125,7 +127,7 @@ jobs:
               # ---------------------------------------
               begin
                   ## Load the current game
-                  game = Chess.load_pgn(game_content)
+                  game = Chess::Game.load_pgn(game_content)
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -200,7 +202,7 @@ jobs:
           next_move_combos = squares.map { |from| Hash[from, squares] }
 
           # delete squares not valid for next move
-          valid_next_move_tester = Game.load_pgn game.pgn
+          valid_next_move_tester = Game::Game.load_pgn game.pgn
           next_move_combos.each do |from, to_options|
             to_options.each do |to|
               begin

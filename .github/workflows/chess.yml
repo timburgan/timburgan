@@ -192,32 +192,16 @@ jobs:
             end
           end
 
-          puts '***** [214] **************'
-          puts squares.to_s
-          puts '*******************'
-
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
-
-          puts '***** [221] **************'
-          puts next_move_combos.to_s
-          puts '*******************'
 
           # delete squares not valid for next move
           valid_next_move_tester = game
           good_move = []
-          puts 'LOADED DUMMY GAME'
           next_move_combos.each do |square|
-
-            puts '***** [230] **************'
-            puts 'from: ' + square[:from].to_s
-            puts 'to: ' + square[:to].to_s
-            puts '*******************'
-
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                puts "move: #{move_command}"
                 valid_next_move_tester.move move_command
               rescue Chess::IllegalMoveError => e
                 # remove that move from the list
@@ -230,7 +214,7 @@ jobs:
           end
 
 
-          puts '***** [246] **************'
+          puts '***** [217] **************'
           puts good_move.to_s
           puts '*******************'
 
@@ -240,7 +224,7 @@ jobs:
 
 
 
-          new_readme <<~HTML.strip
+          new_readme = <<~HTML.strip
 
             ## Tim's Mighty Chess Tournament
 
@@ -249,13 +233,13 @@ jobs:
           HTML
 
           if game.over?
-            new_readme <<~HTML.strip
+            new_readme = <<~HTML.strip
 
               #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess|new|xxxx|1)
 
             HTML
           else
-            new_readme <<~HTML.strip
+            new_readme = <<~HTML.strip
 
               #### Where will you move?
 
@@ -268,7 +252,7 @@ jobs:
             HTML
           end
 
-          new_readme <<~HTML.strip
+          new_readme = <<~HTML.strip
 
             #### Moves so far
 
@@ -289,6 +273,9 @@ jobs:
 
           HTML
 
+
+          puts new_readme
+          
 
 
           #

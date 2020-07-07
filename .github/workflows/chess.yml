@@ -2,7 +2,7 @@ name: "Chess"
 
 on:
   issues:
-    types: [created]
+    types: [opened]
 
 jobs:
   move:

@@ -196,7 +196,7 @@ jobs:
           next_move_combos = squares.map { |from| Hash[from, squares] }
 
           # delete squares not valid for next move
-          valid_next_move_tester = Chess::Game.load_pgn game.pgn
+          valid_next_move_tester = Chess::Game.load_pgn game.pgn.to_s
           next_move_combos.each do |from, to_options|
             to_options.each do |to|
               begin

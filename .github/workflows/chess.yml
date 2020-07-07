@@ -209,7 +209,8 @@ jobs:
           next_move_combos.each do |from, to_options|
 
             puts '***** [230] **************'
-            puts to_options.to_s
+            puts 'key: ' + from.to_s
+            puts 'value: ' + to_options.to_s
             puts '*******************'
 
             to_options.each do |to|

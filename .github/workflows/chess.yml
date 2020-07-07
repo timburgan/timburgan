@@ -109,6 +109,11 @@ jobs:
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
               )&.content
+
+              puts '----------------'
+              puts game_content.to_s
+              puts '----------------'
+
           rescue StandardError => e
               if CHESS_GAME_CMD == 'move'
                 comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be found: #{GAME_DATA_PATH}"
@@ -158,7 +163,8 @@ jobs:
                     GAME_DATA_PATH,
                     "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                     game.pgn.to_s,
-                    branch: 'master'
+                    branch: 'master',
+                    sha:    "#{game_content.sha}"
                   )
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
@@ -249,7 +255,7 @@ jobs:
             HTML
 
             good_move.each do |move|
-              puts "| #{move[:from]} | #{move[:to].map{|a| "[#{a}](https://github.com/timburgan/timburgan/issues/new?title=chess|move|#{move[:from]}#{a}|#{CHESS_GAME_NUM}&body=Just+push+'Submit new issue'.+You+don't+need+to+do+anything+else.)"}.join(', ')} |"
+              new_readme.concat "| #{move[:from]} | #{move[:to].map{|a| "[#{a}](https://github.com/timburgan/timburgan/issues/new?title=chess|move|#{move[:from]}#{a}|#{CHESS_GAME_NUM}&body=Just+push+'Submit new issue'.+You+don't+need+to+do+anything+else.)"}.join(', ')} |\n"
             end
           end
 
@@ -283,12 +289,22 @@ jobs:
           # Update the game with next moves.
           # ---------------------------------------
           begin
+              current_readme = @octokit.contents(
+                'timburgan/timburgan',
+                path: 'README.md'
+              )
+
+              puts '**** current readme *****************'
+              puts current_readme
+              puts '*********************'
+
               @octokit.create_contents(
                 'timburgan/timburgan',
                 'README.md',
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 new_readme,
-                branch: 'master'
+                branch: 'master',
+                sha:    current_readme.sha
               )
           rescue StandardError => e
               comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update render of the game board. Move *was* saved, however."

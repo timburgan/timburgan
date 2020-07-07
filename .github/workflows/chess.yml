@@ -97,7 +97,7 @@ jobs:
           end
 
 
-          GAME_DATA_PATH = "https://github.com/#{ENV.fetch('REPOSITORY')}/blob/master/chess_games/#{CHESS_GAME_TITLE}.pgn"
+          GAME_DATA_PATH = "blob/master/chess_games/#{CHESS_GAME_TITLE}.pgn"
 
 
           #

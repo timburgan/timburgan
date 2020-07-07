@@ -215,7 +215,20 @@ jobs:
                 # next_move_combos = next_move_combos - [Hash[from, to]]
               else
                 # move ok
-                good_move.push({ from: square[:from], to: [to] })
+                if good_move.select{ |move| move[:from] == square[:from] }.blank?
+                  good_move.push({ from: square[:from], to: [to] })
+                else
+                  good_move.map do |move|
+                    if move[:from] == square[:from]
+                      {
+                        from: move[:from],
+                        to:   move[:to].push(to)
+                      }
+                    else
+                      move
+                    end
+                  end
+                end
               end
             end
           end
@@ -289,10 +302,10 @@ jobs:
           # Update the game with next moves.
           # ---------------------------------------
           begin
-              current_readme = @octokit.contents(
+              current_readme_sha = @octokit.contents(
                 'timburgan/timburgan',
                 path: 'README.md'
-              )
+              )&.sha
 
               puts '**** current readme *****************'
               puts current_readme
@@ -304,7 +317,7 @@ jobs:
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 new_readme,
                 branch: 'master',
-                sha:    current_readme.sha
+                sha:    current_readme_sha
               )
           rescue StandardError => e
               comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update render of the game board. Move *was* saved, however."

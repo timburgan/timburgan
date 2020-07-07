@@ -157,11 +157,11 @@ jobs:
                 ENV.fetch('REPOSITORY'),
                 GAME_DATA_PATH,
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-                game.pgn,
+                game.pgn.to_s,
                 branch: 'master'
               )
           rescue StandardError => e
-              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Move not recorded. Sorry"
+              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
               error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
               exit(0)
           end

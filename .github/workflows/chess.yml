@@ -233,13 +233,13 @@ jobs:
           HTML
 
           if game.over?
-            new_readme = <<~HTML.strip
+            new_readme.concat <<~HTML.strip
 
               #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess|new|xxxx|1)
 
             HTML
           else
-            new_readme = <<~HTML.strip
+            new_readme.concat <<~HTML.strip
 
               #### Where will you move?
 
@@ -252,7 +252,7 @@ jobs:
             HTML
           end
 
-          new_readme = <<~HTML.strip
+          new_readme.concat <<~HTML.strip
 
             #### Moves so far
 
@@ -275,7 +275,7 @@ jobs:
 
 
           puts new_readme
-          
+
 
 
           #
@@ -284,7 +284,7 @@ jobs:
           begin
               @octokit.create_contents(
                 'timburgan/timburgan',
-                '/README.md',
+                'README.md',
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 new_readme,
                 branch: 'master'

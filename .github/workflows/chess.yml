@@ -1,7 +1,7 @@
 name: "Chess"
 
 on:
-  issue:
+  issues:
     types: [created]
 
 jobs:

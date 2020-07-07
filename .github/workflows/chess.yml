@@ -148,25 +148,25 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-          end
 
 
 
-          #
-          # Save the game board.
-          # ---------------------------------------
-          begin
-              @octokit.create_contents(
-                ENV.fetch('REPOSITORY'),
-                GAME_DATA_PATH,
-                "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-                game.pgn.to_s,
-                branch: 'master'
-              )
-          rescue StandardError => e
-              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
-              error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-              exit(0)
+              #
+              # Save the game board.
+              # ---------------------------------------
+              begin
+                  @octokit.create_contents(
+                    ENV.fetch('REPOSITORY'),
+                    GAME_DATA_PATH,
+                    "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+                    game.pgn.to_s,
+                    branch: 'master'
+                  )
+              rescue StandardError => e
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
           end
 
           puts game.status
@@ -201,13 +201,6 @@ jobs:
           # delete squares not valid for next move
           filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
           File.write filename, game.pgn.to_s
-
-          puts filename
-          puts '----'
-          puts game.pgn.to_s
-          puts '----'
-          puts File.open(filename).read
-          puts '----'
 
           valid_next_move_tester = Chess::Game.load_pgn filename
           puts 'LOADED'

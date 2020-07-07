@@ -217,6 +217,7 @@ jobs:
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
+                puts "move: #{move_command}"
                 valid_next_move_tester.move move_command
               rescue Chess::IllegalMoveError => e
                 # remove that move from the list

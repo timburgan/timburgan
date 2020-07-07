@@ -224,7 +224,7 @@ jobs:
                 # next_move_combos = next_move_combos - [Hash[from, to]]
               else
                 # move ok
-                good_move.push({ from: from, to: to })
+                good_move.push({ from: square[:from], to: [to] })
               end
             end
           end

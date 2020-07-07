@@ -119,7 +119,7 @@ jobs:
                 # --------------------------------------
                 game = Chess::Game.new
               end
-          else            
+          else
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------
@@ -223,7 +223,7 @@ jobs:
                 # next_move_combos = next_move_combos - [Hash[from, to]]
               else
                 # move ok
-                good_move.push { from: from, to: to }
+                good_move.push({ from: from, to: to })
               end
             end
           end

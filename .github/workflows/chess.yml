@@ -308,7 +308,7 @@ jobs:
               )&.sha
 
               puts '**** current readme *****************'
-              puts current_readme
+              puts current_readme_sha
               puts '*********************'
 
               @octokit.create_contents(

@@ -14,7 +14,7 @@ jobs:
       run: |
         echo ::set-env name=REPOSITORY::${{ github.repository }}
         echo ::set-env name=EVENT_ISSUE_NUMBER::${{ github.event.issue.number }}
-        echo ::set-env name=EVENT_USER_LOGIN::${{ github.event.comment.user.login }}
+        echo ::set-env name=EVENT_USER_LOGIN::${{ github.event.issue.user.login }}
 
       # We <3 Ruby, so let's use it + Octokit to ease the
       # scripting and API interactions.
@@ -83,7 +83,7 @@ jobs:
           begin
               # validate we can parse title Chess|new|e3c2|1
               title_split = '${{ github.event.issue.title }}'.split('|')
-              CHESS_GAME_TITLE = title_split&.first.to_s + (title_split.forth.to_s || ENV.fetch('EVENT_ISSUE_NUMBER').to_s)
+              CHESS_GAME_TITLE = title_split&.first.to_s + (title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s)
               CHESS_GAME_CMD   = title_split&.second.to_s
               CHESS_USER_MOVE  = title_split&.third.to_s
               raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?

@@ -85,7 +85,8 @@ jobs:
           begin
               # validate we can parse title Chess|new|e3c2|1
               title_split = '${{ github.event.issue.title }}'.split('|')
-              CHESS_GAME_TITLE = title_split&.first.to_s + (title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s)
+              CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
+              CHESS_GAME_TITLE = title_split&.first.to_s + CHESS_GAME_NUM
               CHESS_GAME_CMD   = title_split&.second.to_s
               CHESS_USER_MOVE  = title_split&.third.to_s
               raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
@@ -224,7 +225,7 @@ jobs:
 
 
 
-          new_readme = <<~HTML.strip
+          new_readme = <<~HTML
 
             ## Tim's Mighty Chess Tournament
 
@@ -233,26 +234,27 @@ jobs:
           HTML
 
           if game.over?
-            new_readme.concat <<~HTML.strip
+            new_readme.concat <<~HTML
 
               #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess|new|xxxx|1)
 
             HTML
           else
-            new_readme.concat <<~HTML.strip
+            new_readme.concat <<~HTML
 
-              #### Where will you move?
-
-              https://github.com/timburgan/timburgan/issues/new?title=chess|move|e1b2|1&body=Just+push+'Submit new issue'.+You+don't+need+to+do+anything+else.
+              #### It's your move?
 
               | FROM | TO |
-              -------------
-              | A1 | A1 , B2 |
+              - ---- - -- -
 
             HTML
+
+            good_move.each do |move|
+              puts "| #{move[:from]} | #{move[:to].map{|a| "[#{{a}}](https://github.com/timburgan/timburgan/issues/new?title=chess|move|#{move[:from]}#{a}|#{CHESS_GAME_NUM}&body=Just+push+'Submit new issue'.+You+don't+need+to+do+anything+else.)"}.join(', ')} |"
+            end
           end
 
-          new_readme.concat <<~HTML.strip
+          new_readme.concat <<~HTML
 
             #### Moves so far
 

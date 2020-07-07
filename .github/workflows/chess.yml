@@ -255,7 +255,7 @@ jobs:
           if game.over?
             new_readme.concat <<~HTML
 
-              #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess|new|)
+              #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cnew)
 
             HTML
           else

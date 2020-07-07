@@ -108,18 +108,6 @@ jobs:
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
               )&.content
-
-              puts '******** [131] game_content.to_s ***********'
-              puts game_content.to_s
-              puts '********************************************'
-
-              raise StandardError.new 'game_content is blank' if game_content.blank?
-
-              puts '******** [137] game_content.to_s ***********'
-              puts game_content.to_s
-              puts '********************************************'
-
-
           rescue StandardError => e
               if CHESS_GAME_CMD == 'move'
                 comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be found: #{GAME_DATA_PATH}"
@@ -128,49 +116,24 @@ jobs:
               else
                 #
                 # no file exists... so no game... so... go ahead and create it
-                # ---------------------------------------
-
-                puts '******** [152] ***********'
-                puts 'no file exists... so no game... so... go ahead and create it'
-                puts '********************************************'
-
+                # --------------------------------------
                 game = Chess::Game.new
               end
           else            
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------
-
-              puts '******** [163] ***********'
-              puts 'Game is in progress. Load the game board.'
-              puts '***************************'
-
               begin
                   filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
                   File.write filename, game_content
 
                   ## Load the current game
                   game = Chess::Game.load_pgn filename
-
-
-                  puts '******** [175] ***********'
-                  puts 'ok'
-                  puts '***************************'
-
               rescue StandardError => e
-
-                  puts '******** [181] ***********'
-                  puts 'failed'
-                  puts '***************************'
-
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-
-                  puts '******** [190] move ***********'
-                  puts ''
-                  puts '***************************'
 
 
               #
@@ -183,11 +146,6 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-
-                  puts '******** [208] save board ***********'
-                  puts ''
-                  puts '***************************'
-
 
 
               #
@@ -234,13 +192,26 @@ jobs:
             end
           end
 
+          puts '***** [214] **************'
+          puts squares.to_s
+          puts '*******************'
+
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| Hash[from, squares] }
+
+          puts '***** [221] **************'
+          puts next_move_combos.to_s
+          puts '*******************'
 
           # delete squares not valid for next move
           valid_next_move_tester = game
           puts 'LOADED DUMMY GAME'
           next_move_combos.each do |from, to_options|
+
+            puts '***** [230] **************'
+            puts to_options.to_s
+            puts '*******************'
+
             to_options.each do |to|
               begin
                 move_command = "#{from}#{to}"
@@ -252,7 +223,10 @@ jobs:
             end
           end
 
+
+          puts '***** [246] **************'
           puts next_move_combos.to_s
+          puts '*******************'
 
           puts 'combos end:'
           puts Time.now

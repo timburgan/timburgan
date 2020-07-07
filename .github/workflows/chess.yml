@@ -108,9 +108,14 @@ jobs:
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
               )&.content
+
+              puts '******** [131] game_content.to_s ***********'
+              puts game_content.to_s
+              puts '********************************************'
+
               raise StandardError.new 'game_content is blank' if game_content.blank?
 
-              puts '******** [133] game_content.to_s ***********'
+              puts '******** [137] game_content.to_s ***********'
               puts game_content.to_s
               puts '********************************************'
 
@@ -125,7 +130,7 @@ jobs:
                 # no file exists... so no game... so... go ahead and create it
                 # ---------------------------------------
 
-                puts '******** [149] game_content.to_s ***********'
+                puts '******** [152] ***********'
                 puts 'no file exists... so no game... so... go ahead and create it'
                 puts '********************************************'
 
@@ -136,9 +141,9 @@ jobs:
               # Game is in progress. Load the game board.
               # ---------------------------------------
 
-              puts '******** [159] game_content.to_s ***********'
+              puts '******** [163] ***********'
               puts 'Game is in progress. Load the game board.'
-              puts '********************************************'
+              puts '***************************'
 
               begin
                   filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
@@ -146,11 +151,26 @@ jobs:
 
                   ## Load the current game
                   game = Chess::Game.load_pgn filename
+
+
+                  puts '******** [175] ***********'
+                  puts 'ok'
+                  puts '***************************'
+
               rescue StandardError => e
+
+                  puts '******** [181] ***********'
+                  puts 'failed'
+                  puts '***************************'
+
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
+
+                  puts '******** [190] move ***********'
+                  puts ''
+                  puts '***************************'
 
 
               #
@@ -163,6 +183,10 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
+
+                  puts '******** [208] save board ***********'
+                  puts ''
+                  puts '***************************'
 
 
 
@@ -214,11 +238,8 @@ jobs:
           next_move_combos = squares.map { |from| Hash[from, squares] }
 
           # delete squares not valid for next move
-          filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
-          File.write filename, game.pgn.to_s
-
-          valid_next_move_tester = Chess::Game.load_pgn filename
-          puts 'LOADED'
+          valid_next_move_tester = game
+          puts 'LOADED DUMMY GAME'
           next_move_combos.each do |from, to_options|
             to_options.each do |to|
               begin

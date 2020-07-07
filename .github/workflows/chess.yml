@@ -97,7 +97,7 @@ jobs:
           end
 
 
-          GAME_DATA_PATH = "blob/master/chess_games/#{CHESS_GAME_TITLE}.pgn"
+          GAME_DATA_PATH = "chess_games/#{CHESS_GAME_TITLE}.pgn"
 
 
           #
@@ -126,8 +126,11 @@ jobs:
               # Game is in progress. Load the game board.
               # ---------------------------------------
               begin
+                  filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
+                  File.write filename, game_content
+
                   ## Load the current game
-                  game = Chess::Game.load_pgn(game_content)
+                  game = Chess::Game.load_pgn filename
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -196,7 +199,9 @@ jobs:
           next_move_combos = squares.map { |from| Hash[from, squares] }
 
           # delete squares not valid for next move
-          valid_next_move_tester = Chess::Game.load_pgn game.pgn.to_s
+          filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
+          File.write filename, game.pgn.to_s
+          valid_next_move_tester = Chess::Game.load_pgn filename
           next_move_combos.each do |from, to_options|
             to_options.each do |to|
               begin

@@ -53,13 +53,7 @@ jobs:
               puts '-----------'
             end
           end
-          def clean(string, alphanum_only=true)
-            if alphanum_only
-              string.downcase.gsub(/[^0-9A-Za-z]/, '')
-            else
-              string.downcase.gsub(/[^0-9A-Za-z \.]/, '')
-            end
-          end
+
           # Authenticate using GITHUB_TOKEN
           @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
           @octokit.auto_paginate = true
@@ -102,11 +96,12 @@ jobs:
           GAME_DATA_PATH = "chess_games/chess.pgn"
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
-
+          game_content = nil
           #
           # Get the contents of the game board.
           # ---------------------------------------
           begin
+              puts '[104]'
               game_content_raw = @octokit.contents(
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
@@ -118,9 +113,12 @@ jobs:
               puts '----------------'
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
+              puts '[116]'
               game = Chess::Game.new
+              puts '[118]'
           else
-            game = if CHESS_GAME_CMD == 'new'
+            puts '[120]'
+            game = if CHESS_GAME_CMD == 'new' || game.present?
                      Chess::Game.new
                    else
                      #
@@ -136,6 +134,7 @@ jobs:
                          exit(0)
                      end
                    end
+            puts '[137]'
           end
 
 
@@ -145,7 +144,9 @@ jobs:
               # Perform Move
               # ---------------------------------------
               begin
+                  puts '[147]'
                   game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
+                  puts '[149]'
               rescue Chess::IllegalMoveError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move!"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -157,6 +158,7 @@ jobs:
               # Save the game board.
               # ---------------------------------------
               begin
+                  puts '[161]'
                   @octokit.create_contents(
                     ENV.fetch('REPOSITORY'),
                     GAME_DATA_PATH,
@@ -165,6 +167,7 @@ jobs:
                     branch: 'master',
                     sha:    game_content_raw&.sha
                   )
+                  puts '[170]'
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)

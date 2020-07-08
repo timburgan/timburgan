@@ -268,7 +268,7 @@ jobs:
             HTML
 
             good_move.each do |move|
-              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(', ') |}\n"
+              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(', ')} |\n"
             end
           end
 

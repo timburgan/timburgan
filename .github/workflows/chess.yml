@@ -7,7 +7,7 @@ on:
 jobs:
   move:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.issue.title, 'rerender-chess|')
+    if: startsWith(github.event.issue.title, 'chess|')
     steps:
 
     - name: Set env vars
@@ -43,6 +43,16 @@ jobs:
             ::Octokit::Preview::PREVIEW_TYPES[:integrations]
           ]
 
+          def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
+            @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
+            @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
+            @octokit.close_issue(repo_nwo, issue_num)
+            if e.present?
+              puts '-----------'
+              puts "Exception: #{e}"
+              puts '-----------'
+            end
+          end
 
           # Authenticate using GITHUB_TOKEN
           @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
@@ -63,26 +73,129 @@ jobs:
           )
 
 
+          #
+          # Parse the issue title.
+          # ------------------------
+          begin
+              # validate we can parse title Chess|new|e3c2|1
+              title_split = '${{ github.event.issue.title }}'.split('|')
+              CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
+              CHESS_GAME_TITLE = title_split&.first.to_s + CHESS_GAME_NUM
+              CHESS_GAME_CMD   = title_split&.second.to_s
+              CHESS_USER_MOVE  = title_split&.third.to_s
+              raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
+              raise StandardError.new 'CHESS_USER_MOVE is blank'  if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
+              raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? CHESS_GAME_CMD
+          rescue StandardError => e
+              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
+              error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+              exit(0)
+          end
 
 
           GAME_DATA_PATH = "chess_games/chess.pgn"
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
-
           #
           # Get the contents of the game board.
           # ---------------------------------------
-          game_content_raw = @octokit.contents(
-            ENV.fetch('REPOSITORY'),
-            path: GAME_DATA_PATH
-          )
+          begin
+              puts '[104]'
+              game_content_raw = @octokit.contents(
+                ENV.fetch('REPOSITORY'),
+                path: GAME_DATA_PATH
+              )
 
-          game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
+              game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
+              puts '---- [114] -----'
+              puts game_content&.inspect
+              puts '----------------'
+          rescue StandardError => e
+              # no file exists... so no game... so... go ahead and create it
+              puts '[116]'
+              game = Chess::Game.new
+              puts '[118]'
+          else
+            puts '[120]'
+            game = if CHESS_GAME_CMD == 'new' || game.present?
+                     Chess::Game.new
+                   else
+                     #
+                     # Game is in progress. Load the game board.
+                     # ---------------------------------------
+                     begin
+                         ## Load the current game
+                         File.write TMP_FILENAME, game_content
+                         Chess::Game.load_pgn TMP_FILENAME
+                     rescue StandardError => e
+                         comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
+                         error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                         exit(0)
+                     end
+                   end
+            puts '[137]'
+          end
+
+          if CHESS_GAME_CMD == 'new' && game_content_raw.present?
+            begin
+              @octokit.delete_contents(
+                ENV.fetch('REPOSITORY'),
+                GAME_DATA_PATH,
+                "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
+                game_content_raw&.sha,
+                branch: 'master',
+              )
+            rescue StandardError => e
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
+            end
+          end
 
 
-          File.write TMP_FILENAME, game_content
-          game = Chess::Game.load_pgn TMP_FILENAME
+          if CHESS_GAME_CMD == 'move'
+              #
+              # Perform Move
+              # ---------------------------------------
+              begin
+                  puts '[147]'
+                  game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
+                  puts '[149]'
+              rescue Chess::IllegalMoveError => e
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move!"
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
+
+
+              #
+              # Save the game board.
+              # ---------------------------------------
+              begin
+                  puts '[161]'
+                  @octokit.create_contents(
+                    ENV.fetch('REPOSITORY'),
+                    GAME_DATA_PATH,
+                    "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+                    game.pgn.to_s,
+                    branch: 'master',
+                    sha:    game_content_raw&.sha
+                  )
+                  puts '[170]'
+              rescue StandardError => e
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
+          end
+
+
+
+          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")
+          @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
+
+
 
           #
           # Update timburgan/timburgan/README.md
@@ -106,14 +219,8 @@ jobs:
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
           # fake_game = game.clone
-          fake_game = Marshal.load( Marshal.dump(game) )
-
-          puts ''
-          puts ''
-          puts '--- game: -----'
-          puts game.pgn.to_s
-          puts ''
-          puts ''
+          fake_game = Chess::Game.load_pgn TMP_FILENAME
+          # fake_game = Marshal.load( Marshal.dump(game) )
 
           puts ''
           puts ''
@@ -127,7 +234,8 @@ jobs:
           next_move_combos.each do |square|
             square[:to].each do |to|
               move_command = "#{square[:from]}#{to}"
-              fake_game_tmp = fake_game.clone
+              fake_game_tmp = Chess::Game.load_pgn TMP_FILENAME
+              # fake_game_tmp = fake_game.clone
               begin
                 fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e

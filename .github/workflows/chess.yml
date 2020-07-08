@@ -224,7 +224,7 @@ jobs:
                   good_moves.push({ from: square[:from], to: [to] })
                 else
                   good_moves.map do |move|
-                    if move[:from] == square[:from]\
+                    if move[:from] == square[:from]
                       {
                         from: move[:from],
                         to:   move[:to].push(to)

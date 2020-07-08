@@ -110,11 +110,11 @@ jobs:
               game_content = @octokit.contents(
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
-              )&.content
+              )
 
-              game_content = Base64.decode64(game_content.to_s) unless game_content.to_s.blank?
+              game_content = Base64.decode64(game_content&.content.to_s) unless game_content&.content.to_s.blank?
               puts '---- [114] -----'
-              puts game_content.to_s
+              puts game_content&.content.to_s
               puts '----------------'
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
@@ -131,7 +131,7 @@ jobs:
               # ---------------------------------------
               begin
                   ## Load the current game
-                  File.write TMP_FILENAME, game_content
+                  File.write TMP_FILENAME, game_content&.content
                   game = Chess::Game.load_pgn TMP_FILENAME
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"

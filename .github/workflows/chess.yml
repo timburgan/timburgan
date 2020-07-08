@@ -378,14 +378,14 @@ jobs:
           new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            a = game.board[board[row.to_s][:a][:code]].to_s
-            b = game.board[board[row.to_s][:b][:code]].to_s
-            c = game.board[board[row.to_s][:c][:code]].to_s
-            d = game.board[board[row.to_s][:d][:code]].to_s
-            e = game.board[board[row.to_s][:e][:code]].to_s
-            f = game.board[board[row.to_s][:f][:code]].to_s
-            g = game.board[board[row.to_s][:g][:code]].to_s
-            h = game.board[board[row.to_s][:h][:code]].to_s
+            a = game.board[board[:"#{row}"][:a][:code]].to_s
+            b = game.board[board[:"#{row}"][:b][:code]].to_s
+            c = game.board[board[:"#{row}"][:c][:code]].to_s
+            d = game.board[board[:"#{row}"][:d][:code]].to_s
+            e = game.board[board[:"#{row}"][:e][:code]].to_s
+            f = game.board[board[:"#{row}"][:f][:code]].to_s
+            g = game.board[board[:"#{row}"][:g][:code]].to_s
+            h = game.board[board[:"#{row}"][:h][:code]].to_s
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
 

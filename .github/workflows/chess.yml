@@ -214,9 +214,10 @@ jobs:
               rescue Chess::IllegalMoveError => e
                 # remove that move from the list
                 # next_move_combos = next_move_combos - [Hash[from, to]]
+                puts "move: #{move_command}"
               else
                 # move ok
-                puts "move ok: #{move_command}"
+                puts "move: #{move_command} (ok)"
                 if good_move.select{ |move| move[:from] == square[:from] }.blank?
                   good_move.push({ from: square[:from], to: [to] })
                 else

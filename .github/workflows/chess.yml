@@ -379,24 +379,10 @@ jobs:
             end
           end
 
+
           new_readme.concat <<~HTML
 
             <!--
-
-            #### Moves so far this game
-
-            | Date | Who | Move |
-            | ---- | --- | ---- |
-            | xx | @timburgan | a1b3 |
-
-
-            #### Leaderboard
-
-            **Most moves**
-
-            | Moves | Who |
-            | ----- | --- |
-            | xx    | @timburgan |
 
             **Winning moves**
 
@@ -414,7 +400,34 @@ jobs:
 
             Raise an [issue](https://github.com/timburgan/timburgan/issues/new), and include the text _cc @timburgan_.
 
+            <!--
+
+            #### Moves so far this game
+
+            | Date | Who | Move |
+            | ---- | --- | ---- |
+            | xx | @timburgan | a1b3 |
+
+
+            #### Leaderboard
+
+            -->
+
+            **Most moves so far, across all games**
+
+            | Moves | Who |
+            | ----- | --- |
           HTML
+
+          issues = @octokit.list_issues(
+            'timburgan/timburgan',
+            state: 'closed',
+          )
+          moves = issues.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse
+
+          moves.each do |move|
+            new_readme.concat "| #{move[1]} | @#{move[0]} |\n"
+          end
 
 
 

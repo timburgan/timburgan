@@ -201,16 +201,13 @@ jobs:
           fake_game = game.clone
           # fake_game = Marshal.load( Marshal.dump(game) )
 
-          puts ''
-          puts ''
-          puts '--- fake game: -----'
-          puts fake_game.pgn.to_s
-          puts ''
-          puts ''
+          # puts ''
+          # puts ''
+          # puts '--- fake game: -----'
+          # puts fake_game.pgn.to_s
+          # puts ''
+          # puts ''
 
-          puts ''
-          puts ''
-          puts '--- testing moves: -----'
           # delete squares not valid for next move
           good_moves = []
           next_move_combos.each do |square|
@@ -222,14 +219,12 @@ jobs:
               rescue Chess::IllegalMoveError => e
                 # puts "move: #{move_command} (bad)"
               else
-                puts "move: #{move_command} (ok)"
+                # puts "move: #{move_command} (ok)"
                 if good_moves.select{ |move| move[:from] == square[:from] }.blank?
                   good_moves.push({ from: square[:from], to: [to] })
-                  puts "  - #{{ from: square[:from], to: [to] }.to_s}"
                 else
                   good_moves.map do |move|
-                    if move[:from] == square[:from]
-                      puts "  * #{{ from: move[:from], to: move[:to].push(to) }.to_s}"
+                    if move[:from] == square[:from]\
                       {
                         from: move[:from],
                         to:   move[:to].push(to)

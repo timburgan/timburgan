@@ -141,7 +141,7 @@ jobs:
               # Perform Move
               # ---------------------------------------
               begin
-                  puts game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
+                  game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
               rescue Chess::IllegalMoveError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move!"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -159,7 +159,7 @@ jobs:
                     "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                     game.pgn.to_s,
                     branch: 'master',
-                    sha:    "#{game_content.sha}"
+                    sha:    game_content&.sha
                   )
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."

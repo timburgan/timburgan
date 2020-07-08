@@ -107,12 +107,12 @@ jobs:
           # Get the contents of the game board.
           # ---------------------------------------
           begin
-              game_content = @octokit.contents(
+              game_content_raw = @octokit.contents(
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
               )
 
-              game_content = Base64.decode64(game_content&.content.to_s) unless game_content&.content.to_s.blank?
+              game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
               puts '---- [114] -----'
               puts game_content&.inspect
               puts '----------------'
@@ -131,7 +131,7 @@ jobs:
               # ---------------------------------------
               begin
                   ## Load the current game
-                  File.write TMP_FILENAME, game_content&.content
+                  File.write TMP_FILENAME, game_content
                   game = Chess::Game.load_pgn TMP_FILENAME
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
@@ -162,7 +162,7 @@ jobs:
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 game.pgn.to_s,
                 branch: 'master',
-                sha:    game_content&.sha
+                sha:    game_content_raw&.sha
               )
           rescue StandardError => e
               comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."

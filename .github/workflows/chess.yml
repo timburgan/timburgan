@@ -168,8 +168,6 @@ jobs:
               end
           end
 
-          puts game.status
-
 
 
           #
@@ -179,9 +177,6 @@ jobs:
           # visually represent the board
           # generate new comment links
           #   - and "what possible valid moves are for each piece"
-
-          puts 'combos start:'
-          puts Time.now
 
           cols = ('a'..'h').to_a
           rows = (1..8).to_a
@@ -198,22 +193,21 @@ jobs:
           next_move_combos = squares.map { |from| {from: from, to: squares} }
 
           # delete squares not valid for next move
-          good_move = []
+          good_moves = []
           next_move_combos.each do |square|
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                game.clone.move move_command
+                fake_game = game.clone
+                fake_game.move move_command
               rescue Chess::IllegalMoveError => e
-                # remove that move from the list
-                puts "move: #{move_command}"
+                # puts "move: #{move_command} (bad)"
               else
-                # move ok
-                puts "move: #{move_command} (ok)"
-                if good_move.select{ |move| move[:from] == square[:from] }.blank?
-                  good_move.push({ from: square[:from], to: [to] })
+                # puts "move: #{move_command} (ok)"
+                if good_moves.select{ |move| move[:from] == square[:from] }.blank?
+                  good_moves.push({ from: square[:from], to: [to] })
                 else
-                  good_move.map do |move|
+                  good_moves.map do |move|
                     if move[:from] == square[:from]
                       {
                         from: move[:from],
@@ -230,11 +224,8 @@ jobs:
 
 
           puts '***** [217] **************'
-          puts good_move.to_s
+          puts good_moves.to_s
           puts '*******************'
-
-          puts 'combos end:'
-          puts Time.now
 
 
 
@@ -321,7 +312,7 @@ jobs:
               | ---- | -- |
             HTML
 
-            good_move.each do |move|
+            good_moves.each do |move|
               new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
             end
           end
@@ -359,8 +350,6 @@ jobs:
 
           HTML
 
-
-          puts new_readme
 
 
 

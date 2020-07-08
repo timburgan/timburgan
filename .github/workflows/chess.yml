@@ -111,22 +111,17 @@ jobs:
                 path: GAME_DATA_PATH
               )&.content
 
-              puts '----------------'
+              puts '---- [114] -----'
               puts game_content.to_s
               puts '----------------'
-
           rescue StandardError => e
-              if CHESS_GAME_CMD == 'move'
-                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be found: #{GAME_DATA_PATH}"
-                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                exit(0)
-              else
-                #
-                # no file exists... so no game... so... go ahead and create it
-                # --------------------------------------
-                game = Chess::Game.new
-              end
-          else
+              # no file exists... so no game... so... go ahead and create it
+              game = Chess::Game.new
+          end
+
+
+
+          if CHESS_GAME_CMD == 'move'
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------

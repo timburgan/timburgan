@@ -97,7 +97,6 @@ jobs:
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
-          new_game = true
 
           #
           # Get the contents of the game board.
@@ -190,8 +189,6 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-          else
-            new_game = true
           end
 
 
@@ -224,10 +221,7 @@ jobs:
           next_move_combos = squares.map { |from| {from: from, to: squares} }
 
           fake_game = Chess::Game.new
-          if new_game
-            puts '--new--'
-          else
-            puts '--load--'
+          if CHESS_GAME_CMD == 'move'
             fake_game = fake_game.pgn.load_from_string game.pgn.to_s
           end
 
@@ -252,7 +246,7 @@ jobs:
             square[:to].each do |to|
               move_command = "#{square[:from]}#{to}"
               fake_game_tmp = Chess::Game.new
-              unless new_game
+              if CHESS_GAME_CMD == 'move'
                 fake_game_tmp = fake_game_tmp.pgn.load_from_string fake_game.pgn.to_s
               end
               begin

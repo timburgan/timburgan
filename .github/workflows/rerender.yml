@@ -1,11 +1,11 @@
-name: "Chess render"
+name: "Chess"
 
 on:
   issues:
     types: [opened]
 
 jobs:
-  render:
+  move:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'rerender-chess|')
     steps:
@@ -80,7 +80,9 @@ jobs:
 
           game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
 
-        
+
+          File.write TMP_FILENAME, game_content
+          # game = Chess::Game.load_pgn TMP_FILENAME
 
           #
           # Update timburgan/timburgan/README.md
@@ -103,22 +105,30 @@ jobs:
 
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
-          fake_game = game.clone
+          # fake_game = game.clone
           # fake_game = Marshal.load( Marshal.dump(game) )
 
-          puts ''
-          puts ''
-          puts '--- fake game: -----'
-          puts fake_game.pgn.to_s
-          puts ''
-          puts ''
+          # puts ''
+          # puts ''
+          # puts '--- game: -----'
+          # puts game.pgn.to_s
+          # puts ''
+          # puts ''
+          #
+          # puts ''
+          # puts ''
+          # puts '--- fake game: -----'
+          # puts fake_game.pgn.to_s
+          # puts ''
+          # puts ''
 
           # delete squares not valid for next move
           good_moves = []
           next_move_combos.each do |square|
             square[:to].each do |to|
               move_command = "#{square[:from]}#{to}"
-              fake_game_tmp = fake_game.clone
+              fake_game_tmp = Chess::Game.load_pgn TMP_FILENAME
+              # fake_game_tmp = fake_game.clone
               begin
                 fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e

@@ -275,107 +275,19 @@ jobs:
 
           HTML
 
-          pieces = {
-            "K": "♔",
-            "Q": "♕",
-            "R": "♖",
-            "B": "♗",
-            "N": "♘",
-            "P": "♙",
-            "k": "♚",
-            "q": "♛",
-            "r": "♜",
-            "b": "♝",
-            "n": "♞",
-            "p": "♟"
-          }
-
           board = {
-            "8": {
-              a: 56,
-              b: 57,
-              c: 58,
-              d: 59,
-              e: 60,
-              f: 61,
-              g: 62,
-              h: 63
-            },
-            "7": {
-              a: 48,
-              b: 49,
-              c: 50,
-              d: 51,
-              e: 52,
-              f: 53,
-              g: 54,
-              h: 55
-            },
-            "6": {
-              a: 40,
-              b: 41,
-              c: 42,
-              d: 43,
-              e: 44,
-              f: 45,
-              g: 46,
-              h: 47
-            },
-            "5": {
-              a: 32,
-              b: 33,
-              c: 34,
-              d: 35,
-              e: 36,
-              f: 37,
-              g: 38,
-              h: 39
-            },
-            "4": {
-              a: 24,
-              b: 25,
-              c: 26,
-              d: 27,
-              e: 28,
-              f: 29,
-              g: 30,
-              h: 31
-            },
-            "3": {
-              a: 16,
-              b: 17,
-              c: 18,
-              d: 19,
-              e: 20,
-              f: 21,
-              g: 22,
-              h: 23
-            },
-            "2": {
-              a: 8,
-              b: 9,
-              c: 10,
-              d: 11,
-              e: 12,
-              f: 13,
-              g: 14,
-              h: 15
-            },
-            "1": {
-              a: 0,
-              b: 1,
-              c: 2,
-              d: 3,
-              e: 4,
-              f: 5,
-              g: 7,
-              h: 8
-            },
+            "8": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
+            "7": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
+            "6": { a: 40, b: 41, c: 42, d: 43, e: 44, f: 45, g: 46, h: 47 },
+            "5": { a: 32, b: 33, c: 34, d: 35, e: 36, f: 37, g: 38, h: 39 },
+            "4": { a: 24, b: 25, c: 26, d: 27, e: 28, f: 29, g: 30, h: 31 },
+            "3": { a: 16, b: 17, c: 18, d: 19, e: 20, f: 21, g: 22, h: 23 },
+            "2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
+            "1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
           }
 
-
-          new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
-          new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
+          new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
+          new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
             a = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
             b = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"

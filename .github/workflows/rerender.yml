@@ -1,11 +1,11 @@
-name: "Chess"
+name: "Chess Rerender"
 
 on:
   issues:
     types: [opened]
 
 jobs:
-  move:
+  rerender:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'rerender-chess|')
     steps:
@@ -82,7 +82,7 @@ jobs:
 
 
           File.write TMP_FILENAME, game_content
-          # game = Chess::Game.load_pgn TMP_FILENAME
+          game = Chess::Game.load_pgn TMP_FILENAME
 
           #
           # Update timburgan/timburgan/README.md

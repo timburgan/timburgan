@@ -18,6 +18,12 @@ jobs:
 
       # We <3 Ruby, so let's use it + Octokit to ease the
       # scripting and API interactions.
+
+      #
+      # I see your :eyes: :). This is all band-aids and stick tape.
+      # Yep... I log like it's 1995 with random "puts" in places.
+      #
+
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.1
@@ -37,6 +43,7 @@ jobs:
           require 'active_support/core_ext/array'
           require 'octokit'
           require 'chess'
+
 
           @preview_headers = [
             ::Octokit::Preview::PREVIEW_TYPES[:reactions],

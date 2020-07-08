@@ -111,6 +111,7 @@ jobs:
                 path: GAME_DATA_PATH
               )&.content
 
+              game_content = Base64.decode64(game_content.to_s) unless game_content.to_s.blank?
               puts '---- [114] -----'
               puts game_content.to_s
               puts '----------------'
@@ -257,7 +258,7 @@ jobs:
 
             ## Tim's Community Chess Tournament
 
-            #{game_state} This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn (#{(game.board.active_color) ? 'black' : 'white'}}.
+            #{game_state} This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn, #{(game.board.active_color) ? 'black' : 'white'}.
 
           HTML
 

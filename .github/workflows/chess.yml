@@ -114,7 +114,7 @@ jobs:
 
               game_content = Base64.decode64(game_content&.content.to_s) unless game_content&.content.to_s.blank?
               puts '---- [114] -----'
-              puts game_content&.content.to_s
+              puts game_content&.inspect
               puts '----------------'
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it

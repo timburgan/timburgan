@@ -97,6 +97,8 @@ jobs:
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
+          new_game = true
+
           #
           # Get the contents of the game board.
           # ---------------------------------------
@@ -188,6 +190,8 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
+          else
+            new_game = true
           end
 
 
@@ -219,8 +223,10 @@ jobs:
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
           fake_game = Chess::Game.new
-          fake_game = fake_game.pgn.load_from_string game.pgn.to_s
-
+          unless new_game
+            fake_game = fake_game.pgn.load_from_string game.pgn.to_s
+          end
+          
           puts ''
           puts ''
           puts '---  game: -----'

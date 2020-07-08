@@ -271,7 +271,7 @@ jobs:
 
             ## Tim's Mighty Chess Tournament
 
-            #{game_status}
+            #{game_state}
 
           HTML
 

@@ -100,6 +100,7 @@ jobs:
 
 
           GAME_DATA_PATH = "chess_games/chess.pgn"
+          TMP_FILENAME = "/tmp/chess.pgn"
 
 
           #
@@ -123,11 +124,9 @@ jobs:
               # Game is in progress. Load the game board.
               # ---------------------------------------
               begin
-                  filename = "/tmp/chess.pgn"
-                  File.write filename, game_content
-
+                  File.write TMP_FILENAME, game_content
                   ## Load the current game
-                  game = Chess::Game.load_pgn filename
+                  game = Chess::Game.load_pgn TMP_FILENAME
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -199,7 +198,7 @@ jobs:
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                fake_game = Chess::Game.load_pgn filename
+                fake_game = Chess::Game.load_pgn TMP_FILENAME
                 fake_game.move move_command
               rescue Chess::IllegalMoveError => e
                 # puts "move: #{move_command} (bad)"

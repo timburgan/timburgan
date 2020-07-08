@@ -220,10 +220,12 @@ jobs:
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
 
-          fake_game = Chess::Game.new
-          if CHESS_GAME_CMD == 'move'
-            fake_game = fake_game.pgn.load_from_string game.pgn.to_s
-          end
+          fake_game = if CHESS_GAME_CMD == 'move'
+                        File.write TMP_FILENAME, game.pgn.to_s
+                        Chess::Game.load_pgn TMP_FILENAME
+                      else
+                        Chess::Game.new
+                      end
 
 
           puts ''
@@ -245,10 +247,12 @@ jobs:
           next_move_combos.each do |square|
             square[:to].each do |to|
               move_command = "#{square[:from]}#{to}"
-              fake_game_tmp = Chess::Game.new
-              if CHESS_GAME_CMD == 'move'
-                fake_game_tmp = fake_game_tmp.pgn.load_from_string fake_game.pgn.to_s
-              end
+              fake_game_tmp = if CHESS_GAME_CMD == 'move'
+                                File.write TMP_FILENAME, fake_game.pgn.to_s
+                                Chess::Game.load_pgn TMP_FILENAME
+                              else
+                                Chess::Game.new
+                              end
               begin
                 fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e

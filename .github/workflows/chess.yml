@@ -124,8 +124,8 @@ jobs:
               # Game is in progress. Load the game board.
               # ---------------------------------------
               begin
-                  File.write TMP_FILENAME, game_content
                   ## Load the current game
+                  File.write TMP_FILENAME, game_content
                   game = Chess::Game.load_pgn TMP_FILENAME
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
@@ -191,6 +191,7 @@ jobs:
 
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
+          fake_game = game.clone
 
           # delete squares not valid for next move
           good_moves = []
@@ -198,8 +199,8 @@ jobs:
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                fake_game = Chess::Game.load_pgn TMP_FILENAME
-                fake_game.move move_command
+                fake_game_tmp = fake_game.clone
+                fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e
                 # puts "move: #{move_command} (bad)"
               else

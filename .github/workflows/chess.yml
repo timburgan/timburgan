@@ -99,7 +99,7 @@ jobs:
           end
 
 
-          GAME_DATA_PATH = "chess_games/#{CHESS_GAME_TITLE}.pgn"
+          GAME_DATA_PATH = "chess_games/chess.pgn"
 
 
           #
@@ -123,7 +123,7 @@ jobs:
               # Game is in progress. Load the game board.
               # ---------------------------------------
               begin
-                  filename = "/tmp/chess_#{ENV.fetch('EVENT_ISSUE_NUMBER')}.pgn"
+                  filename = "/tmp/chess.pgn"
                   File.write filename, game_content
 
                   ## Load the current game
@@ -199,7 +199,7 @@ jobs:
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                fake_game = game.clone
+                fake_game = Chess::Game.load_pgn filename
                 fake_game.move move_command
               rescue Chess::IllegalMoveError => e
                 # puts "move: #{move_command} (bad)"

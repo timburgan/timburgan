@@ -269,26 +269,25 @@ jobs:
 
           new_readme = <<~HTML
 
-            ## Tim's Mighty Chess Tournament
+            ## Tim's Community Chess Tournament
 
-            #{game.status}
             #{game_state}
 
           HTML
 
           pieces = {
-            K: "♔",
-            Q: "♕",
-            R: "♖",
-            B: "♗",
-            N: "♘",
-            P: "♙",
-            k: "♚",
-            q: "♛",
-            r: "♜",
-            b: "♝",
-            n: "♞",
-            p: "♟"
+            "K": "♔",
+            "Q": "♕",
+            "R": "♖",
+            "B": "♗",
+            "N": "♘",
+            "P": "♙",
+            "k": "♚",
+            "q": "♛",
+            "r": "♜",
+            "b": "♝",
+            "n": "♞",
+            "p": "♟"
           }
 
           board = {
@@ -378,14 +377,14 @@ jobs:
           new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            a = pieces[game.board[board[:"#{row}"][:a][:code]].to_s]
-            b = pieces[game.board[board[:"#{row}"][:b][:code]].to_s]
-            c = pieces[game.board[board[:"#{row}"][:c][:code]].to_s]
-            d = pieces[game.board[board[:"#{row}"][:d][:code]].to_s]
-            e = pieces[game.board[board[:"#{row}"][:e][:code]].to_s]
-            f = pieces[game.board[board[:"#{row}"][:f][:code]].to_s]
-            g = pieces[game.board[board[:"#{row}"][:g][:code]].to_s]
-            h = pieces[game.board[board[:"#{row}"][:h][:code]].to_s]
+            a = pieces[:"#{game.board[board[:"#{row}"][:a][:code]].to_s}"]
+            b = pieces[:"#{game.board[board[:"#{row}"][:b][:code]].to_s}"]
+            c = pieces[:"#{game.board[board[:"#{row}"][:c][:code]].to_s}"]
+            d = pieces[:"#{game.board[board[:"#{row}"][:d][:code]].to_s}"]
+            e = pieces[:"#{game.board[board[:"#{row}"][:e][:code]].to_s}"]
+            f = pieces[:"#{game.board[board[:"#{row}"][:f][:code]].to_s}"]
+            g = pieces[:"#{game.board[board[:"#{row}"][:g][:code]].to_s}"]
+            h = pieces[:"#{game.board[board[:"#{row}"][:h][:code]].to_s}"]
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
 

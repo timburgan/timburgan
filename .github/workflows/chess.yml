@@ -105,8 +105,15 @@ jobs:
 
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
-          fake_game = game.clone
-          # fake_game = Marshal.load( Marshal.dump(game) )
+          # fake_game = game.clone
+          fake_game = Marshal.load( Marshal.dump(game) )
+
+          puts ''
+          puts ''
+          puts '--- game: -----'
+          puts game.pgn.to_s
+          puts ''
+          puts ''
 
           puts ''
           puts ''

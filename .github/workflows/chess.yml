@@ -170,6 +170,11 @@ jobs:
 
 
 
+          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done")
+          @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
+
+
+
           #
           # Update timburgan/timburgan/README.md
           # ---------------------------------------
@@ -362,10 +367,6 @@ jobs:
                 'timburgan/timburgan',
                 path: 'README.md'
               )&.sha
-
-              puts '**** current readme *****************'
-              puts current_readme_sha
-              puts '*********************'
 
               @octokit.create_contents(
                 'timburgan/timburgan',

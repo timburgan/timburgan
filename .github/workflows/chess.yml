@@ -277,25 +277,116 @@ jobs:
           HTML
 
           pieces = {
-            white_king:   "♔",
-            white_queen:  "♕",
-            white_rook:   "♖",
-            white_bishop: "♗",
-            white_knight: "♘",
-            white_pawn:   "♙",
-            black_king:   "♚",
-            black_queen:  "♛",
-            black_rook:   "♜",
-            black_bishop: "♝",
-            black_knight: "♞",
-            black_pawn:   "♟"
+            K: "♔",
+            Q: "♕",
+            R: "♖",
+            B: "♗",
+            N: "♘",
+            P: "♙",
+            k: "♚",
+            q: "♛",
+            r: "♜",
+            b: "♝",
+            n: "♞",
+            p: "♟"
+          }
+
+          board = {
+            "8": {
+              a: { code: 56 },
+              b: { code: 57 },
+              c: { code: 58 },
+              d: { code: 59 },
+              e: { code: 60 },
+              f: { code: 61 },
+              g: { code: 62 },
+              h: { code: 63 }
+            },
+            "7": {
+              a: { code: 48 },
+              b: { code: 49 },
+              c: { code: 50 },
+              d: { code: 51 },
+              e: { code: 52 },
+              f: { code: 53 },
+              g: { code: 54 },
+              h: { code: 55 }
+            },
+            "6": {
+              a: { code: 40 },
+              b: { code: 41 },
+              c: { code: 42 },
+              d: { code: 43 },
+              e: { code: 44 },
+              f: { code: 45 },
+              g: { code: 46 },
+              h: { code: 47 }
+            },
+            "5": {
+              a: { code: 32 },
+              b: { code: 33 },
+              c: { code: 34 },
+              d: { code: 35 },
+              e: { code: 36 },
+              f: { code: 37 },
+              g: { code: 38 },
+              h: { code: 39 }
+            },
+            "4": {
+              a: { code: 24 },
+              b: { code: 25 },
+              c: { code: 26 },
+              d: { code: 27 },
+              e: { code: 28 },
+              f: { code: 29 },
+              g: { code: 30 },
+              h: { code: 31 }
+            },
+            "3": {
+              a: { code: 16 },
+              b: { code: 17 },
+              c: { code: 18 },
+              d: { code: 19 },
+              e: { code: 20 },
+              f: { code: 21 },
+              g: { code: 22 },
+              h: { code: 23 }
+            },
+            "2": {
+              a: { code: 8 },
+              b: { code: 9 },
+              c: { code: 10 },
+              d: { code: 11 },
+              e: { code: 12 },
+              f: { code: 13 },
+              g: { code: 14 },
+              h: { code: 15 }
+            },
+            "1": {
+              a: { code: 0 },
+              b: { code: 1 },
+              c: { code: 2 },
+              d: { code: 3 },
+              e: { code: 4 },
+              f: { code: 5 },
+              g: { code: 7 },
+              h: { code: 8 }
+            },
           }
 
 
           new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            new_readme.concat "| #{row} |  |  |  |  |  |  |  |  |\n"
+            a = game.board[board[row.to_s][:a][:code]].to_s
+            b = game.board[board[row.to_s][:b][:code]].to_s
+            c = game.board[board[row.to_s][:c][:code]].to_s
+            d = game.board[board[row.to_s][:d][:code]].to_s
+            e = game.board[board[row.to_s][:e][:code]].to_s
+            f = game.board[board[row.to_s][:f][:code]].to_s
+            g = game.board[board[row.to_s][:g][:code]].to_s
+            h = game.board[board[row.to_s][:h][:code]].to_s
+            new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
 
 

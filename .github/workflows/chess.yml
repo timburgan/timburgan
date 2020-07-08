@@ -401,7 +401,7 @@ jobs:
 
             **How this works**
 
-            When you click a link, it's open a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a GitHub Actions [workflow]() that'll update my profile with the new state of the board.
+            When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a GitHub Actions workflow that'll update my profile with the new state of the board.
 
           HTML
 

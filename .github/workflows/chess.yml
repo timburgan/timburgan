@@ -377,14 +377,14 @@ jobs:
           new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            a = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"]
-            b = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"]
-            c = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"]
-            d = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"]
-            e = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"]
-            f = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"]
-            g = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"]
-            h = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"]
+            a = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
+            b = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
+            c = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
+            d = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
+            e = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
+            f = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
+            g = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
+            h = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
 

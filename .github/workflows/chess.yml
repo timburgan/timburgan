@@ -272,7 +272,7 @@ jobs:
 
             ## Tim's Community Chess Tournament
 
-            #{game_state}
+            #{game_state} This is open to ANYONE to play. That's the point. :wave: It's your turn (#{(game.board.active_color) ? 'black' : 'white'}}).
 
           HTML
 
@@ -328,13 +328,15 @@ jobs:
             HTML
 
             good_move.each do |move|
-              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(', ')} |\n"
+              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
             end
           end
 
           new_readme.concat <<~HTML
 
-            #### Moves so far
+            <!--
+
+            #### Moves so far this game
 
             | Date | Who | Move |
             | ---- | --- | ---- |
@@ -354,6 +356,12 @@ jobs:
             | Moves | Who |
             | ----- | --- |
             | xx    | @timburgan |
+
+            -->
+
+            **How this works**
+
+            When you click a link, it's open a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a GitHub Actions [workflow]() that'll update my profile with the new state of the board.
 
           HTML
 

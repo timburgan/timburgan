@@ -137,6 +137,21 @@ jobs:
             puts '[137]'
           end
 
+          if CHESS_GAME_CMD == 'new' && game_content_raw.present?
+            begin
+              @octokit.delete_contents(
+                ENV.fetch('REPOSITORY'),
+                GAME_DATA_PATH,
+                "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
+                game_content_raw&.sha,
+                branch: 'master',
+              )
+            rescue StandardError => e
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
+            end
+          end
 
 
           if CHESS_GAME_CMD == 'move'

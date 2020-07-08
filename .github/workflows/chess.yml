@@ -120,6 +120,7 @@ jobs:
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
           else
+            game = Chess::Game.new if CHESS_GAME_CMD == 'new'
           end
 
 
@@ -197,8 +198,8 @@ jobs:
 
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
-          # fake_game = game.clone
-          fake_game = Marshal.load( Marshal.dump(game) )
+          fake_game = game.clone
+          # fake_game = Marshal.load( Marshal.dump(game) )
 
           puts ''
           puts ''

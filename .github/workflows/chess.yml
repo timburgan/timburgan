@@ -164,7 +164,7 @@ jobs:
                   game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
                   puts '[149]'
               rescue Chess::IllegalMoveError => e
-                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move!"
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end

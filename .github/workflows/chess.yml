@@ -204,16 +204,15 @@ jobs:
           next_move_combos = squares.map { |from| {from: from, to: squares} }
 
           # delete squares not valid for next move
-          valid_next_move_tester = game.clone
           good_move = []
           next_move_combos.each do |square|
             square[:to].each do |to|
               begin
                 move_command = "#{square[:from]}#{to}"
-                valid_next_move_tester.move move_command
+                game.clone
+                fake_game.move move_command
               rescue Chess::IllegalMoveError => e
                 # remove that move from the list
-                # next_move_combos = next_move_combos - [Hash[from, to]]
                 puts "move: #{move_command}"
               else
                 # move ok

@@ -216,6 +216,7 @@ jobs:
                 # next_move_combos = next_move_combos - [Hash[from, to]]
               else
                 # move ok
+                puts "move ok: #{move_command}"
                 if good_move.select{ |move| move[:from] == square[:from] }.blank?
                   good_move.push({ from: square[:from], to: [to] })
                 else
@@ -323,7 +324,7 @@ jobs:
 
               #### **#{(game.board.active_color) ? 'BLACK' : 'WHITE'}:** It's your move... to choose _where_ to move..
 
-              | FROM | TO _just click one of the links_ :) |
+              | FROM | TO - _just click one of the links_ :) |
               | ---- | -- |
             HTML
 

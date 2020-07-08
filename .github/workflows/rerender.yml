@@ -1,0 +1,298 @@
+name: "Chess render"
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.issue.title, 'rerender-chess|')
+    steps:
+
+    - name: Set env vars
+      run: |
+        echo ::set-env name=REPOSITORY::${{ github.repository }}
+        echo ::set-env name=EVENT_ISSUE_NUMBER::${{ github.event.issue.number }}
+        echo ::set-env name=EVENT_USER_LOGIN::${{ github.event.issue.user.login }}
+
+      # We <3 Ruby, so let's use it + Octokit to ease the
+      # scripting and API interactions.
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.1
+
+    - name: Setup Gems
+      run: |
+        gem install activesupport -N --silent
+        gem install octokit -N --silent
+        gem install chess -N --silent
+
+
+    - name: Play
+      run: |
+        ruby <<- EORUBY
+          require 'active_support'
+          require 'active_support/core_ext/object'
+          require 'active_support/core_ext/array'
+          require 'octokit'
+          require 'chess'
+
+          @preview_headers = [
+            ::Octokit::Preview::PREVIEW_TYPES[:reactions],
+            ::Octokit::Preview::PREVIEW_TYPES[:integrations]
+          ]
+
+
+          # Authenticate using GITHUB_TOKEN
+          @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
+          @octokit.auto_paginate = true
+          @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
+          # Show we've got eyes on the triggering comment.
+          @octokit.create_issue_reaction(
+            ENV.fetch('REPOSITORY'),
+            ENV.fetch('EVENT_ISSUE_NUMBER'),
+            'eyes',
+            {accept: @preview_headers}
+          )
+          @octokit.create_issue_reaction(
+            ENV.fetch('REPOSITORY'),
+            ENV.fetch('EVENT_ISSUE_NUMBER'),
+            'rocket',
+            {accept: @preview_headers}
+          )
+
+
+
+
+          GAME_DATA_PATH = "chess_games/chess.pgn"
+          TMP_FILENAME = "/tmp/chess.pgn"
+          game = nil
+          game_content = nil
+
+          #
+          # Get the contents of the game board.
+          # ---------------------------------------
+          game_content_raw = @octokit.contents(
+            ENV.fetch('REPOSITORY'),
+            path: GAME_DATA_PATH
+          )
+
+          game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
+
+        
+
+          #
+          # Update timburgan/timburgan/README.md
+          # ---------------------------------------
+
+          # visually represent the board
+          # generate new comment links
+          #   - and "what possible valid moves are for each piece"
+
+          cols = ('a'..'h').to_a
+          rows = (1..8).to_a
+
+          # list squares on the board - format a1, a2, a3, b1, b2, b3 etc
+          squares = []
+          cols.each do |col|
+            rows.each do |row|
+              squares.push "#{col}#{row}"
+            end
+          end
+
+          # combine squares with where they  can MOVE to
+          next_move_combos = squares.map { |from| {from: from, to: squares} }
+          fake_game = game.clone
+          # fake_game = Marshal.load( Marshal.dump(game) )
+
+          puts ''
+          puts ''
+          puts '--- fake game: -----'
+          puts fake_game.pgn.to_s
+          puts ''
+          puts ''
+
+          # delete squares not valid for next move
+          good_moves = []
+          next_move_combos.each do |square|
+            square[:to].each do |to|
+              move_command = "#{square[:from]}#{to}"
+              fake_game_tmp = fake_game.clone
+              begin
+                fake_game_tmp.move move_command
+              rescue Chess::IllegalMoveError => e
+                # puts "move: #{move_command} (bad)"
+              else
+                # puts "move: #{move_command} (ok)"
+                if good_moves.select{ |move| move[:from] == square[:from] }.blank?
+                  good_moves.push({ from: square[:from], to: [to] })
+                else
+                  good_moves.map do |move|
+                    if move[:from] == square[:from]
+                      {
+                        from: move[:from],
+                        to:   move[:to].push(to)
+                      }
+                    else
+                      move
+                    end
+                  end
+                end
+              end
+            end
+          end
+
+
+          puts '***** [217] **************'
+          puts good_moves.to_s
+          puts '*******************'
+
+
+
+
+          game_state =  case game.status.to_s
+                        when 'in_progress'
+                          'Game is in progress.'
+                        when 'white_won'
+                          'Game won by white with a checkmate.'
+                        when 'black_won'
+                          'Game won by black with a checkmate.'
+                        when 'white_won_resign'
+                          'Game won by white for resign.'
+                        when 'black_won_resign'
+                          'Game won by black for resign.'
+                        when 'stalemate'
+                          'Game was a draw due to stalemate.'
+                        when 'insufficient_material'
+                          'Game was a draw due to insufficient material to checkmate.'
+                        when 'fifty_rule_move'
+                          'Game was a draw due to fifty rule move.'
+                        when 'threefold_repetition'
+                          'Game was a draw due to threshold repetition.'
+                        else
+                          'Game terminated. Something went wrong.'
+                        end
+
+          new_readme = <<~HTML
+
+            ## Tim's Community Chess Tournament
+
+            #{game_state} This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn, #{(game.board.active_color) ? 'black' : 'white'}.
+
+          HTML
+
+          board = {
+            "8": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
+            "7": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
+            "6": { a: 40, b: 41, c: 42, d: 43, e: 44, f: 45, g: 46, h: 47 },
+            "5": { a: 32, b: 33, c: 34, d: 35, e: 36, f: 37, g: 38, h: 39 },
+            "4": { a: 24, b: 25, c: 26, d: 27, e: 28, f: 29, g: 30, h: 31 },
+            "3": { a: 16, b: 17, c: 18, d: 19, e: 20, f: 21, g: 22, h: 23 },
+            "2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
+            "1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
+          }
+
+          new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
+          new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
+          (1..8).to_a.reverse.each_with_index do |row|
+            a = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
+            b = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
+            c = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
+            d = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
+            e = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
+            f = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
+            g = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
+            h = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
+
+            # a = game.board[board[:"#{row}"][:a]]
+            # b = game.board[board[:"#{row}"][:b]]
+            # c = game.board[board[:"#{row}"][:c]]
+            # d = game.board[board[:"#{row}"][:d]]
+            # e = game.board[board[:"#{row}"][:e]]
+            # f = game.board[board[:"#{row}"][:f]]
+            # g = game.board[board[:"#{row}"][:g]]
+            # h = game.board[board[:"#{row}"][:h]]
+
+            new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+          end
+
+
+          if game.over?
+            new_readme.concat <<~HTML
+
+              #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cnew)
+
+            HTML
+          else
+            new_readme.concat <<~HTML
+
+              #### **#{(game.board.active_color) ? 'BLACK' : 'WHITE'}:** It's your move... to choose _where_ to move..
+
+              | FROM | TO - _just click one of the links_ :) |
+              | ---- | -- |
+            HTML
+
+            good_moves.each do |move|
+              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
+            end
+          end
+
+          new_readme.concat <<~HTML
+
+            <!--
+
+            #### Moves so far this game
+
+            | Date | Who | Move |
+            | ---- | --- | ---- |
+            | xx | @timburgan | a1b3 |
+
+
+            #### Leaderboard
+
+            **Most moves**
+
+            | Moves | Who |
+            | ----- | --- |
+            | xx    | @timburgan |
+
+            **Winning moves**
+
+            | Moves | Who |
+            | ----- | --- |
+            | xx    | @timburgan |
+
+            -->
+
+            **How this works**
+
+            When you click a link, it's open a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a GitHub Actions [workflow]() that'll update my profile with the new state of the board.
+
+          HTML
+
+
+
+
+          #
+          # Update the game with next moves.
+          # ---------------------------------------
+          begin
+              current_readme_sha = @octokit.contents(
+                'timburgan/timburgan',
+                path: 'README.md'
+              )&.sha
+
+              @octokit.create_contents(
+                'timburgan/timburgan',
+                'README.md',
+                "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+                new_readme,
+                branch: 'master',
+                sha:    current_readme_sha
+              )
+          rescue StandardError => e
+              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update render of the game board. Move *was* saved, however."
+              error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+              exit(0)
+          end

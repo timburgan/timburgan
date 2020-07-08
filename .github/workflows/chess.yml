@@ -413,7 +413,7 @@ jobs:
 
             -->
 
-            **Most moves so far, across all games**
+            **Most moves across all games**
 
             | Moves | Who |
             | ----- | --- |
@@ -423,10 +423,10 @@ jobs:
             'timburgan/timburgan',
             state: 'closed',
           )
-          moves = issues.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse
+          moves = issues.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
 
           moves.each do |move|
-            new_readme.concat "| #{move[1]} | @#{move[0]} |\n"
+            new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
           end
 
 

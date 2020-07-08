@@ -244,7 +244,7 @@ jobs:
 
 
 
-          game_state =  case game.status
+          game_state =  case game.status.to_s
                         when 'in_progress'
                           'Game is in progress.'
                         when 'white_won'

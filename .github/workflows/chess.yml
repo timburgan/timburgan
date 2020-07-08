@@ -101,7 +101,7 @@ jobs:
 
           GAME_DATA_PATH = "chess_games/chess.pgn"
           TMP_FILENAME = "/tmp/chess.pgn"
-
+          game = nil
 
           #
           # Get the contents of the game board.
@@ -120,6 +120,11 @@ jobs:
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
           else
+          end
+
+
+
+          if CHESS_GAME_CMD == 'move'
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------
@@ -132,11 +137,7 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-          end
 
-
-
-          if CHESS_GAME_CMD == 'move'
               #
               # Perform Move
               # ---------------------------------------
@@ -147,7 +148,6 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
-
 
               #
               # Save the game board.
@@ -170,7 +170,7 @@ jobs:
 
 
 
-          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done")
+          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")
           @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
 
 
@@ -198,23 +198,35 @@ jobs:
           next_move_combos = squares.map { |from| {from: from, to: squares} }
           fake_game = game.clone
 
+          puts ''
+          puts ''
+          puts '--- fake game: -----'
+          puts fake_game.pgn.to_s
+          puts ''
+          puts ''
+
+          puts ''
+          puts ''
+          puts '--- testing moves: -----'
           # delete squares not valid for next move
           good_moves = []
           next_move_combos.each do |square|
             square[:to].each do |to|
+              move_command = "#{square[:from]}#{to}"
+              fake_game_tmp = fake_game.clone
               begin
-                move_command = "#{square[:from]}#{to}"
-                fake_game_tmp = fake_game.clone
                 fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e
                 # puts "move: #{move_command} (bad)"
               else
-                # puts "move: #{move_command} (ok)"
+                puts "move: #{move_command} (ok)"
                 if good_moves.select{ |move| move[:from] == square[:from] }.blank?
                   good_moves.push({ from: square[:from], to: [to] })
+                  puts "  - #{{ from: square[:from], to: [to] }.to_s}"
                 else
                   good_moves.map do |move|
                     if move[:from] == square[:from]
+                      puts "  * #{{ from: move[:from], to: move[:to].push(to) }.to_s}"
                       {
                         from: move[:from],
                         to:   move[:to].push(to)

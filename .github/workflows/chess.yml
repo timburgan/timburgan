@@ -298,14 +298,14 @@ jobs:
             # g = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
             # h = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
 
-            a = game.board[board[:"#{row}"][:a]]
-            b = game.board[board[:"#{row}"][:b]]
-            c = game.board[board[:"#{row}"][:c]]
-            d = game.board[board[:"#{row}"][:d]]
-            e = game.board[board[:"#{row}"][:e]]
-            f = game.board[board[:"#{row}"][:f]]
-            g = game.board[board[:"#{row}"][:g]]
-            h = game.board[board[:"#{row}"][:h]]
+            a = '_' + game.board[board[:"#{row}"][:a]] + '_'
+            b = '_' + game.board[board[:"#{row}"][:b]] + '_'
+            c = '_' + game.board[board[:"#{row}"][:c]] + '_'
+            d = '_' + game.board[board[:"#{row}"][:d]] + '_'
+            e = '_' + game.board[board[:"#{row}"][:e]] + '_'
+            f = '_' + game.board[board[:"#{row}"][:f]] + '_'
+            g = '_' + game.board[board[:"#{row}"][:g]] + '_'
+            h = '_' + game.board[board[:"#{row}"][:h]] + '_'
 
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end

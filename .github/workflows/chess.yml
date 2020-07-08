@@ -117,11 +117,7 @@ jobs:
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
-          end
-
-
-
-          if CHESS_GAME_CMD == 'move'
+          else
               #
               # Game is in progress. Load the game board.
               # ---------------------------------------
@@ -136,8 +132,11 @@ jobs:
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
+          end
 
 
+
+          if CHESS_GAME_CMD == 'move'
               #
               # Perform Move
               # ---------------------------------------
@@ -267,7 +266,7 @@ jobs:
 
             ## Tim's Community Chess Tournament
 
-            #{game_state} This is open to ANYONE to play. That's the point. :wave: It's your turn (#{(game.board.active_color) ? 'black' : 'white'}}).
+            #{game_state} This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn (#{(game.board.active_color) ? 'black' : 'white'}}.
 
           HTML
 

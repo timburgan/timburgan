@@ -378,14 +378,14 @@ jobs:
           new_readme.concat "|  | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "|- | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            a = game.board[board[:"#{row}"][:a][:code]].to_s
-            b = game.board[board[:"#{row}"][:b][:code]].to_s
-            c = game.board[board[:"#{row}"][:c][:code]].to_s
-            d = game.board[board[:"#{row}"][:d][:code]].to_s
-            e = game.board[board[:"#{row}"][:e][:code]].to_s
-            f = game.board[board[:"#{row}"][:f][:code]].to_s
-            g = game.board[board[:"#{row}"][:g][:code]].to_s
-            h = game.board[board[:"#{row}"][:h][:code]].to_s
+            a = pieces[game.board[board[:"#{row}"][:a][:code]].to_s]
+            b = pieces[game.board[board[:"#{row}"][:b][:code]].to_s]
+            c = pieces[game.board[board[:"#{row}"][:c][:code]].to_s]
+            d = pieces[game.board[board[:"#{row}"][:d][:code]].to_s]
+            e = pieces[game.board[board[:"#{row}"][:e][:code]].to_s]
+            f = pieces[game.board[board[:"#{row}"][:f][:code]].to_s]
+            g = pieces[game.board[board[:"#{row}"][:g][:code]].to_s]
+            h = pieces[game.board[board[:"#{row}"][:h][:code]].to_s]
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
 
@@ -401,7 +401,7 @@ jobs:
 
               #### **#{(game.board.active_color) ? 'BLACK' : 'WHITE'}:** It's your move... to choose _where_ to move..
 
-              | FROM | TO _just click one of the "to" links_ :) |
+              | FROM | TO _just click one of the links_ :) |
               | ---- | -- |
             HTML
 

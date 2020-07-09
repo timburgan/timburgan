@@ -174,7 +174,7 @@ jobs:
               # Share the play.
               #-------------------
 
-              if issues.present? && issues.first.user.login == EVENT_USER_LOGIN
+              if issues.present? && issues.first.user.login == ENV.fetch('EVENT_USER_LOGIN')
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)

@@ -174,11 +174,11 @@ jobs:
               # Share the play.
               #-------------------
 
-              # if issues.present? && issues.first.user.login == ENV.fetch('EVENT_USER_LOGIN')
-              #     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
-              #     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-              #     exit(0)
-              # end
+              if issues.present? && issues.first.user.login == ENV.fetch('EVENT_USER_LOGIN')
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
 
 
               #
@@ -389,14 +389,17 @@ jobs:
           HTML
 
           if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
-              issues[0..4].each do |issue|
+              i = 0
+              issues.each do |issue|
                 break if issue.title.start_with? 'chess|new'
                 if issue.title.start_with? 'chess|move|'
                   from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
                   to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
                   who = issue.user.login
+                  i += 1
                   new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
                 end
+                break if i >= 4
               end
           else
               new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"

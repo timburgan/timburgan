@@ -389,13 +389,14 @@ jobs:
           HTML
 
           if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
-            issues[0..4].each do |issue|
-              break if issue.title.start_with? 'chess|new'
-              if issue.title.start_with? 'chess|move|'
-                from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
-                to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
-                who = issue.user.login
-                new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
+              issues[0..4].each do |issue|
+                break if issue.title.start_with? 'chess|new'
+                if issue.title.start_with? 'chess|move|'
+                  from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
+                  to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
+                  who = issue.user.login
+                  new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
+                end
               end
           else
               new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"

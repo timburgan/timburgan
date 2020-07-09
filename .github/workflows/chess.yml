@@ -61,6 +61,11 @@ jobs:
             end
           end
 
+          def valid_new_game_request(game)
+            '${{ github.event.issue.title }}'.split('|')&.second.to_s == 'new' &&
+            (ENV.fetch('EVENT_USER_LOGIN') == 'timburgan' || game&.over?)
+          end
+
           # Authenticate using GITHUB_TOKEN
           @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
           @octokit.auto_paginate = true
@@ -100,6 +105,7 @@ jobs:
           end
 
 
+
           GAME_DATA_PATH = "chess_games/chess.pgn"
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
@@ -119,7 +125,7 @@ jobs:
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
           else
-            game = if CHESS_GAME_CMD == 'new' || game.present?
+            game = if valid_new_game_request(game) || game.present?
                      Chess::Game.new
                    else
                      #
@@ -137,7 +143,7 @@ jobs:
                    end
           end
 
-          if CHESS_GAME_CMD == 'new' && game_content_raw.present?
+          if valid_new_game_request(game) && game_content_raw.present?
             begin
               @octokit.delete_contents(
                 ENV.fetch('REPOSITORY'),

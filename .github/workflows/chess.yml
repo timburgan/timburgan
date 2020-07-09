@@ -154,7 +154,33 @@ jobs:
           end
 
 
+
+          begin
+            issues = @octokit.list_issues(
+              'timburgan/timburgan',
+              state: 'closed',
+              accept: @preview_headers
+            )&.select{ |issue| issue&.reactions.confused == 0 }
+
+          rescue StandardError => e
+            # don't exit, if these can't be retrieved. Allow play to continue.
+          end
+
+
+
           if CHESS_GAME_CMD == 'move'
+
+              #
+              # Share the play.
+              #-------------------
+
+              if issues.present? && issues.first.user.login == EVENT_USER_LOGIN
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
+
+
               #
               # Perform Move
               # ---------------------------------------
@@ -356,26 +382,23 @@ jobs:
 
             Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the text _cc @timburgan_.
 
-            **Last few move attempts, this game**
+            **Last few moves, this game**
 
-            | Moves | Who |
+            | Move  | Who |
             | ----- | --- |
           HTML
 
-          issues = @octokit.list_issues(
-            'timburgan/timburgan',
-            state: 'closed',
-            accept: @preview_headers
-          )&.select{ |issue| issue&.reactions.confused == 0 }
-
-          issues[0..4].each do |issue|
-            break if issue.title.start_with? 'chess|new'
-            if issue.title.start_with? 'chess|move|'
-              from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
-              to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
-              who = issue.user.login
-              new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
-            end
+          if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
+            issues[0..4].each do |issue|
+              break if issue.title.start_with? 'chess|new'
+              if issue.title.start_with? 'chess|move|'
+                from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
+                to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
+                who = issue.user.login
+                new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
+              end
+          else
+              new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"
           end
 
 
@@ -383,14 +406,17 @@ jobs:
 
             **Top 20 Leaderboard: Most moves across all games, except me.**
 
-            | Move | Who |
+            | Moves | Who |
             | ----- | --- |
           HTML
 
-          moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
-
-          moves.each do |move|
-            new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
+          if issues.present?
+              moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
+              moves.each do |move|
+                new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
+              end
+          else
+              new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"
           end
 
 

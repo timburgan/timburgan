@@ -171,26 +171,22 @@ jobs:
           if CHESS_GAME_CMD == 'move'
 
               #
-              # Share the play.
+              # Share the play. Exit if user just had the prior move.
+              # Need to filter out and PRs and other issues though.
               #-------------------
 
-              # if issues.present? && issues.first.user.login == ENV.fetch('EVENT_USER_LOGIN')
-              #     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
-              #     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-              #     exit(0)
-              # end
-
-
-              if issues.present? && issues.first.user.login == ENV.fetch('EVENT_USER_LOGIN')
-                puts ""
-                puts ""
-                puts "------------------"
-                puts "first #{issues.first.user.id}: #{issues.first.user.login}"
-                puts "last #{issues.last.user.id}: #{issues.last.user.login}"
-                puts "event: #{ENV.fetch('EVENT_USER_LOGIN')}"
-                puts "------------------"
-                puts ""
-                puts ""
+              i = 0
+              issues&.each do |issue|
+                break if issue.title.start_with? 'chess|new'
+                if issue.title.start_with? 'chess|move|'
+                  if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
+                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                    exit(0)
+                  end
+                  i += 1
+                end
+                break if i >= 1
               end
 
 
@@ -325,7 +321,7 @@ jobs:
 
             ## Tim's Community Chess Tournament
 
-            #{game_state} This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
+            **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
 
           HTML
 
@@ -368,7 +364,7 @@ jobs:
           if game.over?
             new_readme.concat <<~HTML
 
-              #### Play again? [Yep. New Game.](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cnew)
+              ## Play again? [![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/new_game.png)](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cnew)
 
             HTML
           else

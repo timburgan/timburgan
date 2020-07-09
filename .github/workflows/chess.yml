@@ -109,23 +109,16 @@ jobs:
           # Get the contents of the game board.
           # ---------------------------------------
           begin
-              puts '[104]'
               game_content_raw = @octokit.contents(
                 ENV.fetch('REPOSITORY'),
                 path: GAME_DATA_PATH
               )
 
               game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
-              puts '---- [114] -----'
-              puts game_content&.inspect
-              puts '----------------'
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
-              puts '[116]'
               game = Chess::Game.new
-              puts '[118]'
           else
-            puts '[120]'
             game = if CHESS_GAME_CMD == 'new' || game.present?
                      Chess::Game.new
                    else
@@ -142,7 +135,6 @@ jobs:
                          exit(0)
                      end
                    end
-            puts '[137]'
           end
 
           if CHESS_GAME_CMD == 'new' && game_content_raw.present?
@@ -167,9 +159,7 @@ jobs:
               # Perform Move
               # ---------------------------------------
               begin
-                  puts '[147]'
                   game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
-                  puts '[149]'
               rescue Chess::IllegalMoveError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -181,7 +171,6 @@ jobs:
               # Save the game board.
               # ---------------------------------------
               begin
-                  puts '[161]'
                   @octokit.create_contents(
                     ENV.fetch('REPOSITORY'),
                     GAME_DATA_PATH,
@@ -190,7 +179,6 @@ jobs:
                     branch: 'master',
                     sha:    game_content_raw&.sha
                   )
-                  puts '[170]'
               rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -234,21 +222,6 @@ jobs:
                         Chess::Game.new
                       end
 
-
-          puts ''
-          puts ''
-          puts '---  game: -----'
-          puts game.pgn.to_s
-          puts ''
-          puts ''
-
-          puts ''
-          puts ''
-          puts '--- fake game: -----'
-          puts fake_game.pgn.to_s
-          puts ''
-          puts ''
-
           # delete squares not valid for next move
           good_moves = []
           next_move_combos.each do |square|
@@ -283,13 +256,6 @@ jobs:
               end
             end
           end
-
-
-          puts '***** [217] **************'
-          puts good_moves.to_s
-          puts '*******************'
-
-
 
 
           game_state =  case game.status.to_s
@@ -382,16 +348,6 @@ jobs:
 
           new_readme.concat <<~HTML
 
-            <!--
-
-            **Winning moves**
-
-            | Moves | Who |
-            | ----- | --- |
-            | xx    | @timburgan |
-
-            -->
-
             **How this works**
 
             When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a [GitHub Actions](https://docs.github.com/en/actions) workflow that'll update my profile with the new state of the board.
@@ -425,7 +381,6 @@ jobs:
           new_readme.concat <<~HTML
 
             **Top 20 Leaderboard: Most moves across all games**
-
 
             | Move | Who |
             | ----- | --- |

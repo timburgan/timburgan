@@ -402,7 +402,7 @@ jobs:
             | ----- | --- |
           HTML
 
-          new_readme.concat "| #{CHESS_GAME_CMD[0..1].to_s.upcase} to #{CHESS_GAME_CMD[2..3].to_s.upcase} | @#{ENV.fetch('EVENT_USER_LOGIN')} |\n"
+          new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
 
           if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
               i = 0

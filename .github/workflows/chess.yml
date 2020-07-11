@@ -158,7 +158,7 @@ jobs:
 
           begin
             issues = @octokit.list_issues(
-              'timburgan/timburgan',
+              ENV.fetch('REPOSITORY'),
               state: 'closed',
               accept: @preview_headers
             )&.select{ |issue| issue&.reactions.confused == 0 }
@@ -181,7 +181,7 @@ jobs:
                 break if issue.title.start_with? 'chess|new'
                 if issue.title.start_with? 'chess|move|'
                   if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
-                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn!"
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
                     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                     exit(0)
                   end
@@ -225,7 +225,7 @@ jobs:
 
 
 
-          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")
+          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)")
 
           if game.over?
             # add label = end
@@ -359,14 +359,14 @@ jobs:
           new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
           (1..8).to_a.reverse.each_with_index do |row|
-            a = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
-            b = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
-            c = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
-            d = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
-            e = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
-            f = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
-            g = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
-            h = "![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
+            a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
+            b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
+            c = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
+            d = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
+            e = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
+            f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
+            g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
+            h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
 
             # a = game.board[board[:"#{row}"][:a]]
             # b = game.board[board[:"#{row}"][:b]]
@@ -384,7 +384,7 @@ jobs:
           if game.over?
             new_readme.concat <<~HTML
 
-              ## Play again? [![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/new_game.png)](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cnew)
+              ## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew)
 
             HTML
           else
@@ -397,7 +397,7 @@ jobs:
             HTML
 
             good_moves.each do |move|
-              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
+              new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
             end
           end
 
@@ -410,7 +410,7 @@ jobs:
 
             **Notice a problem?**
 
-            Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the text _cc @timburgan_.
+            Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @timburgan_.
 
             **Last few moves, this game**
 
@@ -462,12 +462,12 @@ jobs:
           # ---------------------------------------
           begin
               current_readme_sha = @octokit.contents(
-                'timburgan/timburgan',
+                ENV.fetch('REPOSITORY'),
                 path: 'README.md'
               )&.sha
 
               @octokit.create_contents(
-                'timburgan/timburgan',
+                ENV.fetch('REPOSITORY'),
                 'README.md',
                 "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 new_readme,

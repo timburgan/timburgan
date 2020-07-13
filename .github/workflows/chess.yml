@@ -443,7 +443,7 @@ jobs:
                 break if i >= 4
               end
           else
-              new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"
+              new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
 
@@ -461,7 +461,7 @@ jobs:
                 new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
               end
           else
-              new_readme.concat "| ¯\_(ツ)_/¯ |  |\n"
+              new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
 

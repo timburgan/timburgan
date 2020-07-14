@@ -245,7 +245,7 @@ jobs:
                 end
                 game_stats[:players] = game_stats[:players]&.uniq
                 hours = (game_stats[:start_time] - game_stats[:end_time]).to_i.abs / 3600
-                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. That came had #{game_stats[:moves]} moves, #{game_stats[:players]&.length} players, and went for #{hours} hours. Lets play again at https://github.com/timburgan.\n\nPlayers that game: #{game_stats[:players].join(', ')}")
+                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. That game had #{game_stats[:moves]} moves, #{game_stats[:players]&.length} players, and went for #{hours} hours. Lets play again at https://github.com/timburgan.\n\nPlayers that game: #{game_stats[:players].join(', ')}")
               end
           end
 

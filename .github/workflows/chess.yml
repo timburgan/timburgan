@@ -352,6 +352,11 @@ jobs:
 
           HTML
 
+          if (game.board.active_color)
+            loop_range = (1..8).to_a
+          else
+            loop_range = (1..8).to_a.reverse_each
+          end
           board = {
             "8": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
             "7": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
@@ -362,10 +367,16 @@ jobs:
             "2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
             "1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
           }
-
-          new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
+          
+          if (game.board.active_color)
+            header = "|   | H | G | F | E | D | C | B | A |\n"
+          else
+            header = "|   | A | B | C | D | E | F | G | H |\n"
+          end
+          
+          new_readme.concat header
           new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
-          (1..8).to_a.reverse.each_with_index do |row|
+          loop_range.each_with_index do |row|
             a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
             b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
             c = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
@@ -374,7 +385,7 @@ jobs:
             f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
             g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
             h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
-
+            
             # a = game.board[board[:"#{row}"][:a]]
             # b = game.board[board[:"#{row}"][:b]]
             # c = game.board[board[:"#{row}"][:c]]
@@ -383,8 +394,13 @@ jobs:
             # f = game.board[board[:"#{row}"][:f]]
             # g = game.board[board[:"#{row}"][:g]]
             # h = game.board[board[:"#{row}"][:h]]
-
-            new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+            
+            if (game.board.active_color)
+              row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
+            else
+              row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+            end
+            new_readme.concat row_order
           end
 
 

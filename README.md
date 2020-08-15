@@ -31,7 +31,7 @@
 | **H7** | [H5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch7h5%7C4146&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch7h6%7C4146&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
 | **H8** | [F8](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch8f8%7C4146&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G8](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch8g8%7C4146&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
 
-Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/timburgan)
+Ask a friend to take the next move: [Share on Twitter](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/timburgan)....
 
 **How this works**
 

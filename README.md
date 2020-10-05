@@ -18,16 +18,16 @@
 
 | FROM | TO - _just click one of the links_ :) |
 | ---- | -- |
-| **A2** | [A3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca2a3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [A4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca2a4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **B1** | [A3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb1a3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb1c3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **B2** | [B3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb2b3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [B4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb2b4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **C2** | [C3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc2c3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc2c4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **D2** | [D3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cd2d3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cd2d4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **E2** | [E3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce2e3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [E4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce2e4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **F2** | [F3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf2f3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf2f4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **G1** | [F3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg1f3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg1h3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **G2** | [G3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg2g3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg2g4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **H2** | [H3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch2h3%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch2h4%7C6324&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **A2** | [A3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca2a3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [A4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca2a4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **B1** | [A3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb1a3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb1c3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **B2** | [B3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb2b3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [B4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb2b4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **C2** | [C3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc2c3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc2c4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **D2** | [D3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cd2d3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cd2d4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **E2** | [E3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce2e3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [E4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce2e4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **F2** | [F3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf2f3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf2f4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **G1** | [F3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg1f3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg1h3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **G2** | [G3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg2g3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg2g4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **H2** | [H3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch2h3%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch2h4%7C6325&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
 
 Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/timburgan)
 
@@ -43,7 +43,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-|  to  | [@JRetza](https://github.com/JRetza) |
+|  to  | [@BhuvaneshHingal](https://github.com/BhuvaneshHingal) |
 | F2 to G2 | [@JRetza](https://github.com/JRetza) |
 | H2 to H1 | [@paloma145](https://github.com/paloma145) |
 | E1 to F2 | [@Ritika-Das](https://github.com/Ritika-Das) |
@@ -65,7 +65,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 60 | [@houhoulis](https://github.com/houhoulis) |
 | 58 | [@tanho63](https://github.com/tanho63) |
 | 57 | [@donno2048](https://github.com/donno2048) |
-| 55 | [@AGVGA](https://github.com/AGVGA) |
+| 56 | [@AGVGA](https://github.com/AGVGA) |
 | 50 | [@Jord4563](https://github.com/Jord4563) |
 | 48 | [@dziugaspeciulevicius](https://github.com/dziugaspeciulevicius) |
 | 42 | [@john-r-r-allen](https://github.com/john-r-r-allen) |

@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | F2 to F8 | [@HrBDev](https://github.com/HrBDev) |
 | G4 to G3 | [@rajesh545862](https://github.com/rajesh545862) |
 | F1 to F2 | [@HrBDev](https://github.com/HrBDev) |
 | G5 to G4 | [@simonberner](https://github.com/simonberner) |
-| A6 to A7 | [@HrBDev](https://github.com/HrBDev) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@minji-o-j](https://github.com/minji-o-j) |
 | A1 to H1 | [@minji-o-j](https://github.com/minji-o-j) |
 | G2 to H3 | [@thedoodler](https://github.com/thedoodler) |
 | C1 to A1 | [@rajesh545862](https://github.com/rajesh545862) |
 | H3 to G2 | [@michaelprimo](https://github.com/michaelprimo) |
-| D4 to D3 | [@shaurya-src](https://github.com/shaurya-src) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -47,8 +47,8 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 152 | [@Ritika-Das](https://github.com/Ritika-Das) |
 | 121 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 107 | [@thedoodler](https://github.com/thedoodler) |
+| 92 | [@minji-o-j](https://github.com/minji-o-j) |
 | 91 | [@donno2048](https://github.com/donno2048) |
-| 91 | [@minji-o-j](https://github.com/minji-o-j) |
 | 90 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
 | 82 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | 80 | [@sarveshggn](https://github.com/sarveshggn) |

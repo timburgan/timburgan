@@ -216,7 +216,7 @@ jobs:
                   @octokit.create_contents(
                     ENV.fetch('REPOSITORY'),
                     GAME_DATA_PATH,
-                    "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+                    "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                     game.pgn.to_s,
                     branch: 'master',
                     sha:    game_content_raw&.sha
@@ -484,7 +484,7 @@ jobs:
               @octokit.create_contents(
                 ENV.fetch('REPOSITORY'),
                 'README.md',
-                "@#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+                "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
                 new_readme,
                 branch: 'master',
                 sha:    current_readme_sha

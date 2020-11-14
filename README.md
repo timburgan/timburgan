@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@dpr1005](https://github.com/dpr1005) |
 | F3 to F4 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | C4 to D4 | [@kristianbinau](https://github.com/kristianbinau) |
 | E2 to E1 | [@thedoodler](https://github.com/thedoodler) |
 | B3 to C4 | [@michaelprimo](https://github.com/michaelprimo) |
-| E3 to E2 | [@Kaiofprates](https://github.com/Kaiofprates) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -48,7 +48,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 135 | [@thedoodler](https://github.com/thedoodler) |
 | 125 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 113 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
-| 104 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
+| 105 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | 96 | [@donno2048](https://github.com/donno2048) |
 | 94 | [@minji-o-j](https://github.com/minji-o-j) |
 | 93 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |

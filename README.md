@@ -1,7 +1,7 @@
 
 ## Tim's Community Chess Tournament
 
-**Game is in progress.** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a black piece.
+**Game is in progress.** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a white piece.
 
 |   | A | B | C | D | E | F | G | H |
 | - | - | - | - | - | - | - | - | - |
@@ -12,25 +12,13 @@
 | 4 | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) |
 | 3 | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/b.png) |
 | 2 | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/P.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) |
-| 1 | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/R.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/Q.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/K.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/N.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/q.png) |
+| 1 | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/R.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/Q.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/K.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/q.png) | ![](https://raw.githubusercontent.com/timburgan/timburgan/master/chess_images/blank.png) |
 
-#### **BLACK:** It's your move... to choose _where_ to move..
+#### **WHITE:** It's your move... to choose _where_ to move..
 
 | FROM | TO - _just click one of the links_ :) |
 | ---- | -- |
-| **A5** | [A4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca5a4%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **A8** | [A6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca8a6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [A7](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ca8a7%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **B7** | [B5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb7b5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [B6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb7b6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **B8** | [A6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb8a6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb8c6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D7](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cb8d7%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **C7** | [C5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc7c5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [C6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cc7c6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **E7** | [E5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce7e5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [E6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce7e6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **E8** | [D7](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce8d7%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D8](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce8d8%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **F7** | [F5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf7f5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf7f6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **F8** | [G7](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf8g7%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cf8h6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **G8** | [F6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg8f6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Cg8h6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **H1** | [C6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1c6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1d5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [E4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1e4%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F3](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1f3%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G1](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1g1%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G2](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1g2%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H2](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch1h2%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **H3** | [C8](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3c8%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [D7](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3d7%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [E6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3e6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F1](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3f1%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [F5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3f5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G2](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3g2%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [G4](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch3g4%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
-| **H7** | [H5](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch7h5%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) , [H6](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ch7h6%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
+| **E1** | [D2](https://github.com/timburgan/timburgan/issues/new?title=chess%7Cmove%7Ce1d2%7C8242&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.) |
 
 Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/timburgan)
 
@@ -46,11 +34,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+| H1 to G1 | [@JRetza](https://github.com/JRetza) |
 | F1 to E1 | [@donno2048](https://github.com/donno2048) |
 | G4 to H3 | [@JRetza](https://github.com/JRetza) |
 | H2 to H3 | [@michaelprimo](https://github.com/michaelprimo) |
 | C8 to G4 | [@JRetza](https://github.com/JRetza) |
-| E1 to F1 | [@michaelprimo](https://github.com/michaelprimo) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -64,7 +52,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 137 | [@thedoodler](https://github.com/thedoodler) |
 | 126 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 109 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
-| 97 | [@donno2048](https://github.com/donno2048) |
+| 98 | [@donno2048](https://github.com/donno2048) |
 | 96 | [@minji-o-j](https://github.com/minji-o-j) |
 | 93 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
 | 85 | [@sarveshggn](https://github.com/sarveshggn) |

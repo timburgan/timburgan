@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@donno2048](https://github.com/donno2048) |
 | D8 to D5 | [@michaelprimo](https://github.com/michaelprimo) |
 | D4 to E5 | [@thedoodler](https://github.com/thedoodler) |
 | A8 to D8 | [@rahulxdd](https://github.com/rahulxdd) |
 | C5 to D4 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
-| D7 to C6 | [@michaelprimo](https://github.com/michaelprimo) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -58,6 +58,6 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 77 | [@rahulxdd](https://github.com/rahulxdd) |
 | 72 | [@trekab](https://github.com/trekab) |
 | 71 | [@Nilmanduil](https://github.com/Nilmanduil) |
-| 69 | [@michaelprimo](https://github.com/michaelprimo) |
+| 70 | [@michaelprimo](https://github.com/michaelprimo) |
 | 58 | [@tanho63](https://github.com/tanho63) |
 | 56 | [@AGVGA](https://github.com/AGVGA) |

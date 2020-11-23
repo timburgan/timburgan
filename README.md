@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | E3 to F3 | [@rahulxdd](https://github.com/rahulxdd) |
 | H5 to H4 | [@JRetza](https://github.com/JRetza) |
 | F4 to F5 | [@michaelprimo](https://github.com/michaelprimo) |
 | G5 to H5 | [@JRetza](https://github.com/JRetza) |
-| F7 to F4 | [@simonberner](https://github.com/simonberner) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -51,7 +51,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 130 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 120 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | 102 | [@donno2048](https://github.com/donno2048) |
-| 100 | [@rahulxdd](https://github.com/rahulxdd) |
+| 101 | [@rahulxdd](https://github.com/rahulxdd) |
 | 96 | [@minji-o-j](https://github.com/minji-o-j) |
 | 95 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
 | 89 | [@sarveshggn](https://github.com/sarveshggn) |

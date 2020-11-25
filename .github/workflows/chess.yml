@@ -51,7 +51,7 @@ jobs:
           ]
 
           def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
-            @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
+            # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
             @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
             @octokit.close_issue(repo_nwo, issue_num)
             if e.present?
@@ -71,12 +71,6 @@ jobs:
           @octokit.auto_paginate = true
           @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
           # Show we've got eyes on the triggering comment.
-          @octokit.create_issue_reaction(
-            ENV.fetch('REPOSITORY'),
-            ENV.fetch('EVENT_ISSUE_NUMBER'),
-            'eyes',
-            {accept: @preview_headers}
-          )
           @octokit.create_issue_reaction(
             ENV.fetch('REPOSITORY'),
             ENV.fetch('EVENT_ISSUE_NUMBER'),
@@ -234,7 +228,7 @@ jobs:
               # ---------------------------------------
               if game.over?
                 # add label = end
-                @octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
+                #@octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
                 game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
                 issues&.each do |issue|
                   break if issue.title.start_with? 'chess|new'

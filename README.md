@@ -31,6 +31,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | F5 to H5 | [@JRetza](https://github.com/JRetza) |
 | H5 to H6 | [@timburgan](https://github.com/timburgan) |
 | F4 to F3 | [@JRetza](https://github.com/JRetza) |
@@ -39,7 +40,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Moves | Who |
 | ----- | --- |
-| 550 | [@JRetza](https://github.com/JRetza) |
+| 551 | [@JRetza](https://github.com/JRetza) |
 | 457 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
 | 420 | [@simonberner](https://github.com/simonberner) |
 | 162 | [@Ritika-Das](https://github.com/Ritika-Das) |

@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@Cipher-unhsiV](https://github.com/Cipher-unhsiV) |
 | F3 to G2 | [@eduard-romanyuk](https://github.com/eduard-romanyuk) |
 | A2 to A4 | [@eagleanurag](https://github.com/eagleanurag) |
 | A8 to F3 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | E4 to E8 | [@donno2048](https://github.com/donno2048) |
-| H8 to E8 | [@michaelprimo](https://github.com/michaelprimo) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

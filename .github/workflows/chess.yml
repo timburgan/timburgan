@@ -348,7 +348,7 @@ jobs:
 
             ## Tim's Community Chess Tournament
 
-            **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
+            **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black (solid)' : 'white (hollow)'} piece.
 
           HTML
 

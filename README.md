@@ -41,7 +41,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-| G3 to F2 | [@michaelprimo](https://github.com/michaelprimo) |
+| G3 to F2 | [@Scan0r](https://github.com/Scan0r) |
 | F4 to F2 | [@simonberner](https://github.com/simonberner) |
 | F3 to G3 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | B4 to F4 | [@Matteas-Eden](https://github.com/Matteas-Eden) |

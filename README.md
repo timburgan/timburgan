@@ -31,6 +31,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@michaelprimo](https://github.com/michaelprimo) |
 | A4 to A2 | [@houhoulis](https://github.com/houhoulis) |
 | A2 to A4 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 
@@ -51,8 +52,8 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 109 | [@minji-o-j](https://github.com/minji-o-j) |
 | 108 | [@rahulxdd](https://github.com/rahulxdd) |
 | 102 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
+| 95 | [@houhoulis](https://github.com/houhoulis) |
 | 94 | [@sarveshggn](https://github.com/sarveshggn) |
-| 94 | [@houhoulis](https://github.com/houhoulis) |
 | 91 | [@trekab](https://github.com/trekab) |
 | 79 | [@dpr1005](https://github.com/dpr1005) |
 | 78 | [@rajesh545862](https://github.com/rajesh545862) |

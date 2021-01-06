@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@simonberner](https://github.com/simonberner) |
 | E4 to E8 | [@minji-o-j](https://github.com/minji-o-j) |
 | H6 to H5 | [@michaelprimo](https://github.com/michaelprimo) |
 | G8 to F8 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | C2 to C8 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
-| C2 to C7 | [@simonberner](https://github.com/simonberner) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -51,7 +51,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 169 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | 165 | [@Ritika-Das](https://github.com/Ritika-Das) |
 | 126 | [@donno2048](https://github.com/donno2048) |
-| 123 | [@minji-o-j](https://github.com/minji-o-j) |
+| 124 | [@minji-o-j](https://github.com/minji-o-j) |
 | 108 | [@rahulxdd](https://github.com/rahulxdd) |
 | 102 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
 | 100 | [@houhoulis](https://github.com/houhoulis) |

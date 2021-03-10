@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@simonberner](https://github.com/simonberner) |
 | H7 to C7 | [@cosmoglint](https://github.com/cosmoglint) |
 | B3 to C4 | [@simonberner](https://github.com/simonberner) |
 | F6 to B6 | [@noctambulo-12](https://github.com/noctambulo-12) |
 | F6 to B6 | [@noctambulo-12](https://github.com/noctambulo-12) |
-| B4 to B3 | [@rtambunt](https://github.com/rtambunt) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -45,7 +45,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 813 | [@simonberner](https://github.com/simonberner) |
 | 595 | [@michaelprimo](https://github.com/michaelprimo) |
 | 458 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
-| 276 | [@cosmoglint](https://github.com/cosmoglint) |
+| 277 | [@cosmoglint](https://github.com/cosmoglint) |
 | 231 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 187 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | 170 | [@Matteas-Eden](https://github.com/Matteas-Eden) |

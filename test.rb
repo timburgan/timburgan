@@ -1,3 +1,4 @@
 require './chess.rb'
 
-chess.main()
+game = Chess::Game.new()
+puts game.play('', '', '', 0, '')

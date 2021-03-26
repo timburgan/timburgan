@@ -72,7 +72,7 @@ def main(issue_title, token, repository, issue_number, user)
 	# ---------------------------------------
 	begin
 		game_content_raw = @octokit.contents(
-			ENV.fetch('REPOSITORY'),
+			repository,
 			path: game_data_path
 		)
 
@@ -92,8 +92,8 @@ def main(issue_title, token, repository, issue_number, user)
 				File.write tmp_filename, game_content
 				Chess::Game.load_pgn tmp_filename
 			rescue StandardError => e
-				comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{game_data_path}"
-				error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+				comment_text = "@#{user} Game data couldn't loaded: #{game_data_path}"
+				error_notification(repository, issue_number, 'confused', comment_text, e)
 				exit(0)
 			end
 		end
@@ -102,22 +102,22 @@ def main(issue_title, token, repository, issue_number, user)
 	if valid_new_game_request(game) && game_content_raw.present?
 		begin
 			@octokit.delete_contents(
-				ENV.fetch('REPOSITORY'),
+				repository,
 				game_data_path,
-				"@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
+				"@#{user} delete to allow new game",
 				game_content_raw&.sha,
 				branch: 'master',
 			)
 		rescue StandardError => e
-			comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{game_data_path}"
-			error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+			comment_text = "@#{user} Game data couldn't be deleted: #{game_data_path}"
+			error_notification(repository, issue_number, 'confused', comment_text, e)
 			exit(0)
 		end
 	end
 
 	begin
 		issues = @octokit.list_issues(
-			ENV.fetch('REPOSITORY'),
+			repository,
 			state: 'closed',
 			accept: @preview_headers
 		)&.select{ |issue| issue&.reactions.confused == 0 }
@@ -134,10 +134,10 @@ def main(issue_title, token, repository, issue_number, user)
 		i = 0
 		issues&.each do |issue|
 			break if issue.title.start_with? 'chess|new'
-			if issue.title.start_with?('chess|move|') && ENV.fetch('REPOSITORY') == 'timburgan/timburgan'
-				if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
-					comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
-					error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+			if issue.title.start_with?('chess|move|') && repository == 'timburgan/timburgan'
+				if issue.user.login == user
+					comment_text = "@#{user} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
+					error_notification(repository, issue_number, 'confused', comment_text, e)
 					exit(0)
 				end
 				i += 1
@@ -161,7 +161,7 @@ def main(issue_title, token, repository, issue_number, user)
 		# ---------------------------------------
 		begin
 			@octokit.create_contents(
-				ENV.fetch('REPOSITORY'),
+				repository,
 				game_data_path,
 				"#{user} move #{chess_user_move}",
 				game.pgn.to_s,
@@ -181,7 +181,7 @@ def main(issue_title, token, repository, issue_number, user)
 		# ---------------------------------------
 		if game.over?
 			# add label = end
-			#@octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
+			#@octokit.add_labels_to_an_issue(repository, issue_number, ["game-over"])
 			game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
 			issues&.each do |issue|
 				break if issue.title.start_with? 'chess|new'
@@ -354,7 +354,7 @@ def main(issue_title, token, repository, issue_number, user)
 	if game.over?
 		new_readme.concat <<~HTML
 
-			## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew)
+			## Play again? [![](https://raw.githubusercontent.com/#{repository}/master/chess_images/new_game.png)](https://github.com/#{repository}/issues/new?title=chess%7Cnew)
 
 		HTML
 	else
@@ -367,7 +367,13 @@ def main(issue_title, token, repository, issue_number, user)
 		HTML
 
 		good_moves.each do |move|
-			new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{chess_game_num}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
+			new_readme.concat "| **#{
+				move[:from].upcase
+			}** | #{
+				move[:to].map{
+					|a| "[#{a.upcase}](https://github.com/#{repository}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{chess_game_num}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"
+				}.join(' , ')
+			} |\n"
 		end
 	end
 
@@ -405,7 +411,7 @@ def main(issue_title, token, repository, issue_number, user)
 			break if i >= 4
 		end
 	else
-			new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
+		new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
 	end
 
 	new_readme.concat <<~HTML

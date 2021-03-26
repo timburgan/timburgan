@@ -1,15 +1,15 @@
-name: "Chess"
+name: Chess
 
 on:
   issues:
-    types: [opened]
+    types:
+      - opened
 
 jobs:
   move:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'chess|')
     steps:
-
     - name: Set env vars
       run: |
         echo "REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV

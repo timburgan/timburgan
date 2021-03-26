@@ -1,8 +1,8 @@
-# require 'active_support'
-# require 'active_support/core_ext/object'
-# require 'active_support/core_ext/array'
-# require 'octokit'
-# require 'chess'
+require 'active_support'
+require 'active_support/core_ext/object'
+require 'active_support/core_ext/array'
+require 'octokit'
+require 'chess'
 
 # issue_title: ${{ github.event.issue.title }}
 # token: ${{ secrets.GITHUB_TOKEN }}
@@ -49,7 +49,7 @@ def main(issue_title, token, repository, issue_number, user)
 	begin
 		# validate we can parse title Chess|new|e3c2|1
 		title_split = issue_title.split('|')
-		chess_game_num   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
+		chess_game_num   = title_split&.fourth || issue_number.to_s
 		chess_game_title = title_split&.first.to_s + chess_game_num
 		chess_game_cmd   = title_split&.second.to_s
 		chess_user_move  = title_split&.third.to_s
@@ -212,11 +212,12 @@ def main(issue_title, token, repository, issue_number, user)
 		end
 	end
 
-	text = "I'm playing chess on a GitHub Profile Readme!I just moved. You have the next move at https://github.com/timburgan".split(' ').join('+');puts text
+	text = "I'm playing chess on a GitHub Profile Readme!I just moved. You have the next move at https://github.com/timburgan"
+	encoded_text = text.split(' ').join('+')
 	@octokit.add_comment(
 		repository,
 		issue_number,
-		"@#{user} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
+		"@#{user} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=#{encoded_text})"
 	)					
 	@octokit.close_issue(repository, issue_number)
 

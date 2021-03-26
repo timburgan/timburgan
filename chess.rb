@@ -1,15 +1,15 @@
-require 'active_support'
-require 'active_support/core_ext/object'
-require 'active_support/core_ext/array'
-require 'octokit'
-require 'chess'
+# require 'active_support'
+# require 'active_support/core_ext/object'
+# require 'active_support/core_ext/array'
+# require 'octokit'
+# require 'chess'
 
 # issue_title: ${{ github.event.issue.title }}
 # token: ${{ secrets.GITHUB_TOKEN }}
 # repository: ${REPOSITORY}
 # issue_number: ${ISSUE_NUMBER}
-# user_login: ${USER_LOGIN}
-def main(issue_title, token, repository, issue_number, user_login)
+# user: ${USER_LOGIN}
+def main(issue_title, token, repository, issue_number, user)
 	@preview_headers = [
 		::Octokit::Preview::PREVIEW_TYPES[:reactions],
 		::Octokit::Preview::PREVIEW_TYPES[:integrations]
@@ -28,7 +28,7 @@ def main(issue_title, token, repository, issue_number, user_login)
 
 	def valid_new_game_request(game)
 		issue_title.split('|')&.second.to_s == 'new' &&
-		(user_login == 'timburgan' || game&.over?)
+		(user == 'timburgan' || game&.over?)
 	end
 
 	# Authenticate using GITHUB_TOKEN
@@ -57,7 +57,7 @@ def main(issue_title, token, repository, issue_number, user_login)
 		raise StandardError.new 'chess_user_move is blank'	if chess_user_move.blank? && chess_game_cmd == 'move'
 		raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? chess_game_cmd
 	rescue StandardError => e
-		comment_text = "@#{user_login} The game title or move was unable to be parsed."
+		comment_text = "@#{user} The game title or move was unable to be parsed."
 		error_notification(repository, issue_number, 'confused', comment_text, e)
 		exit(0)
 	end
@@ -151,7 +151,7 @@ def main(issue_title, token, repository, issue_number, user_login)
 		begin
 			game.move(chess_user_move) # ie move('e2e4', …, 'b1c3')
 		rescue Chess::IllegalMoveError => e
-			comment_text = "@#{user_login} Whaaa.. '#{chess_user_move}' is an invalid move! Usually this is because someone squeezed a move in just before you."
+			comment_text = "@#{user} Whaaa.. '#{chess_user_move}' is an invalid move! Usually this is because someone squeezed a move in just before you."
 			error_notification(repository, issue_number, 'confused', comment_text, e)
 			exit(0)
 		end
@@ -163,13 +163,13 @@ def main(issue_title, token, repository, issue_number, user_login)
 			@octokit.create_contents(
 				ENV.fetch('REPOSITORY'),
 				game_data_path,
-				"#{user_login} move #{chess_user_move}",
+				"#{user} move #{chess_user_move}",
 				game.pgn.to_s,
 				branch: 'master',
 				sha:    game_content_raw&.sha
 			)
 		rescue StandardError => e
-			comment_text = "@#{user_login} Couldn't save game data. Sorry."
+			comment_text = "@#{user} Couldn't save game data. Sorry."
 			error_notification(repository, issue_number, 'confused', comment_text, e)
 			exit(0)
 		end
@@ -212,12 +212,11 @@ def main(issue_title, token, repository, issue_number, user_login)
 		end
 	end
 
+	text = "I'm playing chess on a GitHub Profile Readme!I just moved. You have the next move at https://github.com/timburgan".split(' ').join('+');puts text
 	@octokit.add_comment(
 		repository,
 		issue_number,
-		"@#{
-			user_login
-		} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
+		"@#{user} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
 	)					
 	@octokit.close_issue(repository, issue_number)
 
@@ -389,7 +388,7 @@ def main(issue_title, token, repository, issue_number, user_login)
 		| ----- | --- |
 	HTML
 
-	new_readme.concat "| #{chess_user_move[0..1].to_s.upcase} to #{chess_user_move[2..3].to_s.upcase} | [@#{user_login}](https://github.com/#{user_login}) |\n"
+	new_readme.concat "| #{chess_user_move[0..1].to_s.upcase} to #{chess_user_move[2..3].to_s.upcase} | [@#{user}](https://github.com/#{user}) |\n"
 
 	if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
 		i = 0
@@ -438,13 +437,13 @@ def main(issue_title, token, repository, issue_number, user_login)
 		@octokit.create_contents(
 			repository,
 			'README.md',
-			"#{ENV.fetch('EVENT_USER_LOGIN')} move #{chess_user_move}",
+			"#{user} move #{chess_user_move}",
 			new_readme,
 			branch: 'master',
 			sha:    current_readme_sha
 		)
 	rescue StandardError => e
-		comment_text = "@#{user_login} Couldn't update render of the game board. Move *was* saved, however."
+		comment_text = "@#{user} Couldn't update render of the game board. Move *was* saved, however."
 		error_notification(repository, issue_number, 'confused', comment_text, e)
 		exit(0)
 	end

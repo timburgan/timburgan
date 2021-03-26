@@ -41,7 +41,7 @@ jobs:
           require './chess.rb'
 
           game = Chess::Game.new()
-          puts game.play(
+          game.play(
             ${ISSUE_TITLE},
             ${TOKEN},
             ${REPOSITORY},

@@ -325,21 +325,21 @@ module Chess
 				"5": { a: 32, b: 33, c: 34, d: 35, e: 36, f: 37, g: 38, h: 39 },
 				"4": { a: 24, b: 25, c: 26, d: 27, e: 28, f: 29, g: 30, h: 31 },
 				"3": { a: 16, b: 17, c: 18, d: 19, e: 20, f: 21, g: 22, h: 23 },
-				"2": { a:	8, b:	9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
-				"1": { a:	0, b:	1, c:	2, d:	3, e:	4, f:	5, g:	6, h:	7 },
+				"2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
+				"1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
 			}
 
-			new_readme.concat "|	 | A | B | C | D | E | F | G | H |\n"
+			new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
 			new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
 			(1..8).to_a.reverse.each_with_index do |row|
-				a = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:a]] || 'blank').to_s }.png)"
-				b = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:b]] || 'blank').to_s }.png)"
-				c = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:c]] || 'blank').to_s }.png)"
-				d = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:d]] || 'blank').to_s }.png)"
-				e = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:e]] || 'blank').to_s }.png)"
-				f = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:f]] || 'blank').to_s }.png)"
-				g = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:g]] || 'blank').to_s }.png)"
-				h = "![](https://raw.githubusercontent.com/#{repository}/master/chess_images/#{ (game.board[board[:"#{row}"][:h]] || 'blank').to_s }.png)"
+				a = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:a]] || 'blank').to_s }.png)"
+				b = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:b]] || 'blank').to_s }.png)"
+				c = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:c]] || 'blank').to_s }.png)"
+				d = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:d]] || 'blank').to_s }.png)"
+				e = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:e]] || 'blank').to_s }.png)"
+				f = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:f]] || 'blank').to_s }.png)"
+				g = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:g]] || 'blank').to_s }.png)"
+				h = "![](https://raw.githubusercontent.com/#{repository}/master/images/chess_pieces/#{ (game.board[board[:"#{row}"][:h]] || 'blank').to_s }.png)"
 
 				# a = game.board[board[:"#{row}"][:a]]
 				# b = game.board[board[:"#{row}"][:b]]

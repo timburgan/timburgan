@@ -38,7 +38,7 @@ jobs:
     - name: Play
       run: |
         ruby <<- EORUBY
-          require './chess.rb'
+          require './chess_game.rb'
 
           game = Chess::Game.new()
           game.play(

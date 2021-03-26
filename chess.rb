@@ -6,7 +6,10 @@ require 'chess'
 
 # issue_title: ${{ github.event.issue.title }}
 # token: ${{ secrets.GITHUB_TOKEN }}
-def main(issue_title, token)
+# repository: ${REPOSITORY}
+# event_issue_number: ${EVENT_ISSUE_NUMBER}
+# event_user_login: ${EVENT_USER_LOGIN}
+def main(issue_title, token, repository, event_issue_number, event_user_login)
 	@preview_headers = [
 		::Octokit::Preview::PREVIEW_TYPES[:reactions],
 		::Octokit::Preview::PREVIEW_TYPES[:integrations]
@@ -25,7 +28,7 @@ def main(issue_title, token)
 
 	def valid_new_game_request(game)
 		issue_title.split('|')&.second.to_s == 'new' &&
-		(ENV.fetch('EVENT_USER_LOGIN') == 'timburgan' || game&.over?)
+		(event_user_login == 'timburgan' || game&.over?)
 	end
 
 	# Authenticate using GITHUB_TOKEN
@@ -34,12 +37,11 @@ def main(issue_title, token)
 	@octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
 	# Show we've got eyes on the triggering comment.
 	@octokit.create_issue_reaction(
-		ENV.fetch('REPOSITORY'),
-		ENV.fetch('EVENT_ISSUE_NUMBER'),
+		repository,
+		event_issue_number,
 		'rocket',
 		{accept: @preview_headers}
 	)
-
 
 	#
 	# Parse the issue title.
@@ -55,12 +57,10 @@ def main(issue_title, token)
 		raise StandardError.new 'chess_user_move is blank'	if chess_user_move.blank? && chess_game_cmd == 'move'
 		raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? chess_game_cmd
 	rescue StandardError => e
-		comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
-		error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+		comment_text = "@#{event_user_login} The game title or move was unable to be parsed."
+		error_notification(repository, event_issue_number, 'confused', comment_text, e)
 		exit(0)
 	end
-
-
 
 	game_data_path = "chess_games/chess.pgn"
 	tmp_filename = "/tmp/chess.pgn"
@@ -145,19 +145,16 @@ def main(issue_title, token)
 			break if i >= 1
 		end
 
-
-
 			#
 		# Perform Move
 		# ---------------------------------------
 		begin
 			game.move(chess_user_move) # ie move('e2e4', …, 'b1c3')
 		rescue Chess::IllegalMoveError => e
-			comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{chess_user_move}' is an invalid move! Usually this is because someone squeezed a move in just before you."
-			error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+			comment_text = "@#{event_user_login} Whaaa.. '#{chess_user_move}' is an invalid move! Usually this is because someone squeezed a move in just before you."
+			error_notification(repository, event_issue_number, 'confused', comment_text, e)
 			exit(0)
 		end
-
 
 		#
 		# Save the game board.
@@ -166,7 +163,7 @@ def main(issue_title, token)
 			@octokit.create_contents(
 				ENV.fetch('REPOSITORY'),
 				game_data_path,
-				"#{ENV.fetch('EVENT_USER_LOGIN')} move #{chess_user_move}",
+				"#{event_user_login} move #{chess_user_move}",
 				game.pgn.to_s,
 				branch: 'master',
 				sha:    game_content_raw&.sha
@@ -205,12 +202,8 @@ def main(issue_title, token)
 		end
 	end
 
-
-
 	@octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)")					
 	@octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
-
-
 
 	#
 	# Update timburgan/timburgan/README.md
@@ -275,7 +268,6 @@ def main(issue_title, token)
 			end
 		end
 	end
-
 
 	game_state = case game.status.to_s
 		when 'in_progress'
@@ -343,7 +335,6 @@ def main(issue_title, token)
 		new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
 	end
 
-
 	if game.over?
 		new_readme.concat <<~HTML
 
@@ -363,7 +354,6 @@ def main(issue_title, token)
 			new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{chess_game_num}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
 		end
 	end
-
 
 	new_readme.concat <<~HTML
 
@@ -402,7 +392,6 @@ def main(issue_title, token)
 			new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
 	end
 
-
 	new_readme.concat <<~HTML
 
 		**Top 20 Leaderboard: Most moves across all games, except me.**
@@ -419,8 +408,6 @@ def main(issue_title, token)
 	else
 			new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
 	end
-
-
 
 	#
 	# Update the game with next moves.

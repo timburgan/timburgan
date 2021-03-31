@@ -391,7 +391,7 @@ jobs:
           if game.over?
             new_readme.concat <<~HTML
 
-              ## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew)
+              ## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)
 
             HTML
           else

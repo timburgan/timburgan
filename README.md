@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | A7 to A8 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | C6 to A8 | [@princebillyGK](https://github.com/princebillyGK) |
 | A6 to A7 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | D7 to C6 | [@michaelprimo](https://github.com/michaelprimo) |
-| A7 to A6 | [@simonberner](https://github.com/simonberner) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -56,8 +56,8 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 130 | [@minji-o-j](https://github.com/minji-o-j) |
 | 130 | [@donno2048](https://github.com/donno2048) |
 | 128 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
+| 127 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | 126 | [@trekab](https://github.com/trekab) |
-| 126 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | 109 | [@rahulxdd](https://github.com/rahulxdd) |
 | 105 | [@AGVGA](https://github.com/AGVGA) |
 | 95 | [@sarveshggn](https://github.com/sarveshggn) |

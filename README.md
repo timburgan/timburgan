@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@shpatrickguo](https://github.com/shpatrickguo) |
 | E1 to E5 | [@houhoulis](https://github.com/houhoulis) |
 | E6 to F5 | [@siddhant-roy](https://github.com/siddhant-roy) |
 | D1 to E1 | [@NinaM31](https://github.com/NinaM31) |
 | B4 to B3 | [@rajesh545862](https://github.com/rajesh545862) |
-| H2 to H3 | [@siddhant-roy](https://github.com/siddhant-roy) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -47,7 +47,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 459 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
 | 354 | [@cosmoglint](https://github.com/cosmoglint) |
 | 342 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
-| 277 | [@houhoulis](https://github.com/houhoulis) |
+| 278 | [@houhoulis](https://github.com/houhoulis) |
 | 254 | [@rajesh545862](https://github.com/rajesh545862) |
 | 206 | [@donno2048](https://github.com/donno2048) |
 | 187 | [@N-NeelPatel](https://github.com/N-NeelPatel) |

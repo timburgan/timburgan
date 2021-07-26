@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@donno2048](https://github.com/donno2048) |
+| F7 to C7 | [@AcidicViper](https://github.com/AcidicViper) |
 | F7 to E8 | [@donno2048](https://github.com/donno2048) |
 | E7 to D6 | [@siddhant-roy](https://github.com/siddhant-roy) |
 | A3 to D6 | [@donno2048](https://github.com/donno2048) |
-| D7 to D6 | [@AcidicViper](https://github.com/AcidicViper) |
-| D5 to C6 | [@donno2048](https://github.com/donno2048) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -49,7 +49,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 354 | [@cosmoglint](https://github.com/cosmoglint) |
 | 319 | [@houhoulis](https://github.com/houhoulis) |
 | 271 | [@rajesh545862](https://github.com/rajesh545862) |
-| 223 | [@donno2048](https://github.com/donno2048) |
+| 224 | [@donno2048](https://github.com/donno2048) |
 | 187 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | 171 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
 | 169 | [@shpatrickguo](https://github.com/shpatrickguo) |

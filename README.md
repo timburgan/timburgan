@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@kallyas](https://github.com/kallyas) |
 | G1 to G5 | [@automainint](https://github.com/automainint) |
 | H4 to H5 | [@MasterCoder1234567890](https://github.com/MasterCoder1234567890) |
 | H4 to H5 | [@automainint](https://github.com/automainint) |
 | E4 to F4 | [@automainint](https://github.com/automainint) |
-| H5 to H4 | [@houhoulis](https://github.com/houhoulis) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

@@ -31,7 +31,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-| D1 to H1 | [@michaelprimo](https://github.com/michaelprimo) |
+| D1 to H1 | [@donno2048](https://github.com/donno2048) |
 | H2 to H3 | [@username669](https://github.com/username669) |
 | B2 to E5 | [@donno2048](https://github.com/donno2048) |
 | G1 to H2 | [@HorebParraud](https://github.com/HorebParraud) |
@@ -42,7 +42,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | Moves | Who |
 | ----- | --- |
 | 1354 | [@michaelprimo](https://github.com/michaelprimo) |
-| 1276 | [@simonberner](https://github.com/simonberner) |
+| 1277 | [@simonberner](https://github.com/simonberner) |
 | 1059 | [@JRetza](https://github.com/JRetza) |
 | 459 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
 | 422 | [@jatin-pahuja](https://github.com/jatin-pahuja) |

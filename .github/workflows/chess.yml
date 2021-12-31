@@ -277,6 +277,8 @@ jobs:
 
           # combine squares with where they  can MOVE to
           next_move_combos = squares.map { |from| {from: from, to: squares} }
+          puts "next_move_combos"
+          puts next_move_combos
 
           fake_game = if CHESS_GAME_CMD == 'move'
                         File.write TMP_FILENAME, game.pgn.to_s

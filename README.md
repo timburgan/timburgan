@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@FreitasGilberto](https://github.com/FreitasGilberto) |
 | E4 to D5 | [@houhoulis](https://github.com/houhoulis) |
 | C5 to D5 | [@dpr1005](https://github.com/dpr1005) |
 | F4 to E4 | [@simonberner](https://github.com/simonberner) |
 | G5 to C5 | [@adoreblvnk](https://github.com/adoreblvnk) |
-| E5 to F6 | [@mishmanners](https://github.com/mishmanners) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -44,7 +44,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 1545 | [@michaelprimo](https://github.com/michaelprimo) |
 | 1393 | [@simonberner](https://github.com/simonberner) |
 | 1060 | [@JRetza](https://github.com/JRetza) |
-| 574 | [@houhoulis](https://github.com/houhoulis) |
+| 575 | [@houhoulis](https://github.com/houhoulis) |
 | 459 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
 | 456 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 420 | [@donno2048](https://github.com/donno2048) |

@@ -81,11 +81,15 @@ jobs:
           until [ -s run_id ]
           do
             sleep 3
+            echo "a"
             if [[ $counter -eq $max_retry ]]; then
+              echo "b"
               echo "FAILED: No running workflow found."
               exit 1
             fi
+            echo "c"
             ((counter++))
+            echo "d"
             echo "Checking for running workflow..."
           
             gh run list --json 'event,createdAt,conclusion,status,url' | 

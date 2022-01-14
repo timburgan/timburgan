@@ -78,7 +78,7 @@ jobs:
 
           max_retry=10
           counter=0
-          until $(cat run_id | wc -m)
+          until [ -s run_id ]
           do
             sleep 3
             [[ counter -eq $max_retry ]] && echo "FAILED: No running workflow found." && exit 1

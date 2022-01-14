@@ -98,7 +98,7 @@ jobs:
 
     - name: Prevent user taking consecutive moves
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
-
+      run: |
         set -xe
         ruby <<- EORUBY
           last_move = `cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac`&.dig(0)&..split('|').second.to_s[1..-1]

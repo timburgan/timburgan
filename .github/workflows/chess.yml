@@ -492,7 +492,7 @@ jobs:
       run: |
         set -xe
         
-        STAT_MOVES=$(expr $(wc -l $GAME_STAT_PATH) - 1)
+        STAT_MOVES=$(expr $(cat $GAME_STAT_PATH | wc -l) - 1)
         STAT_PLAYERS=$(cat $GAME_STAT_PATH | tail -n +2 | awk -F'|' '{print $2}' | sort --unique)
         STAT_START=$(head -n1 $GAME_STAT_PATH | awk -F'|' '{print $5}'
         STAT_END=$(tail -n1 $GAME_STAT_PATH | awk -F'|' '{print $5}'

@@ -78,7 +78,7 @@ jobs:
 
           max_retry=10
           counter=0
-          until $(wc -m run_id)
+          until $(cat run_id | wc -m)
           do
             sleep 3
             [[ counter -eq $max_retry ]] && echo "FAILED: No running workflow found." && exit 1
@@ -89,7 +89,7 @@ jobs:
               jq '[ .[] | select(.event == "issues" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
               awk -F'/' '{print $NF}' > run_id
           done
-
+ghe
           # wait until that workflow run is finished
           gh run watch $(cat run_id)
           

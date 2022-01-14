@@ -19,8 +19,9 @@ jobs:
   move:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'chess|')
-    steps: set initital state
-    - run: |
+    steps: 
+    - name: set initital state
+      run: |
         set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
         echo "GAME_BRANCH=master" >> $GITHUB_ENV

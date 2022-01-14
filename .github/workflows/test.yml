@@ -45,6 +45,7 @@ jobs:
           echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
           
           # delete all "test" issues
+          PAGER= gh issue list --label "test" --state all
           PAGER= gh issue list --label "test" --state all | awk '{print $1}' > issue_ids
           cat issue_ids
           cat issue_ids | while read issue_id; do gh issue delete $issue_id; done

@@ -50,7 +50,7 @@ jobs:
 
           # game is valid - allow user to move
           rm -f issue_id
-          gh issue create --label "test" --title "$(cat tests/${{ matrix.scenario }}/issue-title.setup.txt)" --repo ${{ github.repository }} --body "${{ github.ref }}" | awk -F'/' '{print $NF}' > issue_id
+          gh issue create --label "test" --title "$(cat tests/${{ matrix.scenario }}/issue-title.setup.txt)" --body "${{ github.ref }}" | awk -F'/' '{print $NF}' > issue_id
           
           if [ ! -s issue_id ]; then
             echo "FAILURE issue_id is empty"

@@ -81,7 +81,7 @@ jobs:
           until [ -s run_id ]
           do
             sleep 3
-            [[ counter -eq $max_retry ]] && echo "FAILED: No running workflow found." && exit 1
+            [[ $counter -eq $max_retry ]] && echo "FAILED: No running workflow found." && exit 1
             ((counter++))
             echo "Checking for running workflow..."
           

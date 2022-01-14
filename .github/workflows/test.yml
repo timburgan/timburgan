@@ -8,7 +8,7 @@ jobs:
       max-parallel: 1
       matrix:
         scenario: ['test-1']
-    name: ${{ matrix.scenario }}
+    name: ${{ matrix.scenario }} 
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}

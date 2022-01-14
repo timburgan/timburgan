@@ -41,8 +41,8 @@ jobs:
           cp tests/test-shared/README.setup.md README.md 2>/dev/null || true
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
           
-          # reauth as TIMBURGAN_PAT_NEW_ISSUE
-          echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
+          # reauth as TIMBURGAN_PAT
+          echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
           
           # delete all "test" issues
           PAGER= gh issue list --label "test" --state all

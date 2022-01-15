@@ -8,7 +8,7 @@ jobs:
       max-parallel: 1
       matrix:
         scenario: ['test-1']
-    name: ${{ matrix.scenario }} 
+    name: ${{ matrix.scenario }}
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}
@@ -111,62 +111,63 @@ jobs:
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
           # issue reactions as expected
-          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat issue.expected.json | jq .reaction)").users.totalCount')
+          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .reaction)").users.totalCount')
           if [[ "$REACTIONS" != "1" ]]; then
-            echo "FAILURE Issue reactions are not as expected: $(cat issue.expected.json | jq .reaction)"
+            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .reaction)"
             cat issue
             exit 1
           fi
 
           # issue comments as expected
           rm -f issue_author
-          COMMENTS=$(cat issue | jq -c --arg expected "$(cat issue.expected.json | jq .comment)" '.comments[] | select(.body | contains($expected)) | length')
+          COMMENTS=$(cat issue | jq -c --arg expected "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .comment)" '.comments[] | select(.body | contains($expected)) | length')
           if [[ -z ${COMMENTS+x} ]]; then
-            echo "FAILURE Issue comments doesn't contain the expected: $(cat issue.expected.json | jq .comment)"
+            echo "FAILURE Issue comments doesn't contain the expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .comment)"
             cat issue
             exit 1
           fi
 
           # issue status as expected
           STATUS=$(cat issue | jq '.state' -r)
-          if [[ "$STATUS" != "$(cat issue.expected.json | jq .state)" ]]; then
-            echo "FAILURE Issue status is not as expected: $(cat issue.expected.json | jq .state)"
+          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .state)" ]]; then
+            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .state)"
             cat issue
             exit 1
           fi
 
           # game file as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}-expected.png refreshed/game.png ]]; then
+          if [[ ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/game.pgn ]]; then
             echo "FAILURE Game PGN file is not as expected"
-            echo "EXPECTED:"
-            cat tests/${{ matrix.scenario }}-expected.pgn
-            echo "ACTUAL:"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/chess.expected.pgn
+            echo "ACTUAL: ---------------------"
             cat refreshed/game.pgn
           fi
 
           # stats file as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}-expected.stats refreshed/stats.txt ]]; then
+          if [[ ! cmp -s tests/${{ matrix.scenario }}/stats.expected.txt refreshed/stats.txt ]]; then
             echo "FAILURE Stats file is not as expected"
-            echo "EXPECTED:"
-            cat tests/${{ matrix.scenario }}-expected.stats
-            echo "ACTUAL:"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/stats.expected.txt
+            echo "ACTUAL: ---------------------"
             cat refreshed/stats.txt
           fi
 
           # leaderboard file is as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}-expected.leaderboard refreshed/leaderboard.txt ]]; then
+          if [[ ! cmp -s tests/${{ matrix.scenario }}/leaderboard.expected.txt refreshed/leaderboard.txt ]]; then
             echo "FAILURE Leaderboard file is not as expected"
-            echo "EXPECTED:"
-            cat tests/${{ matrix.scenario }}-expected.leaderboard
-            echo "ACTUAL:"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/leaderboard.expected.txt
+            echo "ACTUAL: ---------------------"
             cat refreshed/leaderboard.txt
           fi
 
           # readme file is as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}-expected.md refreshed/README.md ]]; then
+          if [[ ! cmp -s tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md ]]; then
             echo "FAILURE README file is not as expected"
-            echo "EXPECTED:"
-            cat tests/${{ matrix.scenario }}-expected.md
-            echo "ACTUAL:"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/README.expected.md
+            echo "ACTUAL: ---------------------"
             cat refreshed/README.md
           fi
+

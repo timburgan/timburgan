@@ -1,49 +1,46 @@
-name: "Echo"
-
+name: "Detect chess"
 on:
-  issues:
-    types: [opened]
-
+#  issues:
+#    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Triggering issue number'
+        required: true
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GH_REPO: ${{ github.repository }}
-
 jobs:
   what_branch:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.issue.title, 'chess|')
-    outputs:
-      test_mode: ${{ steps.set_mode.outputs.test_mode }}
-      game_branch: ${{ steps.set_mode.outputs.game_branch }}
-    steps: 
-    - name: set initital state
+    steps:
+    - run: |
+        set -xe
+        echo "TEST_MODE=no" >> $GITHUB_ENV
+    - if: ${{ github.event_name == 'issue' }} && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       run: |
         set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
         echo "GAME_BRANCH=master" >> $GITHUB_ENV
-    - if: contains(github.event.issue.labels.*.name, 'test')
+    - if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
-        set -xe
-        # is that a valid branch
-        ISSUE_BODY=$(echo "${{ github.event.issue.body }}" | xargv)
+        set -xe        
+        ISSUE_BODY=$(echo "$(gh issue view $INPUT_ISSUE_NUMBER --json body)" | xargv)
         PR_COUNT=$(gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
         
-        if [[ $PR_COUNT == 0 ]]; then echo "$ISSUE_BODY" | grep -qE '^[0-9]+$'; then
+        if [[ $PR_COUNT == 0 ]]; then
           echo "TEST_MODE=no" >> $GITHUB_ENV
           echo "GAME_BRANCH=master" >> $GITHUB_ENV
         else
           echo "TEST_MODE=yes" >> $GITHUB_ENV
           echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
         fi
-    - name: set outputs
-      id: set_mode
-      run: |
-        set -xe
-        echo "::set-output name=test_mode::$TEST_MODE"
-        echo "::set-output name=game_branch::$GAME_BRANCH"
-  play_on:
-    needs: what_branch
-    uses: timburgan/timburgan/.github/workflows/echo.yml@${{needs.set_mode.outputs.game_branch}}
-    with:
-      test_mode: ${{ env.TEST_MODE }}
-      game_ref: ${{ env.GAME_BRANCH }}
+    - name: trigger the game
+      uses: octokit/request-action@v2.x
+      with:
+        route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+        owner: timburgan
+        repo: timburgan
+        ref: ${{ env.GAME_BRANCH }}
+        workflow_id: chess.yml
+        inputs: '{ "game_branch": "${{ env.GAME_BRANCH }}", "test_mode": "${{ env.TEST_MODE }}"}'

@@ -12,6 +12,9 @@ jobs:
   what_branch:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'chess|')
+    outputs:
+      test_mode: ${{ steps.set_mode.outputs.test_mode }}
+      game_branch: ${{ steps.set_mode.outputs.game_branch }}
     steps: 
     - name: set initital state
       run: |
@@ -32,9 +35,15 @@ jobs:
           echo "TEST_MODE=yes" >> $GITHUB_ENV
           echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
         fi
+    - name: set outputs
+      id: set_mode
+      run: |
+        set -xe
+        echo "::set-output name=test_mode::$TEST_MODE"
+        echo "::set-output name=game_branch::$GAME_BRANCH"
   play_on:
     needs: what_branch
-    uses: timburgan/timburgan/.github/workflows/echo.yml@${{env.GAME_BRANCH}}
+    uses: timburgan/timburgan/.github/workflows/echo.yml@${{needs.set_mode.outputs.game_branch}}
     with:
       test_mode: ${{ env.TEST_MODE }}
       game_ref: ${{ env.GAME_BRANCH }}

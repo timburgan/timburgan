@@ -33,7 +33,7 @@ jobs:
           echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
         fi
   play_on:
-    uses: ${{ github.repository }}/.github/workflows/echo.yml@${{env.GAME_BRANCH}}
+    uses: timburgan/timburgan/.github/workflows/echo.yml@${{env.GAME_BRANCH}}
     with:
       test_mode: ${{ env.TEST_MODE }}
       game_ref: ${{ env.GAME_BRANCH }}

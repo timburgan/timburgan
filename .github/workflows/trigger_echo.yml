@@ -14,16 +14,19 @@ jobs:
   what_branch:
     runs-on: ubuntu-latest
     steps:
-    - run: |
+    - name: ALLOW_TO_PROCEED=no
+      run: |
         set -xe
         echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
     - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
+      name: issue trigger
       run: |
         set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
         echo "GAME_BRANCH=master" >> $GITHUB_ENV
         echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
     - if: github.event_name == 'workflow_dispatch'
+      name: workflow_dispatch trigger
       run: |
         set -xe
         ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | tr -d "[:space:]" | tr -d "\r\n")
@@ -36,6 +39,7 @@ jobs:
           echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
         fi
     - if: env.ALLOW_TO_PROCEED == 'yes'
+      name: dispatch workflow
       run: |
         set -xe
         gh workflow run receive_branch.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

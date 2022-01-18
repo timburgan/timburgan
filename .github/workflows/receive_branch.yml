@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "TEST_MODE: $INPUT_TEST_MODE"
-          echo "GAME_BRANCH: $INPUT_GAME_BRANCH"
-        with:
-          test_mode: ${{ inputs.test_mode }}
-          game_branch: ${{ secrets.game_branch }}
+          echo "TEST_MODE: $TEST_MODE"
+          echo "GAME_BRANCH: $GAME_BRANCH"
+        env:
+          TEST_MODE: ${{ github.event.inputs.test_mode }}
+          GAME_BRANCH: ${{ github.event.inputs.game_branch }}

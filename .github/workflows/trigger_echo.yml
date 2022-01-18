@@ -1,4 +1,4 @@
-name: "Detect chess"
+name: "Trigger echo"
 on:
 #  issues:
 #    types: [opened]

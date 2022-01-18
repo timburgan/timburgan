@@ -1,6 +1,6 @@
 name: receive_branch
 on: 
-  workflow_call:
+  workflow_dispatch:
     inputs:
       test_mode:
         required: true

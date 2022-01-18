@@ -17,15 +17,14 @@ jobs:
     - run: |
         set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
+        echo ${{ github.event_name }}
     - if: ${{ github.event_name == 'issue' }} && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       run: |
-        set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
         echo "GAME_BRANCH=master" >> $GITHUB_ENV
     - if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
-        set -xe        
-        ISSUE_BODY=$(echo "$(gh issue view $INPUT_ISSUE_NUMBER --json body)" | xargv)
+        ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | xargv)
         PR_COUNT=$(gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
         if [[ $PR_COUNT == 0 ]]; then
           echo "TEST_MODE=no" >> $GITHUB_ENV

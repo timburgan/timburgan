@@ -25,7 +25,7 @@ jobs:
       name: workflow_dispatch trigger
       run: |
         set -xe
-        ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | tr -d "[:space:]" | tr -d "\r\n")
+        ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | tr -d "[:space:]")
         PR_COUNT=$(PAGER= gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
         if [[ $PR_COUNT == 0 ]]; then
           echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV

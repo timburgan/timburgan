@@ -1,13 +1,13 @@
 name: receive_branch
 on: 
-  workflow_call:
+  workflow_dispatch:
     inputs:
       test_mode:
         required: true
-        type: string
+        description: "Run test: yes or no"
       game_branch:
         required: true
-        type: string
+        description: "Branch for playing"
 
 jobs:
   example_job:

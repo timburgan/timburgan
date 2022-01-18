@@ -17,7 +17,7 @@ jobs:
     - run: |
         set -xe
         echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
-    - if: github.event_name == 'issue' }} && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       run: |
         set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV

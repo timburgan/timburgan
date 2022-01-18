@@ -1,4 +1,4 @@
-name: echo
+name: receive_branch
 on: 
   workflow_call:
     inputs:

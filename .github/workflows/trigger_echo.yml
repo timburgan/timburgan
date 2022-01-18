@@ -14,10 +14,6 @@ jobs:
   what_branch:
     runs-on: ubuntu-latest
     steps:
-    - name: ALLOW_TO_PROCEED=no
-      run: |
-        set -xe
-        echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
     - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       name: issue trigger
       run: |

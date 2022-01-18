@@ -16,22 +16,28 @@ jobs:
     steps:
     - run: |
         set -xe
-        echo "TEST_MODE=no" >> $GITHUB_ENV
-        echo ${{ github.event_name }}
+        echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
     - if: ${{ github.event_name == 'issue' }} && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       run: |
+        set -xe
         echo "TEST_MODE=no" >> $GITHUB_ENV
         echo "GAME_BRANCH=master" >> $GITHUB_ENV
+        echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
     - if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
+        set -xe
         ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | sed 's/ //g')
         PR_COUNT=$(gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
         if [[ $PR_COUNT == 0 ]]; then
           echo "TEST_MODE=no" >> $GITHUB_ENV
           echo "GAME_BRANCH=master" >> $GITHUB_ENV
+          echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
         else
           echo "TEST_MODE=yes" >> $GITHUB_ENV
           echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
+          echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
         fi
-    - run: |
+    - if: ${{ env.ALLOW_TO_PROCEED == 'yes' }}
+      run: |
+        set -xe
         gh workflow run receive_branch.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

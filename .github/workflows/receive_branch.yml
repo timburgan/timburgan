@@ -1,0 +1,21 @@
+name: receive_branch
+on: 
+  workflow_call:
+    inputs:
+      test_mode:
+        required: true
+        type: string
+      game_branch:
+        required: true
+        type: string
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "TEST_MODE: $INPUT_TEST_MODE"
+          echo "GAME_BRANCH: $INPUT_GAME_BRANCH"
+        with:
+          test_mode: ${{ inputs.test_mode }}
+          game_branch: ${{ secrets.game_branch }}

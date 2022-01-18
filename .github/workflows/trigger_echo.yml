@@ -38,4 +38,6 @@ jobs:
       name: dispatch workflow
       run: |
         set -xe
+        gh auth logout --hostname github.com
+        echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
         gh workflow run receive_branch.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

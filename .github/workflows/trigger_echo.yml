@@ -27,7 +27,6 @@ jobs:
         set -xe        
         ISSUE_BODY=$(echo "$(gh issue view $INPUT_ISSUE_NUMBER --json body)" | xargv)
         PR_COUNT=$(gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
-        
         if [[ $PR_COUNT == 0 ]]; then
           echo "TEST_MODE=no" >> $GITHUB_ENV
           echo "GAME_BRANCH=master" >> $GITHUB_ENV
@@ -35,12 +34,5 @@ jobs:
           echo "TEST_MODE=yes" >> $GITHUB_ENV
           echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
         fi
-    - name: trigger the game
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-        owner: timburgan
-        repo: timburgan
-        ref: ${{ env.GAME_BRANCH }}
-        workflow_id: chess.yml
-        inputs: '{ "game_branch": "${{ env.GAME_BRANCH }}", "test_mode": "${{ env.TEST_MODE }}"}'
+    - run: |
+        gh workflow run receive_branch.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

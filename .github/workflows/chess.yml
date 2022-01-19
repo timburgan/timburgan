@@ -12,12 +12,12 @@ jobs:
     - if: startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
       run: |
         # the triggering issue contains test
-        echo ${{ github.event_name }}"
+        echo "${{ github.event_name }}"
         exit 1
 
     - name: Set env vars
       run: |
-        echo ${{ github.event_name }}"
+        echo "${{ github.event_name }}"
         echo "REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
         echo "EVENT_ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
         echo "EVENT_USER_LOGIN=${{ github.event.issue.user.login }}" >> $GITHUB_ENV

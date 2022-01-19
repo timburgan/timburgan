@@ -1,58 +1,52 @@
 name: "Chess"
 
 on:
-  issues:
-    types: [opened]
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Test mode: yes or no'
+        required: true
+      game_branch:
+        description: 'Game branch: master or PR branch'
+        required: true
+      issue_number:
+        description: 'Triggering issue number'
+        required: true
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GH_REPO: ${{ github.repository }}
 
 jobs:
-  ack:
+  play:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.issue.title, 'chess|')
     steps:
-    - name: ACK the issue
-      run: PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='rocket' | jq .
-    - if: startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
-      run: |
-        # the triggering issue contains test
-        echo "${{ github.event_name }}"
-        exit 1
-
-  move:
-    runs-on: ubuntu-latest
-    if: startsWith(github.event.issue.title, 'chess|')
-    steps: 
-    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
-      run: |
-        exit 1
-    - name: set initital state
+    - name: Find and ACK the issue
       run: |
         set -xe
-        echo "TEST_MODE=no" >> $GITHUB_ENV
-        echo "GAME_BRANCH=master" >> $GITHUB_ENV
-
-    - if: contains(github.event.issue.labels.*.name, 'test')
-      run: |
-        set -xe
-
-        # is that a valid branch
-        ISSUE_BODY=$(echo "${{ github.event.issue.body }}" | xargv)
-        PR_COUNT=$(gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'title,number,state.labels') | jq '. | select(.state == "OPEN")'"
+        echo "ISSUE=$ISSUE" >> $GITHUB_ENV
         
-        if [[ $PR_COUNT == 0 ]]; then echo "$ISSUE_BODY" | grep -qE '^[0-9]+$'; then
-          echo "TEST_MODE=no" >> $GITHUB_ENV
-          echo "GAME_BRANCH=master" >> $GITHUB_ENV
-        else
-          echo "TEST_MODE=yes" >> $GITHUB_ENV
-          echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
+        if [[ -z ${ISSUE+x} ]]; then
+          echo "FAILURE Open issue #${{ github.event.inputs.issue_number }} not found."
+          exit 1
         fi
+    - name: Not chess
+      run: |
+        sex -xe
+        if [[ "$(echo "$ISSUE" | jq -r .title)" =~ ^chess* ]]; then
+          echo "FAILURE Not chess."
+          exit 1
+        fi
+        
+    - name: React
+      run: |
+        set -xe
+        gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='rocket' | jq .
 
     - uses: actions/checkout@v2
       with:
-        ref: '${{ env.GAME_BRANCH }}'
+        ref: '${{ github.event.inputs.game_branch }}'
 
     - uses: ruby/setup-ruby@v1
       with:
@@ -62,6 +56,8 @@ jobs:
     - name: Parse the issue title
       run: |
         set -xe
+        
+CHANGE THESE TO USE ENV VAR
 
         CHESS_GAME_NUM=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $4}'`
         CHESS_GAME_TITLE=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $1}'`

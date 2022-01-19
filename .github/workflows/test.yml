@@ -62,8 +62,7 @@ jobs:
           fi
           
           gh workflow run router.yml --ref master -f issue_number=$(cat issue_id)
- 
-          # reauth as GITHUB_TOKEN
+          
           gh auth logout --hostname github.com
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 

@@ -15,11 +15,19 @@ jobs:
     steps:
     - name: ACK the issue
       run: PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='rocket' | jq .
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
+      run: |
+        # the triggering issue contains test
+        exit 1
 
   move:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'chess|')
     steps: 
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
+      run: |
+        # the triggering issue contains test
+        exit 1
     - name: set initital state
       run: |
         set -xe

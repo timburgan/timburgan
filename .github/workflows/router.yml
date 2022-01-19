@@ -1,0 +1,43 @@
+name: "Trigger echo"
+on:
+#  issues:
+#    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Triggering issue number'
+        required: true
+env:
+  GH_REPO: ${{ github.repository }}
+jobs:
+  what_branch:
+    runs-on: ubuntu-latest
+    steps:
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
+      name: issue trigger
+      run: |
+        set -xe
+        echo "TEST_MODE=no" >> $GITHUB_ENV
+        echo "GAME_BRANCH=master" >> $GITHUB_ENV
+        echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
+    - if: github.event_name == 'workflow_dispatch'
+      name: workflow_dispatch trigger
+      run: |
+        set -xe
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | jq -r .body | tr -d "[:space:]")
+        PR_COUNT=$(PAGER= gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
+        if [[ $PR_COUNT == 0 ]]; then
+          echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
+        else
+          echo "TEST_MODE=yes" >> $GITHUB_ENV
+          echo "GAME_BRANCH=$ISSUE_BODY" >> $GITHUB_ENV
+          echo "ALLOW_TO_PROCEED=yes" >> $GITHUB_ENV
+          gh auth logout --hostname github.com
+        fi
+    - if: env.ALLOW_TO_PROCEED == 'yes'
+      name: dispatch workflow
+      run: |
+        set -xe
+        echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
+        gh workflow run chess.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

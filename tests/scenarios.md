@@ -31,7 +31,7 @@ which will return PASS or FAIL.
 13. high score populated correctly from existing issues (see leaderboard.legacy.txt)
 14. 
 
-### ASSERRTIONS
+### ASSERTIONS
 
 - issue reactions as expected
 - issue comments as expected

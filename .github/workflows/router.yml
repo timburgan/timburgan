@@ -1,4 +1,4 @@
-name: "Trigger echo"
+name: "Router"
 on:
 #  issues:
 #    types: [opened]

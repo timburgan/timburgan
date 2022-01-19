@@ -15,9 +15,10 @@ jobs:
     steps:
     - name: ACK the issue
       run: PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='rocket' | jq .
-    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
+    - if: startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
       run: |
         # the triggering issue contains test
+        echo ${{ github.event_name }}"
         exit 1
 
   move:

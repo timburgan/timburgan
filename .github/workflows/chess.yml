@@ -17,6 +17,7 @@ jobs:
 
     - name: Set env vars
       run: |
+        echo ${{ github.event_name }}"
         echo "REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
         echo "EVENT_ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
         echo "EVENT_USER_LOGIN=${{ github.event.issue.user.login }}" >> $GITHUB_ENV

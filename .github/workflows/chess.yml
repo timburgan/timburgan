@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.event.issue.title, 'chess|')
     steps:
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
+      run: |
+        # the triggering issue contains test
+        exit 1
 
     - name: Set env vars
       run: |

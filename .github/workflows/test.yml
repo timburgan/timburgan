@@ -61,7 +61,7 @@ jobs:
             exit 1
           fi
           
-          gh workflow run router.yml --ref master -f issue_numer=$(cat issue_id)
+          gh workflow run router.yml --ref master -f issue_number=$(cat issue_id)
  
           # reauth as GITHUB_TOKEN
           gh auth logout --hostname github.com

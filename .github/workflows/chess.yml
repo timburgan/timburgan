@@ -18,7 +18,7 @@ jobs:
     - if: startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
       run: |
         # the triggering issue contains test
-        echo ${{ github.event_name }}"
+        echo "${{ github.event_name }}"
         exit 1
 
   move:
@@ -27,7 +27,6 @@ jobs:
     steps: 
     - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && contains(github.event.issue.labels.*.name, 'test')
       run: |
-        # the triggering issue contains test
         exit 1
     - name: set initital state
       run: |

@@ -40,4 +40,4 @@ jobs:
       run: |
         set -xe
         echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
-        gh workflow run chess.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}
+        gh workflow run chess.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }} -f issue_number=${{ github.event.inputs.issue_number }}

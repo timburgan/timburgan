@@ -24,7 +24,7 @@ jobs:
       run: |
         set -xe
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'title,number,state.labels') | jq '. | select(.state == "OPEN")'"
+        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'author,title,number,state.labels') | jq '. | select(.state == "OPEN")'"
         echo "ISSUE=$ISSUE" >> $GITHUB_ENV
         
         if [[ -z ${ISSUE+x} ]]; then
@@ -57,13 +57,11 @@ jobs:
       run: |
         set -xe
         
-CHANGE THESE TO USE ENV VAR
-
-        CHESS_GAME_NUM=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $4}'`
-        CHESS_GAME_TITLE=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $1}'`
-        CHESS_GAME_TITLE=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $1}'` += $CHESS_GAME_NUM
-        CHESS_GAME_CMD=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $2}'`
-        CHESS_USER_MOVE=`echo "${{ github.event.issue.title }}" | awk -F'|' '{print $3}'`
+        CHESS_GAME_NUM=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $4}'`
+        CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'`
+        CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'` += $CHESS_GAME_NUM
+        CHESS_GAME_CMD=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $2}'`
+        CHESS_USER_MOVE=` echo "$ISSUE" | jq -r .title | awk -F'|' '{print $3}'`
 
         CHESS_GAME_CMD_ALLOWED_LIST=('new' 'move')
         CHESS_GAME_CMD_ALLOWED_USED=`echo ${CHESS_GAME_CMD_ALLOWED_LIST[*]} | grep "$CHESS_GAME_CMD"`
@@ -83,11 +81,11 @@ CHANGE THESE TO USE ENV VAR
           echo
 
           # react to issue
-          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='confused' | jq .
+          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # add comment
-          gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} The game title or move was unable to be parsed."
+          gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) The game title or move was unable to be parsed."
           # close issue
-          gh issue close ${{ github.event.issue.number }}
+          gh issue close ${{ github.event.inputs.issue_number }}
           echo "INVALID The game title or move was unable to be parsed."
           exit 1
         fi
@@ -106,17 +104,17 @@ CHANGE THESE TO USE ENV VAR
         set -xe
         ruby <<- EORUBY
           last_move = `cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac`&.dig(0)&..split('|').second.to_s[1..-1]
-          result = 'yes' if last_move  == "@${{ github.event.issue.user.login }}"
+          result = 'yes' if last_move  == "@$(echo "$ISSUE" | jq -r .author)"
           File.write(ENV.fetch('GITHUB_ENV'), "LAST_MOVE_SAME_PERSON=#{result}\n", mode: 'a')
         EORUBY
 
         if [[ $LAST_MOVE_SAME_PERSON == 'yes' ]]; then
           # react
-          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='confused' | jq .
+          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # comment
-          gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/${{ github.repository }})"
+          gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/${{ github.repository }})"
           # close issue
-          gh issue close ${{ github.event.issue.number }}
+          gh issue close ${{ github.event.inputs.issue_number }}
           echo "INVALID Same player making consecutive moves."
           exit 1
         fi
@@ -153,19 +151,18 @@ CHANGE THESE TO USE ENV VAR
             CHESS_CANT_LOAD == 'true'
         ]]; then
           # react
-          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='confused' | jq .
+          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # comment
-          gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} The game data is corrupt. A new game will be booted in a moment."
+          gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) The game data is corrupt. A new game will be booted in a moment."
           # close issue
-          gh issue close ${{ github.event.issue.number }}
+          gh issue close ${{ github.event.inputs.issue_number }}
 
           # create new issue as timburgan PAT with `chess|new`
-          gh auth logout --hostname github.com
-          echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
+          gh auth logout --hostname github.com && echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
           if [[ "${{ env.TEST_MODE }}" == "yes" ]]; then
             gh issue create --label "test" --title "chess|new" --body "${{ env.GAME_BRANCH }}" --repo ${{ github.repository }}
           else
-            gh issue create --title "chess|new" --body "See #${{ github.event.issue.number }}" --repo ${{ github.repository }}
+            gh issue create --title "chess|new" --body "See #${{ github.event.inputs.issue_number }}" --repo ${{ github.repository }}
           fi
 
           echo "FAILURE The game data is corrupt. A new game will be booted in a moment."
@@ -180,7 +177,7 @@ CHANGE THESE TO USE ENV VAR
         CHESS_NEW_GAME=false
         if [[ 
             # if new_game_request => new game
-            ( $CHESS_GAME_CMD == 'new' && '${{ github.event.issue.user.login }}' == 'timburgan' ) ||
+            ( $CHESS_GAME_CMD == 'new' && '$(echo "$ISSUE" | jq -r .author)' == 'timburgan' ) ||
 
             ( $CHESS_GAME_CMD == 'new' && $CHESS_GAME_OVER == 'true' )
         ]]; then
@@ -193,9 +190,9 @@ CHANGE THESE TO USE ENV VAR
       if: ${{ env.CHESS_NEW_GAME == 'false' }} && ${{ env.CHESS_GAME_CMD == 'new' }}
       run: |
         set -xe
-        PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='confused' | jq .
-        gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} This is an invalid new game request. If a new game is genuinely needed, create a new issue and ping @timburgan."
-        gh issue close ${{ github.event.issue.number }}
+        PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
+        gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) This is an invalid new game request. If a new game is genuinely needed, create a new issue and ping @timburgan."
+        gh issue close ${{ github.event.inputs.issue_number }}
         exit 1
 
     - name: Create new game
@@ -214,10 +211,10 @@ CHANGE THESE TO USE ENV VAR
         EORUBY
 
         # ack the issue
-        PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='rocket' | jq .
+        PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='rocket' | jq .
 
         # write stats
-        echo "new|@${{ github.event.issue.user.login }}||${{ github.event.issue.number }}|$(date -Iseconds)" > $GAME_STAT_PATH
+        echo "new|@$(echo "$ISSUE" | jq -r .author)||${{ github.event.inputs.issue_number }}|$(date -Iseconds)" > $GAME_STAT_PATH
 
     - name: Load existing game and perform move
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
@@ -237,28 +234,28 @@ CHANGE THESE TO USE ENV VAR
         
         if [ $? -ge 1 ]; then
           # react to issue
-          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/reactions -f content='confused' | jq .
+          PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # add comment
-          gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} Whaaa.. '${CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
+          gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) Whaaa.. '${CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
           # close issue
-          gh issue close ${{ github.event.issue.number }}
+          gh issue close ${{ github.event.inputs.issue_number }}
           exit 0
         fi
         EORUBY
 
         # write stats
-        echo "move|@${{ github.event.issue.user.login }}|${CHESS_USER_MOVE}|${{ github.event.issue.number }}|$(date -Iseconds)" > $GAME_STAT_PATH
+        echo "move|@$(echo "$ISSUE" | jq -r .author)|${CHESS_USER_MOVE}|${{ github.event.inputs.issue_number }}|$(date -Iseconds)" > $GAME_STAT_PATH
 
         # write leaderboard
-        EXISTING_LINE=$(grep @${{ github.event.issue.user.login }}$ $GAME_LEADERBOARD_PATH)
+        EXISTING_LINE=$(grep @$(echo "$ISSUE" | jq -r .author)$ $GAME_LEADERBOARD_PATH)
         if [[ -n "$EXISTING_LINE" ]]; then
           COUNT_OLD=$(echo $EXISTING_LINE | cut -d'|' -f1)
           COUNT_NEW=$(expr $COUNT_OLD + 1)
           WHO=$(echo $$EXISTING_LINE | cut -d'|' -f2)
-          sed -n '/@${{ github.event.issue.user.login }}$/p' -i -- "s/$COUNT_OLD|$WHO/$COUNT_NEW|$WHO/g" $GAME_LEADERBOARD_PATH
+          sed -n '/@$(echo "$ISSUE" | jq -r .author)$/p' -i -- "s/$COUNT_OLD|$WHO/$COUNT_NEW|$WHO/g" $GAME_LEADERBOARD_PATH
           sort -t'|' -k1 -r $GAME_LEADERBOARD_PATH
         else
-          echo "1|@${{ github.event.issue.user.login }}" >> $GAME_LEADERBOARD_PATH
+          echo "1|@$(echo "$ISSUE" | jq -r .author)" >> $GAME_LEADERBOARD_PATH
         fi
 
     - name: Update README
@@ -486,10 +483,8 @@ CHANGE THESE TO USE ENV VAR
     - name: Push PGN, README, stats, leaderboard changes
       run: |
         set -xe
-        git commit -am "@@${{ github.event.issue.user.login }} ${{ github.event.issue.title }} via #${{ github.event.issue.number }}"
-
-        echo "${{ env.GAME_BRANCH }}"
-        # git push origin ${{ env.GAME_BRANCH }}
+        git commit -am "@@$(echo "$ISSUE" | jq -r .author) $(echo "$ISSUE" | jq -r .title) via #${{ github.event.inputs.issue_number }}"
+        git push origin ${{ github.event.inputs.game_branch }}
 
     - name: Game over. Thank players
       if: ${{ env.CHESS_GAME_OVER == 'true' }}
@@ -509,15 +504,15 @@ CHANGE THESE TO USE ENV VAR
         # move|dan|move|issue|date
         # move|joe|move|issue|date
         # move|dan|move|issue|date
-        # Move|${{ github.event.issue.user.login }}|${CHESS_USER_MOVE}|${{ github.event.issue.number }}|$(date -Iseconds)
+        # Move|$(echo "$ISSUE" | jq -r .author)|${CHESS_USER_MOVE}|${{ github.event.inputs.issue_number }}|$(date -Iseconds)
         # EOF
 
-        gh issue comment ${{ github.event.issue.number }} --body "That's game over! Thank you for playing that chess game. That game had ${STAT_MOVES} moves, $(echo "${STAT_PLAYERS}" | wc -l) players, and went for ${STAT_DURATION} hours. Let's play again at https://github.com/timburgan.\n\nPlayers that game: $(awk '{print;}' file.txt | paste -s -d', ')")
+        gh issue comment ${{ github.event.inputs.issue_number }} --body "That's game over! Thank you for playing that chess game. That game had ${STAT_MOVES} moves, $(echo "${STAT_PLAYERS}" | wc -l) players, and went for ${STAT_DURATION} hours. Let's play again at https://github.com/timburgan.\n\nPlayers that game: $(awk '{print;}' file.txt | paste -s -d', ')")
 
     - name: Move is complete
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
       run: |
         set -xe
-        gh issue comment ${{ github.event.issue.number }} --body "@${{ github.event.issue.user.login }} Done. View back at https://github.com/${{ github.repository }}\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/${{ github.repository }})")
-        gh issue close ${{ github.event.issue.number }}
+        gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author) Done. View back at https://github.com/${{ github.repository }}\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/${{ github.repository }})")
+        gh issue close ${{ github.event.inputs.issue_number }}
 

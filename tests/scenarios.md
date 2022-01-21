@@ -29,7 +29,7 @@ which will return PASS or FAIL.
 11. force new game when gameover via other person
 12. stats populated correctly from existing issues
 13. high score populated correctly from existing issues (see leaderboard.legacy.txt)
-14. 
+14. if only 1 move can be made, just take it
 
 ### ASSERTIONS
 

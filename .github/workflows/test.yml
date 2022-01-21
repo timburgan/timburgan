@@ -90,12 +90,15 @@ jobs:
             # ((counter++))
             echo "Checking for running workflow..."
           
-            echo '  -------- list ------'
-            PAGER= gh run list --json 'event,createdAt,conclusion,status,url'
-            echo '  -------- /list ------'
+            # echo '  -------- list ------'
+            # sleep 1
+            # PAGER= gh run list --json 'event,createdAt,conclusion,status,url'
+            # sleep 1
+            # echo '  -------- /list ------'
+            # sleep 1
             
             gh run list --json 'event,createdAt,conclusion,status,url' | 
-              jq '[ .[] | select(.event == "issues" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
+              jq '[ .[] | select(.event == "workflow_dispatch" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
               awk -F'/' '{print $NF}' > run_id
           done
 

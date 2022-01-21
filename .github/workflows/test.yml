@@ -93,7 +93,8 @@ jobs:
             echo '  -------- list ------'
             sleep 1
             # PAGER= gh run list --limit 10 --json 'event,createdAt,conclusion,status,url'
-            PAGER= gh run list --limit 10
+            PAGER= gh run list --limit 10 --json
+            echo
             echo
             sleep 1
             echo '  -------- /list ------'

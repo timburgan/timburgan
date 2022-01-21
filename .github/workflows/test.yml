@@ -89,18 +89,9 @@ jobs:
             counter=$((counter+1))
             # ((counter++))
             echo "Checking for running workflow..."
-          
-            echo '  -------- list ------'
-            sleep 1
-            PAGER= gh run list --limit 10 --json 'conclusion,createdAt,event,headBranch,name,status,url'
-            echo
-            echo
-            sleep 3
-            echo '  -------- /list ------'
-            sleep 1
             
-            gh run list --json 'event,createdAt,conclusion,status,url' | 
-              jq '[ .[] | select(.event == "workflow_dispatch" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
+            gh run list -w 'chess.yml' --json 'event,createdAt,conclusion,status,url,headBranch' | 
+              jq '[ .[] | select(.event == "workflow_dispatch" and .headBranch == "${{ github.head_ref }}" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
               awk -F'/' '{print $NF}' > run_id
           done
 

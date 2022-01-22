@@ -24,7 +24,7 @@ jobs:
       run: |
         set -xe
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'author,title,number,state,labels') | jq '. | select(.state == "OPEN")'"
+        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'author,title,number,state,labels' | jq '. | select(.state == "OPEN")'"
         echo "ISSUE=$ISSUE" >> $GITHUB_ENV
         
         if [[ -z ${ISSUE+x} ]]; then
@@ -56,10 +56,6 @@ jobs:
     - name: Parse the issue title
       run: |
         set -xe
-        
-        MEH=`echo "$ISSUE" | jq -r .title`
-        echo $MEH
-        exit 1
         
         CHESS_GAME_NUM=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $4}'`
         CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'`

@@ -105,7 +105,7 @@ jobs:
           puts 'last_move = last_move_raw_line&.dig(0)&.split('|').second.to_s[1..-1]'
           puts last_move
           
-          result = 'yes' if last_move  == "@$(echo "$ISSUE" | jq -r .author)"
+          result = 'yes' if last_move  =="@ %[echo "$ISSUE" | jq -r .author]"
           File.write(ENV.fetch('GITHUB_ENV'), "LAST_MOVE_SAME_PERSON=#{result}\n", mode: 'a')
         EORUBY
 

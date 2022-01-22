@@ -34,7 +34,7 @@ jobs:
     - name: Not chess
       run: |
         set -xe
-        if [[ "$(echo "$ISSUE" | jq -r .title)" =~ ^chess* ]]; then
+        if [[ "$(echo "$ISSUE" | jq .title)" =~ ^chess* ]]; then
           echo "FAILURE Not chess."
           exit 1
         fi

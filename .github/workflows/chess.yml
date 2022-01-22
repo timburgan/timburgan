@@ -57,6 +57,10 @@ jobs:
       run: |
         set -xe
         
+        MEH=`echo "$ISSUE" | jq -r .title`
+        echo $MEH
+        exit 1
+        
         CHESS_GAME_NUM=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $4}'`
         CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'`
         CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'` += $CHESS_GAME_NUM

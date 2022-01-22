@@ -66,8 +66,8 @@ jobs:
 
         # if the title, move, or command is bad, exit
 
-        if [ -z "$CHESS_USER_MOVE" && "$CHESS_GAME_CMD" == "move" ] || 
-            [ -z "$CHESS_GAME_CMD_ALLOWED_USED" ]; then
+        if [ -z $CHESS_USER_MOVE && $CHESS_GAME_CMD == "move" ] || 
+            [ -z $CHESS_GAME_CMD_ALLOWED_USED ]; then
 
           echo
           echo '----- <commands> -----'

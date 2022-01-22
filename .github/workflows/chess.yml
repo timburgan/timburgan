@@ -24,7 +24,7 @@ jobs:
       run: |
         set -xe
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'author,title,number,state.labels') | jq '. | select(.state == "OPEN")'"
+        ISSUE="$(gh issue view ${{ github.event.inputs.issue_number }} --json 'author,title,number,state,labels') | jq '. | select(.state == "OPEN")'"
         echo "ISSUE=$ISSUE" >> $GITHUB_ENV
         
         if [[ -z ${ISSUE+x} ]]; then

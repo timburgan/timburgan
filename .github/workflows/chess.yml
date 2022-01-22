@@ -57,9 +57,7 @@ jobs:
       run: |
         set -xe
         
-        CHESS_GAME_NUM=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $4}'`
-        CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}'`
-        CHESS_GAME_TITLE=`echo "$ISSUE" | jq -r .title | awk -F'|' '{print $1}' += $CHESS_GAME_NUM`
+        CHESS_GAME_NUM=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $4}'`\
         CHESS_GAME_CMD=`  echo "$ISSUE" | jq -r .title | awk -F'|' '{print $2}'`
         CHESS_USER_MOVE=` echo "$ISSUE" | jq -r .title | awk -F'|' '{print $3}'`
 
@@ -68,13 +66,11 @@ jobs:
 
         # if the title, move, or command is bad, exit
 
-        if [ -z "$CHESS_GAME_TITLE" ] || 
-            [ -z "$CHESS_USER_MOVE" && "$CHESS_GAME_CMD" == "move" ] || 
+        if [ -z "$CHESS_USER_MOVE" && "$CHESS_GAME_CMD" == "move" ] || 
             [ -z "$CHESS_GAME_CMD_ALLOWED_USED" ]; then
 
           echo
           echo '----- <commands> -----'
-          echo "CHESS_GAME_TITLE=$CHESS_GAME_TITLE"
           echo "CHESS_USER_MOVE=$CHESS_USER_MOVE"
           echo "CHESS_GAME_CMD=$CHESS_GAME_CMD"
           echo '----- </commands> -----'

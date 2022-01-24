@@ -101,8 +101,8 @@ jobs:
           puts 'last_move_raw_line = %x[cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac]'
           puts last_move_raw_line
           
-          last_move = last_move_raw_line&.split('|').second.to_s[1..-1]
-          puts 'last_move = last_move_raw_line&.dig(0)&.split('|').second.to_s[1..-1]'
+          last_move = last_move_raw_line&.split('|').dig(1).to_s[1..-1]
+          puts 'last_move = last_move_raw_line&.dig(0)&.split('|').dig(1).to_s[1..-1]'
           puts last_move
           
           result = 'yes' if last_move  == '@' + %x[echo "$ISSUE" | jq -r .author]

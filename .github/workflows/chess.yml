@@ -96,6 +96,9 @@ jobs:
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
       run: |
         set -xe
+        
+        # move|@timburgan|d8e8|18957|2022-01-24T12:04:48+00:00
+        cat $GAME_STAT_PATH
         LAST_MOVE_RAW_LINE=$(cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac)
         echo $LAST_MOVE_RAW_LINE
         

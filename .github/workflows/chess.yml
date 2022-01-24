@@ -96,21 +96,9 @@ jobs:
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
       run: |
         set -xe
+        LAST_MOVER=$(cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac | awk -F'|' '{print $2)' | cut -c 2-)
         
-        # move|@timburgan|d8e8|18957|2022-01-24T12:04:48+00:00
-        cat $GAME_STAT_PATH
-        LAST_MOVE_RAW_LINE=$(cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac)
-        echo $LAST_MOVE_RAW_LINE
-        
-        exit 1
-        ruby <<- EORUBY
-          last_move = ENV.fetch('LAST_MOVE_RAW_LINE')&.split('|').dig(1).to_s[1..-1]
-          
-          result = 'yes' if last_move  == '@' + %x[echo "$ISSUE" | jq -r .author]
-          File.write(ENV.fetch('GITHUB_ENV'), "LAST_MOVE_SAME_PERSON=#{result}\n", mode: 'a')
-        EORUBY
-
-        if [[ $LAST_MOVE_SAME_PERSON == 'yes' ]]; then
+        if [[ $LAST_MOVER == "$(echo "$ISSUE" | jq -r .author)" ]]; then
           # react
           PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # comment
@@ -120,6 +108,8 @@ jobs:
           echo "INVALID Same player making consecutive moves."
           exit 1
         fi
+        
+        exit 1
 
     - name: Check if saved game PGN error
       run: |

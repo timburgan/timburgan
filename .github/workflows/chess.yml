@@ -96,8 +96,7 @@ jobs:
       if: ${{ env.CHESS_GAME_CMD == 'move' }}
       run: |
         set -xe
-        LAST_MOVER=$(cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac | awk -F'|' '{print $2)' | cut -c 2-)
-        
+        LAST_MOVER=$(cat $GAME_STAT_PATH | tail -n +2 | tail -n 1 | tac | awk -F '|' '{print $2}' | cut -c 2-)
         if [[ $LAST_MOVER == "$(echo "$ISSUE" | jq -r .author.login)" ]]; then
           # react
           PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
@@ -108,8 +107,6 @@ jobs:
           echo "INVALID Same player making consecutive moves."
           exit 1
         fi
-        
-        exit 1
 
     - name: Check if saved game PGN error
       run: |

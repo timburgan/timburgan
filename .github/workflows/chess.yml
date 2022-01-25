@@ -51,7 +51,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.1
-        bundler-cache: true
+        # bundler-cache: true
 
     - name: Install dependencies
       run: |
@@ -72,13 +72,6 @@ jobs:
         # if the title, move, or command is bad, exit
 
         if [[ (-z $CHESS_USER_MOVE && $CHESS_GAME_CMD == "move") || -z $CHESS_GAME_CMD_ALLOWED_USED ]]; then
-          echo
-          echo '----- <commands> -----'
-          echo "CHESS_USER_MOVE=$CHESS_USER_MOVE"
-          echo "CHESS_GAME_CMD=$CHESS_GAME_CMD"
-          echo '----- </commands> -----'
-          echo
-
           # react to issue
           PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # add comment
@@ -120,11 +113,6 @@ jobs:
         # load game file. Throws an exception otherwise, which is caught and sets 
         # environment variable CHESS_CANT_LOAD=true
         ruby <<- EORUBY
-          # read file
-          puts '-----------'
-          puts File.read(ENV.fetch('GAME_DATA_PATH'))
-          puts '-----------'
-
           require 'chess'
           game = begin
                    Chess::Game.load_pgn ENV.fetch('GAME_DATA_PATH')

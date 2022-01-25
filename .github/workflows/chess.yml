@@ -204,9 +204,13 @@ jobs:
         set -x
         ruby <<- EORUBY
           require 'chess'
-          game = Chess::Game.load_pgn ENV.fetch('GAME_DATA_PATH')
-          game.move(ENV.fetch('CHESS_USER_MOVE')) # ie move('e2e4', …, 'b1c3')
-          File.write(ENV.fetch('GAME_DATA_PATH'), "#{game.pgn.to_s}")
+          begin
+            game = Chess::Game.load_pgn ENV.fetch('GAME_DATA_PATH')
+            game.move(ENV.fetch('CHESS_USER_MOVE')) # ie move('e2e4', …, 'b1c3')
+            File.write(ENV.fetch('GAME_DATA_PATH'), "#{game.pgn.to_s}")
+          rescue StandardError => e
+            File.write('move_error', '')
+          end
           if game&.over?
             File.write(ENV.fetch('GITHUB_ENV'), "CHESS_GAME_OVER=true\n", mode: 'a')
           else
@@ -214,7 +218,7 @@ jobs:
           end
         EORUBY
         
-        if [ $? -ge 1 ]; then
+        if [ -f move_error ]; then
           # react to issue
           PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .
           # add comment

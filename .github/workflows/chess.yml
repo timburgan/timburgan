@@ -225,7 +225,7 @@ jobs:
           gh issue comment ${{ github.event.inputs.issue_number }} --body "@$(echo "$ISSUE" | jq -r .author.login) Whaaa.. '${CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
           # close issue
           gh issue close ${{ github.event.inputs.issue_number }}
-          exit 0
+          exit 1
         fi
         EORUBY
 
@@ -416,7 +416,7 @@ jobs:
             | ----- | --- |
           HTML
 
-          last_5_moves = `cat $GAME_STAT_PATH | tail -n +2 | tail -n 5 | tac`
+          last_5_moves = %x[cat $GAME_STAT_PATH | tail -n +2 | tail -n 5 | tac]
           last_5_moves.each do |move|
             from = move.split('|').third.to_s[0..1].to_s.upcase
             to = move.split('|').third.to_s[2..3].to_s.upcase
@@ -427,7 +427,7 @@ jobs:
 
 
           ## <GET THE TOP USERS LEGACY METHOD>
-              `rm -f leaderboard.legacy.txt || true`
+              %x[rm -f leaderboard.legacy.txt || true]
               begin
                 @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
                 @octokit.auto_paginate = true

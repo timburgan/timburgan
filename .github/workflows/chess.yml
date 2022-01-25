@@ -169,7 +169,7 @@ jobs:
         echo "CHESS_NEW_GAME=$CHESS_NEW_GAME" >> $GITHUB_ENV
 
     - name: Trap invalid new game request
-      if: ${{ env.CHESS_NEW_GAME == 'false' }} && ${{ env.CHESS_GAME_CMD == 'new' }}
+      if: ${{ env.CHESS_NEW_GAME == 'false' && env.CHESS_GAME_CMD == 'new' }}
       run: |
         set -xe
         PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .

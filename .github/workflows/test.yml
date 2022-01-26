@@ -112,26 +112,26 @@ jobs:
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
           # issue reactions as expected
-          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .reaction)").users.totalCount')
+          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)").users.totalCount')
           if [[ "$REACTIONS" != "1" ]]; then
-            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .reaction)"
+            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)"
             cat issue
             exit 1
           fi
 
           # issue comments as expected
           rm -f issue_author
-          COMMENTS=$(cat issue | jq -c --arg expected "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .comment)" '.comments[] | select(.body | contains($expected)) | length')
+          COMMENTS=$(cat issue | jq -c --arg expected "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .comment)" '.comments[] | select(.body | contains($expected)) | length')
           if [[ -z ${COMMENTS+x} ]]; then
-            echo "FAILURE Issue comments doesn't contain the expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .comment)"
+            echo "FAILURE Issue comments doesn't contain the expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .comment)"
             cat issue
             exit 1
           fi
 
           # issue status as expected
           STATUS=$(cat issue | jq '.state' -r)
-          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .state)" ]]; then
-            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json issue.expected.json | jq .state)"
+          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .state)" ]]; then
+            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .state)"
             cat issue
             exit 1
           fi

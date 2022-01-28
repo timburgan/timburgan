@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@GabrielTheophilo](https://github.com/GabrielTheophilo) |
 | D5 to G2 | [@DalpatRathore](https://github.com/DalpatRathore) |
 | A1 to B1 | [@goodbyepavlyi](https://github.com/goodbyepavlyi) |
 | D8 to D5 | [@cosmoglint](https://github.com/cosmoglint) |
 | D8 to D5 | [@DalpatRathore](https://github.com/DalpatRathore) |
-| C3 to D5 | [@automainint](https://github.com/automainint) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

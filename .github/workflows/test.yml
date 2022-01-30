@@ -123,9 +123,9 @@ jobs:
           echo 
 
           # issue reactions as expected
-          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)").users.totalCount')
+          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)")')
           if [[ "$REACTIONS" != "1" ]]; then
-            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)"
+            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)"
             cat issue
             exit 1
           fi

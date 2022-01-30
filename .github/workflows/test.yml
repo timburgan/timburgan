@@ -111,9 +111,11 @@ jobs:
           rm -f issue
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
+          echo '-1-'
+          echo "$(cat tests/${{ matrix.scenario }}/issue.expected.json)"
           echo 
-          echo 
-          echo "$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json)")')"
+          echo '-2-'
+          echo "$(cat issue | jq '.reactionGroups[] | select(.content == \"$(cat tests/${{ matrix.scenario }}/issue.expected.json)\")')"
           #echo "$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)")')"
           echo 
           echo 

@@ -123,7 +123,7 @@ jobs:
           echo 
 
           # issue reactions as expected
-          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)").users.totalCount')
+          REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)").users.totalCount')
           if [[ "$REACTIONS" != "1" ]]; then
             echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)"
             cat issue

@@ -113,7 +113,9 @@ jobs:
 
           echo 
           echo 
-          echo "$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)")')"
+          echo "$(cat issue | jq '.reactionGroups | select([].content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json)")')"
+          echo "$(cat issue | jq '.reactionGroups | select([].content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq [0].reaction)")')"
+          #echo "$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)")')"
           echo 
           echo 
           echo 

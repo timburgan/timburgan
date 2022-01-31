@@ -1,6 +1,5 @@
 name: Run test scenarios
-on: 
-  pull_request:
+on: pull_request
 env:
   GH_REPO: ${{ github.repository }}
 jobs:

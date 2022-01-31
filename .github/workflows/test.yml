@@ -44,7 +44,7 @@ jobs:
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
           
           # push setup to branch
-          echo "testrun_${{ github.event.pull_request.id }}_${{ github.sha }}_${{ matrix.scenario }}" > test_branch_name
+          echo "testrun_${{ github.event.pull_request.id }}_${{ matrix.scenario }}" > test_branch_name
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git add chess_games/chess.pgn chess_games/stats.txt chess_games/leaderboard.txt README.md

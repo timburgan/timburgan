@@ -51,7 +51,7 @@ jobs:
           echo "testrun_${{ github.event.pull_request.id }}_${{ github.sha }}_${{ matrix.scenario }}" > test_branch_name
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git status
+          git add chess_games/chess.pgn chess_games/stats.txt chess_games/leaderboard.txt README.md
           git commit -m "${{ matrix.scenario }}"
           git status
           git push --set-upstream origin ${{ github.head_ref }}:$(cat test_branch_name) --dry-run

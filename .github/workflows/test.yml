@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'tests/**'
+      - '.github/**'
 env:
   GH_REPO: ${{ github.repository }}
 jobs:

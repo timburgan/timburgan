@@ -18,6 +18,8 @@ jobs:
     continue-on-error: false
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - name: name
         run: cat tests/${{ matrix.scenario }}/_name
       - name: setup

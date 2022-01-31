@@ -45,10 +45,8 @@ jobs:
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
           
           # push setup to branch
-          git status
-          # git commit -am "Test ${{ matrix.scenario }}"
-          # git push origin ${{ github.event.inputs.game_branch }}
-          exit 1
+          git commit -am "Test ${{ matrix.scenario }}"
+          git push origin ${{ github.event.inputs.game_branch }}
           
           # reauth as TIMBURGAN_PAT
           echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token

@@ -112,7 +112,7 @@ jobs:
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
           # issue reactions as expected
-          REACTIONS=$(cat issue | jq -r '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)")')
+          REACTIONS=$(cat issue | jq -r '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction)")')
           if [[ "$REACTIONS" != "1" ]]; then
             echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction)"
             cat issue

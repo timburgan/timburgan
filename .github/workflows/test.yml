@@ -125,7 +125,7 @@ jobs:
           echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "ROCKET")')
           echo 
           echo 
-          echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "$EXPECTED_REACTION")')
+          echo $(cat issue | jq --arg expected $EXPECTED_REACTION '.reactionGroups[] | select(.content == $expected)')
           echo 
           echo 
           echo 

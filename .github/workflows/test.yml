@@ -147,6 +147,7 @@ jobs:
       - name: assert game file
         run: |
           set -xe
+          ls -la ./refreshed/chess_games
           # game file as expected
           if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/game.pgn; then
             echo "FAILURE Game PGN file is not as expected"

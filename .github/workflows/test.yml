@@ -118,9 +118,6 @@ jobs:
             cat issue
             exit 1
           fi
-          
-          echo 'GOOD'
-          exit 1
 
           # issue comments as expected
           rm -f issue_author
@@ -130,7 +127,7 @@ jobs:
             cat issue
             exit 1
           fi
-
+          
           # issue status as expected
           STATUS=$(cat issue | jq '.state' -r)
           if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)" ]]; then
@@ -146,6 +143,7 @@ jobs:
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
             echo "ACTUAL: ---------------------"
             cat refreshed/game.pgn
+            exit 1
           fi
 
           # stats file as expected
@@ -155,6 +153,7 @@ jobs:
             cat tests/${{ matrix.scenario }}/stats.expected.txt
             echo "ACTUAL: ---------------------"
             cat refreshed/stats.txt
+            exit 1
           fi
 
           # leaderboard file is as expected
@@ -164,6 +163,7 @@ jobs:
             cat tests/${{ matrix.scenario }}/leaderboard.expected.txt
             echo "ACTUAL: ---------------------"
             cat refreshed/leaderboard.txt
+            exit 1
           fi
 
           # readme file is as expected
@@ -173,5 +173,9 @@ jobs:
             cat tests/${{ matrix.scenario }}/README.expected.md
             echo "ACTUAL: ---------------------"
             cat refreshed/README.md
+            exit 1
           fi
+          
+          echo "PASSED"
+          exit 0
 

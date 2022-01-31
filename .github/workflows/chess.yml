@@ -421,15 +421,15 @@ jobs:
 
             Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/timburgan)
 
-            **How this works**
+            ## How this works
 
             When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a [GitHub Actions](https://github.blog/2020-07-03-github-action-hero-casey-lee/#getting-started-with-github-actions) workflow that'll update my GitHub Profile _README.md_ with the new state of the board.
 
-            **Notice a problem?**
+            ## Notice a problem?
 
             Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @timburgan_.
 
-            **Last few moves, this game**
+            ## Last few moves, this game
 
             | Move  | Who |
             | ----- | --- |
@@ -457,7 +457,7 @@ jobs:
 
           new_readme.concat <<~HTML
 
-            **Top 20 Leaderboard: Most moves across all games, except me.**
+            ## Top 20 Leaderboard: Most moves across all games, except me.
 
             | Moves | Who |
             | ----- | --- |
@@ -499,3 +499,4 @@ jobs:
         EORUBY
         
         
+

@@ -124,7 +124,7 @@ jobs:
           echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "ROCKET")')
           echo 
           echo 
-          echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction)")')
+          echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "`cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction`")')
           echo 
           echo 
           echo 

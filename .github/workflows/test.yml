@@ -1,0 +1,215 @@
+name: Run test scenarios
+on: pull_request
+env:
+  GH_REPO: ${{ github.repository }}
+jobs:
+  tests:
+    strategy:
+      max-parallel: 1
+      matrix:
+        scenario: ['test-1']
+    name: ${{ matrix.scenario }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.head_ref }}
+    continue-on-error: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - name: name
+        run: cat tests/${{ matrix.scenario }}/_name
+      - name: setup
+        run: |
+          set -xe
+          
+          # PGN game file
+          rm -f chess.pgn
+          cp tests/test-shared/chess.setup.pgn chess_games/chess.pgn 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/chess.setup.pgn chess_games/chess.pgn 2>/dev/null || true
+          
+          # stats
+          rm -f stats.txt
+          cp tests/test-shared/stats.setup.txt chess_games/stats.txt 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/stats.setup.txt chess_games/stats.txt 2>/dev/null || true
+          
+          # leaderboard
+          rm -f leaderboard.txt
+          cp tests/test-shared/leaderboard.setup.txt chess_games/leaderboard.txt 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/leaderboard.setup.txt chess_games/leaderboard.txt 2>/dev/null || true
+          
+          # readme
+          rm -f README.md
+          cp tests/test-shared/README.setup.md README.md 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
+          
+          # push setup to branch
+          echo "testrun_${{ github.event.pull_request.id }}_${{ github.sha }}_${{ matrix.scenario }}" > test_branch_name
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git add chess_games/chess.pgn chess_games/stats.txt chess_games/leaderboard.txt README.md
+          git commit -m "${{ matrix.scenario }}"
+          git push --set-upstream origin ${{ github.head_ref }}:$(cat test_branch_name)
+          
+          # reauth as TIMBURGAN_PAT
+          echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
+          
+          # delete all "test" issues
+          # PAGER= gh issue list --label "test" --state all
+          # PAGER= gh issue list --label "test" --state all --repo timburgan/timburgan --json number
+          PAGER= gh issue list --label "test" --state all | awk '{print $1}' > issue_ids
+          cat issue_ids
+          cat issue_ids | while read issue_id; do gh issue delete $issue_id; done
+
+          # game is valid - allow user to move
+          rm -f issue_id
+          # BRANCH="${{ github.head_ref }}"
+          BRANCH="$(cat test_branch_name)"
+          gh issue create --label "test" --title "$(cat tests/${{ matrix.scenario }}/issue-title.setup.txt)" --body "$BRANCH" | awk -F'/' '{print $NF}' > issue_id
+          
+          if [ ! -s issue_id ]; then
+            echo "FAILURE issue_id is empty"
+            exit 1
+          fi
+          
+          gh workflow run router.yml --ref master -f issue_number=$(cat issue_id)
+          
+          gh auth logout --hostname github.com
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: run
+        run: |
+          set -xe
+          
+          # Find workflow related to the issue_id above.
+          # There's no easy way I know to do this, see https://github.com/timburgan/personal/issues/17
+          # So.. fuzzy match: List created from issues in last 5 minutes, currently in_progress, select the latest
+          rm -f run_id ; touch run_id
+
+          # how can I see just the "test" related workflow runs, vs the runs related to the "real" games. I only care about test.
+
+          max_retry=10
+          counter=0
+          until [[ -s run_id && "$(cat run_id)" != "null" ]]
+          do
+            sleep 3
+            if [[ $counter -eq $max_retry ]]; then
+              echo "FAILED: No running workflow found."
+              exit 1
+            fi
+            counter=$((counter+1))
+            
+            echo "Checking for running workflow..."
+            
+            gh run list -w 'chess.yml' --json 'event,createdAt,conclusion,status,url,headBranch' | 
+              jq '[ .[] | select(.event == "workflow_dispatch" and .headBranch == "${{ github.head_ref }}" and (.status == "queued" or .status == "in_progress") and select(.createdAt | fromdateiso8601 > now - 301)) ][0].url' -r |
+              awk -F'/' '{print $NF}' > run_id
+          done
+
+          # wait until that workflow run is finished
+          gh run watch $(cat run_id)
+          
+      - name: refresh
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          path: refreshed
+
+      - name: assertion prep
+        run: |
+          set -xe
+          ls -la ./refreshed/chess_games
+          rm -f issue
+          gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
+
+      - name: assert reactions
+        run: |
+          set -xe
+          # issue reactions as expected
+          REACTIONS=$(cat issue | jq --arg expected $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction) '.reactionGroups[] | select(.content == $expected) | .users.totalCount')
+          if [[ "$REACTIONS" != "1" ]]; then
+            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction)"
+            cat issue
+            exit 1
+          fi
+
+      - name: assert issue comments
+        run: |
+          set -xe
+          # issue comments as expected
+          rm -f issue_author
+          COMMENTS=$(cat issue | jq -rc --arg expected "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .comment)" '.comments[] | select(.body | contains($expected)) | length')
+          if [[ -z ${COMMENTS+x} ]]; then
+            echo "FAILURE Issue comments doesn't contain the expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .comment)"
+            cat issue
+            exit 1
+          fi
+          
+      - name: assert issue status
+        run: |
+          set -xe
+          # issue status as expected
+          STATUS=$(cat issue | jq '.state' -r)
+          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)" ]]; then
+            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)"
+            cat issue
+            exit 1
+          fi
+
+      - name: assert game file
+        run: |
+          set -xe
+          # game file as expected
+          if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/chess.pgn; then
+            echo "FAILURE Game PGN file is not as expected"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/chess.expected.pgn
+            echo "ACTUAL: ---------------------"
+            cat refreshed/chess_games/chess.pgn
+            exit 1
+          fi
+
+      - name: assert game stats
+        run: |
+          set -xe
+          # stats file as expected
+          if ! cmp -s tests/${{ matrix.scenario }}/stats.expected.txt refreshed/chess_games/stats.txt; then
+            echo "FAILURE Stats file is not as expected"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/stats.expected.txt
+            echo "ACTUAL: ---------------------"
+            cat refreshed/chess_games/stats.txt
+            exit 1
+          fi
+
+      - name: assert leaderboard
+        run: |
+          set -xe
+          # leaderboard file is as expected
+          if ! cmp -s tests/${{ matrix.scenario }}/leaderboard.expected.txt refreshed/chess_games/leaderboard.txt; then
+            echo "FAILURE Leaderboard file is not as expected"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/leaderboard.expected.txt
+            echo "ACTUAL: ---------------------"
+            cat refreshed/chess_games/leaderboard.txt
+            exit 1
+          fi
+
+      - name: assert README
+        run: |
+          set -xe
+          # readme file is as expected
+          if ! cmp -s tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md; then
+            echo "FAILURE README file is not as expected"
+            echo "EXPECTED: ---------------------"
+            cat tests/${{ matrix.scenario }}/README.expected.md
+            echo "ACTUAL: ---------------------"
+            cat refreshed/README.md
+            exit 1
+          fi
+      
+      - name: Remove test branch
+        if: always()
+        run: |
+          set -xe
+          gh api --method DELETE /repos/${{github.repository}}/git/refs/heads/$(cat test_branch_name)

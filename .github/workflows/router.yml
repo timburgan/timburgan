@@ -13,7 +13,7 @@ jobs:
   what_branch:
     runs-on: ubuntu-latest
     steps:
-    - if: github.event_name == 'issues' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
+    - if: github.event_name == 'issue' && startsWith(github.event.issue.title, 'chess|') && ! contains(github.event.issue.labels.*.name, 'test')
       name: issue trigger
       run: |
         set -xe
@@ -40,4 +40,4 @@ jobs:
       run: |
         set -xe
         echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
-        gh workflow run chess.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }} -f issue_number=${{ github.event.inputs.issue_number }}
+        gh workflow run chess.yml --ref ${{ env.GAME_BRANCH }} -f test_mode=${{ env.TEST_MODE }} -f game_branch=${{ env.GAME_BRANCH }}

@@ -110,7 +110,7 @@ jobs:
           
           rm -f issue
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
-          EXPECTED_REACTION=`cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction`
+          EXPECTED_REACTION=`cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction`
 
           echo 
           echo 

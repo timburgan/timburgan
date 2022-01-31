@@ -50,7 +50,10 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git commit -am "Test ${{ matrix.scenario }}"
-          git push origin ${{ github.event.inputs.game_branch }}
+          git status
+          git push origin ${{ github.head_ref }} --dry-run
+          
+          exit 1
           
           # reauth as TIMBURGAN_PAT
           echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token

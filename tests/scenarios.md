@@ -30,6 +30,7 @@ which will return PASS or FAIL.
 12. stats populated correctly from existing issues
 13. high score populated correctly from existing issues (see leaderboard.legacy.txt)
 14. if only 1 move can be made, just take it
+15. ...
 
 ### ASSERTIONS
 

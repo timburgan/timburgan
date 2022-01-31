@@ -29,18 +29,18 @@ jobs:
           
           # PGN game file
           rm -f chess.pgn
-          cp tests/test-shared/chess.setup.pgn chess.pgn 2>/dev/null || true
-          cp tests/${{ matrix.scenario }}/chess.setup.pgn chess.pgn 2>/dev/null || true
+          cp tests/test-shared/chess.setup.pgn chess_games/chess.pgn 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/chess.setup.pgn chess_games/chess.pgn 2>/dev/null || true
           
           # stats
           rm -f stats.txt
-          cp tests/test-shared/stats.setup.txt stats.txt 2>/dev/null || true
-          cp tests/${{ matrix.scenario }}/stats.setup.txt stats.txt 2>/dev/null || true
+          cp tests/test-shared/stats.setup.txt chess_games/stats.txt 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/stats.setup.txt chess_games/stats.txt 2>/dev/null || true
           
           # leaderboard
           rm -f leaderboard.txt
-          cp tests/test-shared/leaderboard.setup.txt leaderboard.txt 2>/dev/null || true
-          cp tests/${{ matrix.scenario }}/leaderboard.setup.txt leaderboard.txt 2>/dev/null || true
+          cp tests/test-shared/leaderboard.setup.txt chess_games/leaderboard.txt 2>/dev/null || true
+          cp tests/${{ matrix.scenario }}/leaderboard.setup.txt chess_games/leaderboard.txt 2>/dev/null || true
           
           # readme
           rm -f README.md
@@ -48,10 +48,11 @@ jobs:
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
           
           # push setup to branch
-          echo "testrun_${{ github.event.pull_request.id }}_${{ github.sha }}_s${{ matrix.scenario }}" > test_branch_name
+          echo "testrun_${{ github.event.pull_request.id }}_${{ github.sha }}_${{ matrix.scenario }}" > test_branch_name
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git commit -am "Test ${{ matrix.scenario }}"
+          git status
+          git commit -m "${{ matrix.scenario }}"
           git status
           git push --set-upstream origin ${{ github.head_ref }}:$(cat test_branch_name) --dry-run
           

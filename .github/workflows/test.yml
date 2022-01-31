@@ -112,7 +112,7 @@ jobs:
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
           echo '-1-'
-          echo "$(cat tests/${{ matrix.scenario }}/issue.expected.json)"
+          echo "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction )"
           echo 
           echo '-2-'
           echo $(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json)")')
@@ -125,7 +125,7 @@ jobs:
           # issue reactions as expected
           REACTIONS=$(cat issue | jq '.reactionGroups[] | select(.content == "$(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)")')
           if [[ "$REACTIONS" != "1" ]]; then
-            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | .reaction)"
+            echo "FAILURE Issue reactions are not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq .reaction)"
             cat issue
             exit 1
           fi

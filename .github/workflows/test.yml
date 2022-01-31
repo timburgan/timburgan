@@ -107,6 +107,7 @@ jobs:
       - name: assertion prep
         run: |
           set -xe
+          ls -la ./refreshed/chess_games
           rm -f issue
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
 
@@ -147,14 +148,13 @@ jobs:
       - name: assert game file
         run: |
           set -xe
-          ls -la ./refreshed/chess_games
           # game file as expected
-          if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/game.pgn; then
+          if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/chess.pgn; then
             echo "FAILURE Game PGN file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
             echo "ACTUAL: ---------------------"
-            cat refreshed/chess_games/game.pgn
+            cat refreshed/chess_games/chess.pgn
             exit 1
           fi
 

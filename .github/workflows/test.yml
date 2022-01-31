@@ -110,6 +110,7 @@ jobs:
           
           rm -f issue
           gh issue view $(cat issue_id) --json 'author,comments,reactionGroups,state' > issue
+          EXPECTED_REACTION=`cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction`
 
           echo 
           echo 
@@ -124,7 +125,7 @@ jobs:
           echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "ROCKET")')
           echo 
           echo 
-          echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "`cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .reaction`")')
+          echo $(cat issue | jq -r '.reactionGroups[] | select(.content == "$EXPECTED_REACTION")')
           echo 
           echo 
           echo 

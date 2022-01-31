@@ -45,6 +45,8 @@ jobs:
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
           
           # push setup to branch
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
           git commit -am "Test ${{ matrix.scenario }}"
           git push origin ${{ github.event.inputs.game_branch }}
           

@@ -1,5 +1,8 @@
 name: Run test scenarios
-on: pull_request
+on: 
+  pull_request:
+    paths:
+      - 'tests/**'
 env:
   GH_REPO: ${{ github.repository }}
 jobs:
@@ -40,6 +43,12 @@ jobs:
           rm -f README.md
           cp tests/test-shared/README.setup.md README.md 2>/dev/null || true
           cp tests/${{ matrix.scenario }}/README.setup.md README.md 2>/dev/null || true
+          
+          # push setup to branch
+          git status
+          # git commit -am "Test ${{ matrix.scenario }}"
+          # git push origin ${{ github.event.inputs.game_branch }}
+          exit 1
           
           # reauth as TIMBURGAN_PAT
           echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token

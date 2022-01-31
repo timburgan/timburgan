@@ -53,10 +53,7 @@ jobs:
           git config user.email "<>"
           git add chess_games/chess.pgn chess_games/stats.txt chess_games/leaderboard.txt README.md
           git commit -m "${{ matrix.scenario }}"
-          git status
-          git push --set-upstream origin ${{ github.head_ref }}:$(cat test_branch_name) --dry-run
-          
-          exit 1
+          git push --set-upstream origin ${{ github.head_ref }}:$(cat test_branch_name)
           
           # reauth as TIMBURGAN_PAT
           echo "${{ secrets.TIMBURGAN_PAT }}" | gh auth login --with-token
@@ -214,4 +211,11 @@ jobs:
             cat refreshed/README.md
             exit 1
           fi
+      
+      - name: Remove test branch
+        if: always()
+        run: |
+          set -xe
+          gh api --method DELETE /repos/${{github.repository}}/git/refs/$(cat test_branch_name)
+          
           

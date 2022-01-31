@@ -148,7 +148,7 @@ jobs:
         run: |
           set -xe
           # game file as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/game.pgn ]]; then
+          if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/game.pgn; then
             echo "FAILURE Game PGN file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
@@ -161,7 +161,7 @@ jobs:
         run: |
           set -xe
           # stats file as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}/stats.expected.txt refreshed/stats.txt ]]; then
+          if ! cmp -s tests/${{ matrix.scenario }}/stats.expected.txt refreshed/stats.txt; then
             echo "FAILURE Stats file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/stats.expected.txt
@@ -174,7 +174,7 @@ jobs:
         run: |
           set -xe
           # leaderboard file is as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}/leaderboard.expected.txt refreshed/leaderboard.txt ]]; then
+          if ! cmp -s tests/${{ matrix.scenario }}/leaderboard.expected.txt refreshed/leaderboard.txt; then
             echo "FAILURE Leaderboard file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/leaderboard.expected.txt
@@ -187,7 +187,7 @@ jobs:
         run: |
           set -xe
           # readme file is as expected
-          if [[ ! cmp -s tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md ]]; then
+          if ! cmp -s tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md; then
             echo "FAILURE README file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/README.expected.md

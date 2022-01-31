@@ -26,8 +26,8 @@ jobs:
         set -xe
         echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
         ISSUE_BODY=$(echo "$(gh issue view ${{ github.event.inputs.issue_number }} --json body)" | jq -r .body | tr -d "[:space:]")
-        PR_COUNT=$(PAGER= gh pr list --head "$ISSUE_BODY" --json number | jq ". | length")
-        if [[ $PR_COUNT == 0 ]]; then
+        BRANCH_COUNT=$(PAGER= gh api /repos/${{ github.repository }}/git/matching-refs/heads/$ISSUE_BODY | jq ". | length")
+        if [[ $BRANCH_COUNT == 0 ]]; then
           echo "ALLOW_TO_PROCEED=no" >> $GITHUB_ENV
         else
           echo "TEST_MODE=yes" >> $GITHUB_ENV

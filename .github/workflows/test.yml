@@ -143,17 +143,6 @@ jobs:
             cat issue
             exit 1
           fi
-          
-      - name: assert issue status
-        run: |
-          set -xe
-          # issue status as expected
-          STATUS=$(cat issue | jq '.state' -r)
-          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)" ]]; then
-            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)"
-            cat issue
-            exit 1
-          fi
 
       - name: assert game file
         run: |
@@ -165,6 +154,17 @@ jobs:
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
             echo "ACTUAL: ---------------------"
             cat refreshed/chess_games/chess.pgn
+            exit 1
+          fi
+          
+      - name: assert issue status
+        run: |
+          set -xe
+          # issue status as expected
+          STATUS=$(cat issue | jq '.state' -r)
+          if [[ "$STATUS" != "$(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)" ]]; then
+            echo "FAILURE Issue status is not as expected: $(cat tests/${{ matrix.scenario }}/issue.expected.json | jq -r .state)"
+            cat issue
             exit 1
           fi
 

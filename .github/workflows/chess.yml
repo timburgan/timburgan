@@ -259,8 +259,8 @@ jobs:
           cols = ('a'..'h').to_a
           rows = (1..8).to_a
           squares = []
-          cols&.each do |col|
-            rows&.each do |row|
+          cols.each do |col|
+            rows.each do |row|
               squares.push "#{col}#{row}"
             end
           end
@@ -274,8 +274,8 @@ jobs:
 
           # delete squares not valid for next move
           good_moves = []
-          next_move_combos&.each do |square|
-            square[:to]&.each do |to|
+          next_move_combos.each do |square|
+            square[:to].each do |to|
               move_command = "#{square[:from]}#{to}"
               fake_game_tmp = if ENV.fetch('CHESS_GAME_CMD') == 'move'
                                 File.write "#{ENV.fetch('GAME_DATA_PATH')}.fake", fake_game.pgn.to_s
@@ -353,7 +353,7 @@ jobs:
 
           new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
-          (1..8).to_a.reverse&.each_with_index do |row|
+          (1..8).to_a.reverse.each_with_index do |row|
             a = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
             b = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
             c = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
@@ -391,7 +391,7 @@ jobs:
               | ---- | -- |
             HTML
 
-            good_moves&.each do |move|
+            good_moves.each do |move|
               new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/${{ github.repository }}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{ENV.fetch('CHESS_GAME_NUM')}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
             end
           end
@@ -415,40 +415,40 @@ jobs:
             | ----- | --- |
           HTML
 
-          last_5_moves = %x[cat $GAME_STAT_PATH | tail -n +2 | tail -n 5 | tac]
-          last_5_moves&.each do |move|
-            from = move.split('|').third.to_s[0..1].to_s.upcase
-            to = move.split('|').third.to_s[2..3].to_s.upcase
-            who = move.split('|').second.to_s[1..-1]
-            new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
-          end
+          # last_5_moves = %x[cat $GAME_STAT_PATH | tail -n +2 | tail -n 5 | tac]
+          # last_5_moves&.each do |move|
+          #   from = move.split('|').third.to_s[0..1].to_s.upcase
+          #   to = move.split('|').third.to_s[2..3].to_s.upcase
+          #   who = move.split('|').second.to_s[1..-1]
+          #   new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
+          # end
 
 
 
           ## <GET THE TOP USERS LEGACY METHOD>
-              %x[rm -f leaderboard.legacy.txt || true]
-              begin
-                @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
-                @octokit.auto_paginate = true
-                @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
-                issues = @octokit.list_issues(
-                  'timburgan/timburgan',
-                  state: 'closed',
-                  accept: @preview_headers
-                )&.select{ |issue| issue&.reactions.confused == 0 }
-                if issues.present?
-                    moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
-                    moves&.each do |move|
-                      File.write('leaderboard.legacy.txt', "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n", mode: 'a')
-                    end
-                end
-              rescue StandardError => e
-                # don't exit, if these can't be retrieved. Allow play to continue.
-              end
+              # %x[rm -f leaderboard.legacy.txt || true]
+              # begin
+              #   @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
+              #   @octokit.auto_paginate = true
+              #   @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
+              #   issues = @octokit.list_issues(
+              #     'timburgan/timburgan',
+              #     state: 'closed',
+              #     accept: @preview_headers
+              #   )&.select{ |issue| issue&.reactions.confused == 0 }
+              #   if issues.present?
+              #       moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
+              #       moves&.each do |move|
+              #         File.write('leaderboard.legacy.txt', "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n", mode: 'a')
+              #       end
+              #   end
+              # rescue StandardError => e
+              #   # don't exit, if these can't be retrieved. Allow play to continue.
+              # end
 
-              puts '--- legacy leaderboard ---'
-              puts File.read('leaderboard.legacy.txt')
-              puts '--- /legacy leaderboard ---'
+              # puts '--- legacy leaderboard ---'
+              # puts File.read('leaderboard.legacy.txt')
+              # puts '--- /legacy leaderboard ---'
           ## </GET THE TOP USERS LEGACY METHOD>
 
 

@@ -259,8 +259,8 @@ jobs:
           cols = ('a'..'h').to_a
           rows = (1..8).to_a
           squares = []
-          cols.each do |col|
-            rows.each do |row|
+          cols&.each do |col|
+            rows&.each do |row|
               squares.push "#{col}#{row}"
             end
           end
@@ -274,7 +274,7 @@ jobs:
 
           # delete squares not valid for next move
           good_moves = []
-          next_move_combos.each do |square|
+          next_move_combos&.each do |square|
             square[:to]&.each do |to|
               move_command = "#{square[:from]}#{to}"
               fake_game_tmp = if ENV.fetch('CHESS_GAME_CMD') == 'move'

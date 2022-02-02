@@ -228,13 +228,11 @@ jobs:
           exit 1
         fi
 
-
         # write stats
         echo "move|@$(echo "$ISSUE" | jq -r .author.login)|${CHESS_USER_MOVE}|${{ github.event.inputs.issue_number }}|$(date -Iseconds)" > $GAME_STAT_PATH
 
         # write leaderboard
         if grep @$(echo "$ISSUE" | jq -r .author.login) $GAME_LEADERBOARD_PATH; then
-          echo mee-moar
           EXISTING_LINE=$(grep @$(echo "$ISSUE" | jq -r .author.login) $GAME_LEADERBOARD_PATH)
           COUNT_OLD=$(echo $EXISTING_LINE | cut -d'|' -f1)
           COUNT_NEW=$(expr $COUNT_OLD + 1)
@@ -242,7 +240,6 @@ jobs:
           sed -n '/@$(echo "$ISSUE" | jq -r .author.login)$/p' -i -- "s/$COUNT_OLD|$WHO/$COUNT_NEW|$WHO/g" $GAME_LEADERBOARD_PATH
           sort -t'|' -k1 -r $GAME_LEADERBOARD_PATH
         else
-          echo woop
           echo "1|@$(echo "$ISSUE" | jq -r .author.login)" >> $GAME_LEADERBOARD_PATH
         fi
 
@@ -419,7 +416,7 @@ jobs:
           HTML
 
           last_5_moves = %x[cat $GAME_STAT_PATH | tail -n +2 | tail -n 5 | tac]
-          last_5_moves.each do |move|
+          last_5_moves&.each do |move|
             from = move.split('|').third.to_s[0..1].to_s.upcase
             to = move.split('|').third.to_s[2..3].to_s.upcase
             who = move.split('|').second.to_s[1..-1]
@@ -441,7 +438,7 @@ jobs:
                 )&.select{ |issue| issue&.reactions.confused == 0 }
                 if issues.present?
                     moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
-                    moves.each do |move|
+                    moves&.each do |move|
                       File.write('leaderboard.legacy.txt', "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n", mode: 'a')
                     end
                 end

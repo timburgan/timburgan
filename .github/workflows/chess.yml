@@ -353,7 +353,7 @@ jobs:
 
           new_readme.concat "|   | A | B | C | D | E | F | G | H |\n"
           new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
-          (1..8).to_a.reverse.each_with_index do |row|
+          (1..8).to_a.reverse&.each_with_index do |row|
             a = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
             b = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
             c = "![](https://raw.githubusercontent.com/${{ github.repository }}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"

@@ -233,7 +233,7 @@ jobs:
         echo "move|@$(echo "$ISSUE" | jq -r .author.login)|${CHESS_USER_MOVE}|${{ github.event.inputs.issue_number }}|$(date -Iseconds)" > $GAME_STAT_PATH
 
         # write leaderboard
-        if [[ grep @$(echo "$ISSUE" | jq -r .author.login) $GAME_LEADERBOARD_PATH ]]; then
+        if grep @$(echo "$ISSUE" | jq -r .author.login) $GAME_LEADERBOARD_PATH; then
           echo mee-moar
           EXISTING_LINE=$(grep @$(echo "$ISSUE" | jq -r .author.login) $GAME_LEADERBOARD_PATH)
           COUNT_OLD=$(echo $EXISTING_LINE | cut -d'|' -f1)

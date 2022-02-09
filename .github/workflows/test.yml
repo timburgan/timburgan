@@ -155,11 +155,20 @@ jobs:
           if ! cmp -s tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/chess.pgn; then
             set +x
             echo "FAILURE Game PGN file is not as expected"
+            echo "."
             echo "EXPECTED: ---------------------"
+            echo "."
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
             sleep 5
+            echo "."
             echo "ACTUAL: ---------------------"
+            echo "."
             cat refreshed/chess_games/chess.pgn
+            sleep 5
+            echo "."
+            echo "DIFFERENCE: -------"
+            echo "."
+            cmp -b tests/${{ matrix.scenario }}/chess.expected.pgn refreshed/chess_games/chess.pgn || true
             exit 1
           fi
           

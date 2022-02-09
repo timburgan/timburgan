@@ -157,7 +157,7 @@ jobs:
             echo "FAILURE Game PGN file is not as expected"
             echo "EXPECTED: ---------------------"
             cat tests/${{ matrix.scenario }}/chess.expected.pgn
-            sleep +x
+            sleep 5
             echo "ACTUAL: ---------------------"
             cat refreshed/chess_games/chess.pgn
             exit 1

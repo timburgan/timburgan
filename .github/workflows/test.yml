@@ -256,4 +256,3 @@ jobs:
           gh auth logout --hostname github.com
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           gh api --method DELETE /repos/${{github.repository}}/git/refs/heads/$(cat test_branch_name)
-

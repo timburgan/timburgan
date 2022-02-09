@@ -211,4 +211,5 @@ jobs:
         if: always()
         run: |
           set -xe
-          # gh api --method DELETE /repos/${{github.repository}}/git/refs/heads/$(cat test_branch_name)
+          gh api --method DELETE /repos/${{github.repository}}/git/refs/heads/$(cat test_branch_name)
+

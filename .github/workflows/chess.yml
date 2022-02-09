@@ -141,7 +141,7 @@ jobs:
 
           # create new issue as timburgan PAT with `chess|new`
           gh auth logout --hostname github.com && echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
-          if [[ "${{ env.TEST_MODE }}" == "yes" ]]; then
+          if [[ "${{ github.event.inputs.game_branch }}" == "yes" ]]; then
             gh issue create --label "test" --title "chess|new" --body "${{ env.GAME_BRANCH }}" --repo ${{ github.repository }}
           else
             gh issue create --title "chess|new" --body "See #${{ github.event.inputs.issue_number }}" --repo ${{ github.repository }}
@@ -231,7 +231,7 @@ jobs:
         # write stats
         TIME=$(date -Iseconds)
         ISSUE_NUM=${{ github.event.inputs.issue_number }}
-        if [[ "${{ env.TEST_MODE }}" == "yes" ]]; then
+        if [[ "${{ github.event.inputs.game_branch }}" == "yes" ]]; then
           TIME='2022-01-01T00:00:00+00:00'
           ISSUE_NUM=12345
         fi

@@ -183,19 +183,19 @@ jobs:
           if ! cmp -s tests/${{ matrix.scenario }}/stats.expected.txt refreshed/chess_games/stats.txt; then
             set +x
             echo "FAILURE Stats file is not as expected"
-            echo
+            echo "."
             echo "EXPECTED: ---------------------"
-            echo
+            echo "."
             cat tests/${{ matrix.scenario }}/stats.expected.txt
             sleep 5
-            echo
+            echo "."
             echo "ACTUAL: ---------------------"
-            echo
+            echo "."
             cat refreshed/chess_games/stats.txt
             sleep 5
-            echo
+            echo "."
             echo "DIFFERENCE: -------"
-            echo
+            echo "."
             cmp -b tests/${{ matrix.scenario }}/stats.expected.txt refreshed/chess_games/stats.txt || true
             exit 1
           fi
@@ -213,9 +213,9 @@ jobs:
             echo "ACTUAL: ---------------------"
             cat refreshed/chess_games/leaderboard.txt
             sleep 5
-            echo
+            echo "."
             echo "DIFFERENCE: -------"
-            echo
+            echo "."
             cmp -b tests/${{ matrix.scenario }}/leaderboard.expected.txt refreshed/chess_games/leaderboard.txt || true
             exit 1
           fi
@@ -233,9 +233,9 @@ jobs:
             echo "ACTUAL: ---------------------"
             cat refreshed/README.md
             sleep 5
-            echo
+            echo "."
             echo "DIFFERENCE: -------"
-            echo
+            echo "."
             cmp -b tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md || true
             exit 1
           fi

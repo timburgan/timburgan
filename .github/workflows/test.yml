@@ -236,16 +236,18 @@ jobs:
           if ! cmp -s tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md; then
             set +x
             echo "FAILURE README file is not as expected"
-            echo "EXPECTED: ---------------------"
-            cat tests/${{ matrix.scenario }}/README.expected.md
-            sleep 5
-            echo "ACTUAL: ---------------------"
-            cat refreshed/README.md
-            sleep 5
-            echo "."
-            echo "DIFFERENCE: -------"
-            echo "."
-            cmp -b tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md || true
+            # echo "EXPECTED: ---------------------"
+            # cat tests/${{ matrix.scenario }}/README.expected.md
+            # sleep 5
+            # echo "ACTUAL: ---------------------"
+            # cat refreshed/README.md
+            # sleep 5
+            # echo "."
+            # echo "DIFFERENCE: -------"
+            # echo "."
+            # cmp -b tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md || true
+            
+            diff -y tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md
             exit 1
           fi
       

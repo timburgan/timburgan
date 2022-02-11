@@ -33,7 +33,7 @@ Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/sh
 
 **How this works**
 
-When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a [GitHub Actions](https://github.blog/2020-07-03-github-action-hero-casey-lee/#getting-started-with-github-actions) workflow that'll update my GitHub Profile _README.md_ with the new state of the board.
+When you click a link, it opens a GitHub Issue with the required pre-populated text, then just push "Create New Issue" to save it. That will trigger a [GitHub Actions](https://github.blog/2020-07-03-github-action-hero-casey-lee/#getting-started-with-github-actions) workflow that'll update my GitHub Profile _README.md_ with the new state of the board.
 
 **Notice a problem?**
 
@@ -53,23 +53,4 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Moves | Who |
 | ----- | --- |
-| 1547 | [@michaelprimo](https://github.com/michaelprimo) |
-| 1394 | [@simonberner](https://github.com/simonberner) |
-| 1060 | [@JRetza](https://github.com/JRetza) |
-| 577 | [@houhoulis](https://github.com/houhoulis) |
-| 459 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
-| 456 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
-| 426 | [@donno2048](https://github.com/donno2048) |
-| 393 | [@cosmoglint](https://github.com/cosmoglint) |
-| 309 | [@rajesh545862](https://github.com/rajesh545862) |
-| 189 | [@dpr1005](https://github.com/dpr1005) |
-| 187 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
-| 182 | [@mishmanners](https://github.com/mishmanners) |
-| 173 | [@shpatrickguo](https://github.com/shpatrickguo) |
-| 171 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
-| 166 | [@Ritika-Das](https://github.com/Ritika-Das) |
-| 155 | [@trekab](https://github.com/trekab) |
-| 150 | [@automainint](https://github.com/automainint) |
-| 147 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |
-| 132 | [@minji-o-j](https://github.com/minji-o-j) |
-| 130 | [@siddhant-roy](https://github.com/siddhant-roy) |
+| 1 | [@timburgan](https://github.com/timburgan) |

@@ -43,14 +43,10 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-| D8 to E8 | [@houhoulis](https://github.com/houhoulis) |
-| F6 to G7 | [@donno2048](https://github.com/donno2048) |
-| C2 to A1 | [@annachanna](https://github.com/annachanna) |
-| E1 to D2 | [@dpr1005](https://github.com/dpr1005) |
-| D4 to C2 | [@donno2048](https://github.com/donno2048) |
+| D8 to E8 | ![@timburgan](https://avatars.githubusercontent.com/timburgan?s=50) [@timburgan](https://github.com/timburgan) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
 | Moves | Who |
 | ----- | --- |
-| 1 | [@timburgan](https://github.com/timburgan) |
+| 1 | ![@timburgan](https://avatars.githubusercontent.com/timburgan?s=50) [@timburgan](https://github.com/timburgan) |

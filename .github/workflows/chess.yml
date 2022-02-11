@@ -243,11 +243,11 @@ jobs:
           COUNT_OLD=$(echo $EXISTING_LINE | cut -d '|' -f2 | tr -d ' ')
           COUNT_NEW=$(expr $COUNT_OLD + 1)
           WHO=$(echo $EXISTING_LINE | cut -d'|' -f3 | awk -F'/' '{print $4}' | awk -F')' '{print $1}')
-          sed -n '/@$(echo "$ISSUE" | jq -r .author.login)$/p' -i -- "s,$EXISTING_LINE,| $COUNT_NEW | [@$WHO](https://github.com/$WHO) |,g" $GAME_LEADERBOARD_PATH
+          sed -n '/@$(echo "$ISSUE" | jq -r .author.login)$/p' -i -- "s,$EXISTING_LINE,| $COUNT_NEW | ![@$WHO](https://avatars.githubusercontent.com/$WHO?s=50) [@$WHO](https://github.com/$WHO) |,g" $GAME_LEADERBOARD_PATH
           sort -t'|' -k1 -r $GAME_LEADERBOARD_PATH
         else
           WHO=$(echo "$ISSUE" | jq -r .author.login)
-          echo "| 1 | [@$WHO](https://github.com/$WHO) |" >> $GAME_LEADERBOARD_PATH
+          echo '|' 1 | ![@'"$WHO](https://avatars.githubusercontent.com/$WHO?s=50) [@$WHO](https://github.com/$WHO) |" >> $GAME_LEADERBOARD_PATH
         fi
 
     - name: Update README

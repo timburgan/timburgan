@@ -247,7 +247,7 @@ jobs:
             # echo "."
             # cmp -b tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md || true
 
-            diff --side-by-side --ignore-space-change --text --brief --suppress-common-lines tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md
+            diff --side-by-side --ignore-space-change --text --suppress-common-lines tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md
             exit 1
           fi
       

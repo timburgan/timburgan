@@ -231,7 +231,7 @@ jobs:
         # write stats
         TIME=$(date -Iseconds)
         ISSUE_NUM=${{ github.event.inputs.issue_number }}
-        if [[ "${{ github.event.inputs.game_branch }}" == "yes" ]]; then
+        if [[ "${{ github.event.inputs.test_mode }}" == "yes" ]]; then
           TIME='2022-01-01T00:00:00+00:00'
           ISSUE_NUM=12345
         fi

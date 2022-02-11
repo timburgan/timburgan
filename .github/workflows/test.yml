@@ -246,8 +246,8 @@ jobs:
             # echo "DIFFERENCE: -------"
             # echo "."
             # cmp -b tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md || true
-            
-            diff -y tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md
+
+            diff --side-by-side --ignore-space-change --test --brief --suppress-common-lines tests/${{ matrix.scenario }}/README.expected.md refreshed/README.md
             exit 1
           fi
       

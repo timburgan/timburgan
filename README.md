@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@BPower0036](https://github.com/BPower0036) |
 | A7 to B7 | [@JohnyP36](https://github.com/JohnyP36) |
-| C8 to B7 | [@ScndO](https://github.com/ScndO) |
+| C8 to B7 | [@ghost](https://github.com/ghost) |
 | C8 to B7 | [@BPower0036](https://github.com/BPower0036) |
 | A2 to A7 | [@JohnyP36](https://github.com/JohnyP36) |
-| F6 to G5 | [@faizalabdrahman](https://github.com/faizalabdrahman) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -56,7 +56,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 188 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | 174 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | 171 | [@Matteas-Eden](https://github.com/Matteas-Eden) |
-| 169 | [@JohnyP36](https://github.com/JohnyP36) |
+| 170 | [@JohnyP36](https://github.com/JohnyP36) |
 | 166 | [@Ritika-Das](https://github.com/Ritika-Das) |
 | 155 | [@trekab](https://github.com/trekab) |
 | 147 | [@KimberleyEvans-Parker](https://github.com/KimberleyEvans-Parker) |

@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@BPower0036](https://github.com/BPower0036) |
 | D3 to F1 | [@bfrederick18](https://github.com/bfrederick18) |
 | H8 to G8 | [@JohnyP36](https://github.com/JohnyP36) |
 | H8 to G8 | [@BPower0036](https://github.com/BPower0036) |
 | D2 to E3 | [@JohnyP36](https://github.com/JohnyP36) |
-| F8 to B4 | [@BPower0036](https://github.com/BPower0036) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

@@ -115,12 +115,12 @@ jobs:
         # environment variable CHESS_CANT_LOAD=true
         ruby <<- EORUBY
           require 'chess'
-          game = begin
-                   Chess::Game.load_pgn ENV.fetch('GAME_DATA_PATH')
-                 rescue StandardError => e
-                   # Either, file doesn't exist, invalid PGN format, illegal move saved, or bad notation error
-                   File.write(ENV.fetch('GITHUB_ENV'), "CHESS_CANT_LOAD=true\n", mode: 'a')
-                 end
+          begin
+            game = Chess::Game.load_pgn ENV.fetch('GAME_DATA_PATH')
+          rescue StandardError => e
+            # Either, file doesn't exist, invalid PGN format, illegal move saved, or bad notation error
+            File.write(ENV.fetch('GITHUB_ENV'), "CHESS_CANT_LOAD=true\n", mode: 'a')
+          end
           if game&.over?
             File.write(ENV.fetch('GITHUB_ENV'), "CHESS_GAME_OVER=true\n", mode: 'a')
           end

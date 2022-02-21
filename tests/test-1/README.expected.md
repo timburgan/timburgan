@@ -50,4 +50,3 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | Moves | Who |
 | ----- | --- |
 | 1 | ![@timburgan](https://avatars.githubusercontent.com/timburgan?s=50) [@timburgan](https://github.com/timburgan) |
-

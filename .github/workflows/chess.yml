@@ -131,7 +131,7 @@ jobs:
             # if saved_data file doesn't exist
             ! -f $GAME_DATA_PATH || 
             # if file was corrupt or invalid game
-            CHESS_CANT_LOAD == 'true'
+            $CHESS_CANT_LOAD == 'true'
         ]]; then
           # react
           PAGER= gh api /repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/reactions -f content='confused' | jq .

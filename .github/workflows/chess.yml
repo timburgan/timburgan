@@ -107,7 +107,7 @@ jobs:
           exit 1
         fi
 
-    - name: Check if saved game PGN error
+    - name: Check if saved game PGN error - part 1
       run: |
         set -xe
 
@@ -125,6 +125,10 @@ jobs:
             File.write(ENV.fetch('GITHUB_ENV'), "CHESS_GAME_OVER=true\n", mode: 'a')
           end
         EORUBY
+
+    - name: Check if saved game PGN error - part 2
+      run: |
+        set -xe
         
         # by default assume we're going to load an existing game
         if [[ 

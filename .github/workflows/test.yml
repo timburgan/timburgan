@@ -7,7 +7,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        scenario: ['test-1']
+        scenario: ['test-1', 'test-2']
     name: ${{ matrix.scenario }}
     runs-on: ubuntu-latest
     concurrency:

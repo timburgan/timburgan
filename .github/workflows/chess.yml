@@ -245,7 +245,9 @@ jobs:
         MOVE_FROM=$(echo ${CHESS_USER_MOVE} | cut -c1-2 | awk '{print toupper($0)}')
         MOVE_TO=$(echo ${CHESS_USER_MOVE} | cut -c3-4 | awk '{print toupper($0)}')
         MOVE_WHO=$(echo '![@'"$WHO](https://avatars.githubusercontent.com/$WHO?s=50) [@$WHO](https://github.com/$WHO)")
-        (echo "| $MOVE_FROM to $MOVE_TO | $MOVE_WHO |"; cat $GAME_MOVES_PATH) | sponge | head -n5 | sponge $GAME_MOVES_PATH
+        cp $GAME_MOVES_PATH TMPFILE
+        echo "| $MOVE_FROM to $MOVE_TO | $MOVE_WHO |" > $GAME_MOVES_PATH
+        cat TMPFILE | head -n4 >> $GAME_MOVES_PATH
         
         cat $GAME_MOVES_PATH
         echo "-------\nLines: $(wc -l $GAME_MOVES_PATH), Content: $(cat $GAME_MOVES_PATH)-------\n"

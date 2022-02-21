@@ -17,7 +17,7 @@ which will return PASS or FAIL.
 ### TEST SCENARIOS
 
 1. [x] game is valid - allow user to move
-2. [ ] game data file doesn't exist
+2. [-] game data file doesn't exist
 3. [ ] game data file corrupt
 4. [ ] game data file contains invalid move
 5. [ ] same user just moved in last step

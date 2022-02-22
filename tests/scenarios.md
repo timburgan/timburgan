@@ -18,8 +18,7 @@ which will return PASS or FAIL.
 
 1. [x] game is valid - allow user to move
 2. [x] game data file doesn't exist
-3. [ ] game data file corrupt
-4. [ ] game data file contains invalid move
+3. [x] game data file corrupt
 5. [ ] same user just moved in last step
 6. [ ] game is now checkmate
 7. [ ] invalid issue title issued = m0ve

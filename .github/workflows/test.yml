@@ -9,7 +9,8 @@ jobs:
       matrix:
         scenario: 
           # - 'test-1'
-          - 'test-2'
+          # - 'test-2'
+          - 'test-3'
     name: ${{ matrix.scenario }}
     runs-on: ubuntu-latest
     concurrency:

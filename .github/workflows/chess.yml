@@ -146,7 +146,7 @@ jobs:
 
           # create new issue as timburgan TIMBURGAN_PAT_NEW_ISSUE with `chess|new`
           gh auth logout --hostname github.com && echo "${{ secrets.TIMBURGAN_PAT_NEW_ISSUE }}" | gh auth login --with-token
-          if [[ "${{ github.event.inputs.game_branch }}" == "yes" ]]; then
+          if [[ "${{ github.event.inputs.test_mode }}" == "yes" ]]; then
             gh issue create --label "test" --title "chess|new" --body "${{ env.GAME_BRANCH }}" --repo ${{ github.repository }}
           else
             gh issue create --title "chess|new" --body "See #${{ github.event.inputs.issue_number }}" --repo ${{ github.repository }}

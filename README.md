@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@WebDevVikramChoudhary](https://github.com/WebDevVikramChoudhary) |
 | F4 to F1 | [@andbrew](https://github.com/andbrew) |
+| D3 to D1 | [@WebDevVikramChoudhary](https://github.com/WebDevVikramChoudhary) |
 | G1 to H1 | [@WebDevVikramChoudhary](https://github.com/WebDevVikramChoudhary) |
 | C4 to F4 | [@Sam948-byte](https://github.com/Sam948-byte) |
-| F2 to G1 | [@houhoulis](https://github.com/houhoulis) |
-| F2 to G1 | [@andbrew](https://github.com/andbrew) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -51,7 +51,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 461 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 430 | [@cosmoglint](https://github.com/cosmoglint) |
 | 425 | [@BPower0036](https://github.com/BPower0036) |
-| 331 | [@dpr1005](https://github.com/dpr1005) |
+| 330 | [@dpr1005](https://github.com/dpr1005) |
 | 311 | [@rajesh545862](https://github.com/rajesh545862) |
 | 278 | [@automainint](https://github.com/automainint) |
 | 254 | [@mishmanners](https://github.com/mishmanners) |

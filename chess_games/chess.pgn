@@ -7,4 +7,5 @@
 [Result "*"]
 
 1. a4 e6 2. Ra3 d5 3. d4 Qd6 4. Re3 Qb4+ 5. Qd2 Qxa4 6. Nc3 Bb4 7. Nxa4 a6 8.
-Qxb4 Nc6 9. Qc5 Nf6 10. f4 e5 11. Nf3 Ng4 12. Qxd5 f5 13. Rc3 Nb4 14. Qb3 *
+Qxb4 Nc6 9. Qc5 Nf6 10. f4 e5 11. Nf3 Ng4 12. Qxd5 f5 13. Rc3 Nb4 14. Qb3 exf4
+*

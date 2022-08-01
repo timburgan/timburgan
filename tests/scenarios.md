@@ -1,0 +1,43 @@
+## Test Scenarios
+
+Any pull request/workflow_dispatch in timburganec/timburgan, will
+trigger test workflow.
+
+That workflow will itself trigger timburgan/chess-workflow-tester
+which will return PASS or FAIL.
+
+### SETUP
+
+- delete issues
+- readme - current board positions, next steps, last moves, top movers
+- PGN game file
+- issues
+- stats
+
+### TEST SCENARIOS
+
+1. [x] game is valid - allow user to move
+2. [x] game data file doesn't exist
+3. [x] game data file corrupt
+5. [ ] same user just moved in last step
+6. [ ] game is now checkmate
+7. [ ] invalid issue title issued = m0ve
+8. [ ] invalid issue title issued = ch3ss
+9. [ ] force new game midway through via timburgan
+10. [ ] force new game midway through via other person
+11. [ ] force new game when gameover via other person
+12. [ ] stats populated correctly from existing issues
+13. [ ] high score populated correctly from existing issues (see leaderboard.legacy.txt)
+14. [ ] if only 1 move can be made, just take it
+15. [ ] is all history as expected
+16. [ ] is last 5 moves truncated correctly if there's lots of moves in the current game?
+17. [ ] is last 5 moves truncated correctly if they split over an "end of game"
+18. [ ] ...
+
+### ASSERTIONS
+
+- issue reactions as expected
+- issue comments as expected
+- issue status as expected
+- game file as expected
+- stats file as expected

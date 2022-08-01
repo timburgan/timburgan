@@ -1,0 +1,5 @@
+{
+  "state": "CLOSED",
+  "comment": "@timburgan Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/${{ github.repository }})",
+  "reaction": "CONFUSED"
+}  

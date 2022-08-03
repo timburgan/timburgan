@@ -36,9 +36,9 @@ jobs:
 
     - name: Setup Gems
       run: |
-        gem install activesupport -N --silent
-        gem install octokit -N --silent
-        gem install chess -N --silent
+        gem install activesupport -v 7.0.3 -N --silent
+        gem install octokit -v 5.1.0 -N --silent
+        gem install chess -v 0.3.3 -N --silent
 
 
     - name: Play

@@ -4,7 +4,7 @@
 [Round ""]
 [White ""]
 [Black ""]
-[Result "*"]
+[Result "0-1"]
 
 1. a4 c5 2. d4 d5 3. Nc3 cxd4 4. Qxd4 Nf6 5. Nxd5 Nxd5 6. Ra3 Bf5 7. e4 e6 8.
 exf5 Qa5+ 9. Bd2 Qc5 10. b4 Qxd4 11. Rd3 Qa1+ 12. Ke2 Nc6 13. fxe6 fxe6 14. b5
@@ -13,4 +13,4 @@ Ne5 15. Rb3 Bc5 16. f3 O-O 17. f4 Nc4 18. Kd3 Qxf1+ 19. Ne2 Qxh1 20. Kxc4 Qxh2
 Qxd3+ 27. Ka2 Nxf4 28. cxd3 Nxd3 29. Kb3 e5 30. a5 e4 31. axb6 axb6 32. Ka4
 Rc4+ 33. Kb3 Rb4+ 34. Kc2 Rc4+ 35. Kb3 Nc5+ 36. Kxc4 h5 37. Kd4 h4 38. Ke3 h3
 39. Kf4 h2 40. Kg3 e3 41. Kg2 e2 42. Kxh2 e1 43. Kg2 Ne4 44. Kf3 g5 45. Kg2
-Qg3+ 46. Kh1 *
+Qg3+ 46. Kh1 Nf2# 0-1

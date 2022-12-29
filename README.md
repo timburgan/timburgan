@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | E3 to E1 | [@it176131](https://github.com/it176131) |
 | G2 to H1 | [@mnparolari](https://github.com/mnparolari) |
 | G2 to G1 | [@ziadOUA](https://github.com/ziadOUA) |
 | D1 to D2 | [@ziadOUA](https://github.com/ziadOUA) |
-| D1 to E2 | [@JRetza](https://github.com/JRetza) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

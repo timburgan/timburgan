@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@ProjectGrantwood](https://github.com/ProjectGrantwood) |
 | G6 to G4 | [@automainint](https://github.com/automainint) |
 | F4 to F3 | [@houhoulis](https://github.com/houhoulis) |
 | F7 to F5 | [@automainint](https://github.com/automainint) |
 | F5 to F4 | [@raysantori](https://github.com/raysantori) |
-| G8 to G6 | [@muratavci05](https://github.com/muratavci05) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -49,7 +49,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 643 | [@donno2048](https://github.com/donno2048) |
 | 631 | [@BPower0036](https://github.com/BPower0036) |
 | 501 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
-| 490 | [@automainint](https://github.com/automainint) |
+| 491 | [@automainint](https://github.com/automainint) |
 | 461 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 433 | [@cosmoglint](https://github.com/cosmoglint) |
 | 404 | [@Mmark94](https://github.com/Mmark94) |

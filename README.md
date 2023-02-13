@@ -31,11 +31,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-| B1 to B2 | [@Kupofty](https://github.com/Kupofty) |
-| H2 to G2 | [@SumukhShrote](https://github.com/SumukhShrote) |
-| E2 to E1 | [@amarilindra](https://github.com/amarilindra) |
-| G2 to H2 | [@rogersalvadeo256](https://github.com/rogersalvadeo256) |
-| E3 to E2 | [@JRetza](https://github.com/JRetza) |
+|  to  | [@muratavci05](https://github.com/muratavci05) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

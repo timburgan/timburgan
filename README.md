@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@vealmichael](https://github.com/vealmichael) |
+| E6 to E8 | [@houhoulis](https://github.com/houhoulis) |
 | E6 to E8 | [@JohnyP36](https://github.com/JohnyP36) |
 | G8 to G7 | [@simonberner](https://github.com/simonberner) |
 | F8 to F6 | [@raysantori](https://github.com/raysantori) |
-| G7 to G8 | [@Murdeala](https://github.com/Murdeala) |
-| G7 to G8 | [@sameerahmed56](https://github.com/sameerahmed56) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
@@ -43,9 +43,9 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | ----- | --- |
 | 2225 | [@JRetza](https://github.com/JRetza) |
 | 1641 | [@michaelprimo](https://github.com/michaelprimo) |
-| 1626 | [@JohnyP36](https://github.com/JohnyP36) |
+| 1627 | [@JohnyP36](https://github.com/JohnyP36) |
 | 1527 | [@simonberner](https://github.com/simonberner) |
-| 1239 | [@houhoulis](https://github.com/houhoulis) |
+| 1240 | [@houhoulis](https://github.com/houhoulis) |
 | 644 | [@donno2048](https://github.com/donno2048) |
 | 637 | [@BPower0036](https://github.com/BPower0036) |
 | 551 | [@automainint](https://github.com/automainint) |

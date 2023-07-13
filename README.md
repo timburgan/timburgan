@@ -31,11 +31,11 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | F7 to F8 | [@SifisoPatel](https://github.com/SifisoPatel) |
 | F7 to F8 | [@JRetza](https://github.com/JRetza) |
 | E8 to D8 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | F6 to F7 | [@JRetza](https://github.com/JRetza) |
-| D7 to C8 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

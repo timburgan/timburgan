@@ -31,17 +31,17 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@JRetza](https://github.com/JRetza) |
 | F7 to G6 | [@JRetza](https://github.com/JRetza) |
 | G7 to H6 | [@malikjahanzaib](https://github.com/malikjahanzaib) |
 | B4 to B5 | [@AswanthJabba](https://github.com/AswanthJabba) |
 | D7 to F7 | [@darrylnoakes](https://github.com/darrylnoakes) |
-| H6 to F7 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
 | Moves | Who |
 | ----- | --- |
-| 2556 | [@JRetza](https://github.com/JRetza) |
+| 2557 | [@JRetza](https://github.com/JRetza) |
 | 1731 | [@JohnyP36](https://github.com/JohnyP36) |
 | 1641 | [@michaelprimo](https://github.com/michaelprimo) |
 | 1557 | [@simonberner](https://github.com/simonberner) |

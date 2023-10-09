@@ -31,6 +31,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
+|  to  | [@lucas-koontz](https://github.com/lucas-koontz) |
 | E1 to E4 | [@Mmark94](https://github.com/Mmark94) |
 | F5 to G4 | [@lucas-koontz](https://github.com/lucas-koontz) |
 | F6 to H7 | [@JRetza](https://github.com/JRetza) |
@@ -48,7 +49,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | 641 | [@BPower0036](https://github.com/BPower0036) |
 | 555 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
 | 552 | [@automainint](https://github.com/automainint) |
-| 536 | [@Mmark94](https://github.com/Mmark94) |
+| 537 | [@Mmark94](https://github.com/Mmark94) |
 | 501 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
 | 481 | [@cosmoglint](https://github.com/cosmoglint) |
 | 461 | [@jatin-pahuja](https://github.com/jatin-pahuja) |

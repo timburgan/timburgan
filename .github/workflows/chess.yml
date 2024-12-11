@@ -32,14 +32,13 @@ jobs:
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: '3.0'
 
     - name: Setup Gems
       run: |
-        gem install activesupport -v 7.0.3 -N --silent
-        gem install octokit -v 5.1.0 -N --silent
-        gem install chess -v 0.3.3 -N --silent
-
+        gem install activesupport -v 7.0.3 --no-document
+        gem install octokit -v 5.1.0 --no-document
+        gem install chess -v 0.3.3 --no-document
 
     - name: Play
       run: |

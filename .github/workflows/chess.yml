@@ -454,17 +454,12 @@ jobs:
             | ----- | --- |
           HTML
 
-          # Only add current move to README if this was a move command
-          if CHESS_GAME_CMD == 'move'
-            new_readme.concat "| #{CHESS_USER_MOVE[0..1].upcase} to #{CHESS_USER_MOVE[2..3].upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
-          end
-
           # Read recent moves from local file instead of API calls to avoid rate limiting
           begin
             recent_moves_file = "chess_games/recent_moves.txt"
             if File.exist?(recent_moves_file)
               recent_moves = File.readlines(recent_moves_file).map(&:strip).reject(&:empty?)
-              recent_moves[1..4]&.each do |move_line|
+              recent_moves[0..4]&.each do |move_line|
                 new_readme.concat "#{move_line}\n"
               end
             else

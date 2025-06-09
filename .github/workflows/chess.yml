@@ -230,12 +230,9 @@ jobs:
                 
                 # Sort by count (descending) and keep top 20
                 sorted_lines = leaderboard_lines.sort_by do |line|
-                  if match = line.match(/\| (\d+) \|/)
-                    -match[1].to_i
-                  else
-                    0
-                  end
-                end[0..19]
+                  match = line.match(/\| (\d+) \|/)
+                  -match[1].to_i if match
+                end.compact[0..19]
                 
                 File.write(leaderboard_file, sorted_lines.join("\n") + "\n")
                 

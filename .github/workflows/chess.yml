@@ -127,15 +127,26 @@ jobs:
             end
           end
 
-          # Handle new game request - delete local file if needed
-          if valid_new_game_request(game) && File.exist?(GAME_DATA_PATH)
+          # Handle new game request - delete local file if needed and ensure clean state
+          if valid_new_game_request(game)
+            if File.exist?(GAME_DATA_PATH)
+              begin
+                File.delete(GAME_DATA_PATH)
+              rescue StandardError => e
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
+            end
+            # Always create a fresh game for new game requests
+            game = Chess::Game.new
+            
+            # Clear supporting files for clean new game state
             begin
-              File.delete(GAME_DATA_PATH)
-              game = Chess::Game.new
+              File.write("chess_games/last_mover.txt", "")
+              File.write("chess_games/recent_moves.txt", "")
             rescue StandardError => e
-                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
-                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                exit(0)
+              # Don't exit on failure to clear these files, they're not critical
             end
           end
 
@@ -245,13 +256,16 @@ jobs:
           @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")          
           @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
 
-          # Save current game state to local PGN file (for both moves and new games)
-          begin
-            File.write(GAME_DATA_PATH, game.pgn.to_s)
-          rescue StandardError => e
-            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game state. Sorry."
-            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-            exit(0)
+          # Save current game state to local PGN file (only for games with moves)
+          # Don't save PGN for new games as the Chess gem v0.4.0 cannot load empty game PGNs
+          if CHESS_GAME_CMD == 'move' || (game.moves.length > 0)
+            begin
+              File.write(GAME_DATA_PATH, game.pgn.to_s)
+            rescue StandardError => e
+              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game state. Sorry."
+              error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+              exit(0)
+            end
           end
 
           # Update timburgan/timburgan/README.md

@@ -55,7 +55,7 @@ jobs:
           require 'octokit'
           require 'chess'
 
-          def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
+          def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e = nil)
             # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
             @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
             @octokit.close_issue(repo_nwo, issue_num)
@@ -67,7 +67,7 @@ jobs:
           end
 
           def valid_new_game_request(game)
-            '${{ github.event.issue.title }}'.split('|')&.second.to_s == 'new' &&
+            '${{ github.event.issue.title }}'.split('|')&.second == 'new' &&
             (ENV.fetch('EVENT_USER_LOGIN') == 'timburgan' || game&.over?)
           end
 
@@ -88,13 +88,13 @@ jobs:
           begin
               # validate we can parse title Chess|new|e3c2|1
               title_split = '${{ github.event.issue.title }}'.split('|')
-              CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
-              CHESS_GAME_TITLE = title_split&.first.to_s + CHESS_GAME_NUM
+              CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER')
+              CHESS_GAME_TITLE = "#{title_split&.first}#{CHESS_GAME_NUM}"
               CHESS_GAME_CMD   = title_split&.second.to_s
               CHESS_USER_MOVE  = title_split&.third.to_s
-              raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
-              raise StandardError.new 'CHESS_USER_MOVE is blank'  if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
-              raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? CHESS_GAME_CMD
+              raise StandardError, 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
+              raise StandardError, 'CHESS_USER_MOVE is blank' if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
+              raise StandardError, 'new|move are the only allowed commands' unless ['new', 'move'].include?(CHESS_GAME_CMD)
           rescue StandardError => e
               comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
               error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -107,6 +107,7 @@ jobs:
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
+          game_content_raw = nil
 
           #
           # Get the contents of the game board.
@@ -117,27 +118,28 @@ jobs:
                 path: GAME_DATA_PATH
               )
 
-              game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
+              game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.blank?
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
           else
-            game = if valid_new_game_request(game) || game.present?
-                     Chess::Game.new
-                   else
-                     #
-                     # Game is in progress. Load the game board.
-                     # ---------------------------------------
-                     begin
-                         ## Load the current game
-                         File.write TMP_FILENAME, game_content
-                         Chess::Game.load_pgn TMP_FILENAME
-                     rescue StandardError => e
-                         comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
-                         error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                         exit(0)
-                     end
-                   end
+            # Load existing game from content, unless this is a new game request
+            if valid_new_game_request(nil)
+              game = Chess::Game.new
+            else
+              #
+              # Game is in progress. Load the game board.
+              # ---------------------------------------
+              begin
+                  ## Load the current game
+                  File.write TMP_FILENAME, game_content
+                  game = Chess::Game.load_pgn TMP_FILENAME
+              rescue StandardError => e
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
+                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                  exit(0)
+              end
+            end
           end
 
           if valid_new_game_request(game) && game_content_raw.present?
@@ -220,7 +222,7 @@ jobs:
                 
                 # Update recent moves list
                 recent_moves_file = "chess_games/recent_moves.txt"
-                new_move = "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |"
+                new_move = "| #{CHESS_USER_MOVE[0..1].upcase} to #{CHESS_USER_MOVE[2..3].upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |"
                 
                 # Read existing moves, add new one at top, keep only last 5
                 existing_moves = []
@@ -322,12 +324,12 @@ jobs:
           squares = []
           cols.each do |col|
             rows.each do |row|
-              squares.push "#{col}#{row}"
+              squares.push("#{col}#{row}")
             end
           end
 
           # combine squares with where they  can MOVE to
-          next_move_combos = squares.map { |from| {from: from, to: squares} }
+          next_move_combos = squares.map { |from| { from: from, to: squares } }
           puts "next_move_combos"
           puts next_move_combos
 
@@ -355,19 +357,11 @@ jobs:
                 # puts "move: #{move_command} (bad)"
               else
                 # puts "move: #{move_command} (ok)"
-                if good_moves.select{ |move| move[:from] == square[:from] }.blank?
+                existing_move = good_moves.find { |move| move[:from] == square[:from] }
+                if existing_move.nil?
                   good_moves.push({ from: square[:from], to: [to] })
                 else
-                  good_moves.map do |move|
-                    if move[:from] == square[:from]
-                      {
-                        from: move[:from],
-                        to:   move[:to].push(to)
-                      }
-                    else
-                      move
-                    end
-                  end
+                  existing_move[:to].push(to)
                 end
               end
             end
@@ -482,7 +476,7 @@ jobs:
 
           # Only add current move to README if this was a move command
           if CHESS_GAME_CMD == 'move'
-            new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
+            new_readme.concat "| #{CHESS_USER_MOVE[0..1].upcase} to #{CHESS_USER_MOVE[2..3].upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
           end
 
           # Read recent moves from local file instead of API calls to avoid rate limiting

@@ -22,6 +22,11 @@ jobs:
         echo "EVENT_ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
         echo "EVENT_USER_LOGIN=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
       # We <3 Ruby, so let's use it + Octokit to ease the
       # scripting and API interactions.
 
@@ -32,13 +37,13 @@ jobs:
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: 3.3
 
     - name: Setup Gems
       run: |
-        gem install activesupport -v 7.0.3 -N --silent
-        gem install octokit -v 5.1.0 -N --silent
-        gem install chess -v 0.3.3 -N --silent
+        gem install activesupport -v 8.0.2 -N --silent
+        gem install octokit -v 10.0.0 -N --silent
+        gem install chess -v 0.4.0 -N --silent
 
 
     - name: Play
@@ -49,12 +54,6 @@ jobs:
           require 'active_support/core_ext/array'
           require 'octokit'
           require 'chess'
-
-
-          @preview_headers = [
-            ::Octokit::Preview::PREVIEW_TYPES[:reactions],
-            ::Octokit::Preview::PREVIEW_TYPES[:integrations]
-          ]
 
           def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
             # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
@@ -75,13 +74,11 @@ jobs:
           # Authenticate using GITHUB_TOKEN
           @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
           @octokit.auto_paginate = true
-          @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
           # Show we've got eyes on the triggering comment.
           @octokit.create_issue_reaction(
             ENV.fetch('REPOSITORY'),
             ENV.fetch('EVENT_ISSUE_NUMBER'),
-            'rocket',
-            {accept: @preview_headers}
+            'eyes'
           )
 
 
@@ -280,6 +277,18 @@ jobs:
                 # don't exit if local file updates fail, just continue
               end
 
+              # Commit local file changes to repository
+              begin
+                # Configure git for the action
+                `git config --global user.email 'action@github.com'`
+                `git config --global user.name 'GitHub Action'`
+                `git add chess_games/`
+                `git commit -m "#{ENV.fetch('EVENT_USER_LOGIN')} updated game files"`
+                `git push`
+              rescue StandardError => e
+                # don't exit if git operations fail
+              end
+
               
 
               #
@@ -471,7 +480,10 @@ jobs:
             | ----- | --- |
           HTML
 
-          new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
+          # Only add current move to README if this was a move command
+          if CHESS_GAME_CMD == 'move'
+            new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
+          end
 
           # Read recent moves from local file instead of API calls to avoid rate limiting
           begin

@@ -44,10 +44,6 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | Move  | Who |
 | ----- | --- |
 | C2 to C4 | [@timburgan](https://github.com/timburgan) |
-| D1 to F3 | [@JohnyP36](https://github.com/JohnyP36) |
-| G8 to F6 | [@jomsk1e](https://github.com/jomsk1e) |
-| B1 to C3 | [@memcorrupt](https://github.com/memcorrupt) |
-| D7 to D6 | [@JohnyP36](https://github.com/JohnyP36) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

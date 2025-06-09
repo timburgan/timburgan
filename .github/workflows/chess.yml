@@ -55,12 +55,6 @@ jobs:
           require 'octokit'
           require 'chess'
 
-
-          @preview_headers = [
-            ::Octokit::Preview::PREVIEW_TYPES[:reactions],
-            ::Octokit::Preview::PREVIEW_TYPES[:integrations]
-          ]
-
           def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
             # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
             @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
@@ -80,13 +74,11 @@ jobs:
           # Authenticate using GITHUB_TOKEN
           @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
           @octokit.auto_paginate = true
-          @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
           # Show we've got eyes on the triggering comment.
           @octokit.create_issue_reaction(
             ENV.fetch('REPOSITORY'),
             ENV.fetch('EVENT_ISSUE_NUMBER'),
-            'rocket',
-            {accept: @preview_headers}
+            'eyes'
           )
 
 

@@ -43,11 +43,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 
 | Move  | Who |
 | ----- | --- |
-| F7 to F5 | [@SEEWON](https://github.com/SEEWON) |
-| D7 to D5 | [@timburgan](https://github.com/timburgan) |
-| E7 to E5 | [@kigary](https://github.com/kigary) |
-| H7 to H5 | [@turgs](https://github.com/turgs) |
-| C2 to C4 | [@timburgan](https://github.com/timburgan) |
+| ¯\_(ツ)_/¯ | New game - no moves yet! |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 

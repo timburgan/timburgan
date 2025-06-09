@@ -161,38 +161,25 @@ jobs:
 
 
 
-          begin
-            issues = @octokit.list_issues(
-              ENV.fetch('REPOSITORY'),
-              state: 'closed',
-              accept: @preview_headers
-            )&.select{ |issue| issue&.reactions.confused == 0 }
-
-          rescue StandardError => e
-            # don't exit, if these can't be retrieved. Allow play to continue.
-          end
-
-
-
           if CHESS_GAME_CMD == 'move'
 
               #
               # Share the play. Exit if user just had the prior move.
-              # Need to filter out and PRs and other issues though.
+              # Check using local data instead of API calls to avoid rate limiting.
               #-------------------
 
-              i = 0
-              issues&.each do |issue|
-                break if issue.title.start_with? 'chess|new'
-                if issue.title.start_with?('chess|move|') && ENV.fetch('REPOSITORY') == 'timburgan/timburgan'
-                  if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
+              begin
+                last_mover_file = "chess_games/last_mover.txt"
+                if File.exist?(last_mover_file) && ENV.fetch('REPOSITORY') == 'timburgan/timburgan'
+                  last_mover = File.read(last_mover_file).strip
+                  if last_mover == ENV.fetch('EVENT_USER_LOGIN')
                     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
-                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, nil)
                     exit(0)
                   end
-                  i += 1
                 end
-                break if i >= 1
+              rescue StandardError => e
+                # don't exit, if file can't be read. Allow play to continue.
               end
 
 
@@ -227,31 +214,80 @@ jobs:
                   exit(0)
               end
 
+              #
+              # Update local data files to avoid API rate limiting
+              # ---------------------------------------
+              begin
+                # Update last mover
+                File.write("chess_games/last_mover.txt", ENV.fetch('EVENT_USER_LOGIN'))
+                
+                # Update recent moves list
+                recent_moves_file = "chess_games/recent_moves.txt"
+                new_move = "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |"
+                
+                # Read existing moves, add new one at top, keep only last 5
+                existing_moves = []
+                if File.exist?(recent_moves_file)
+                  existing_moves = File.readlines(recent_moves_file).map(&:strip).reject(&:empty?)
+                end
+                updated_moves = [new_move] + existing_moves[0..3] # Keep only 4 previous + 1 new = 5 total
+                File.write(recent_moves_file, updated_moves.join("\n") + "\n")
+                
+                # Update leaderboard
+                leaderboard_file = "chess_games/leaderboard.txt"
+                leaderboard_lines = []
+                user_found = false
+                user_login = ENV.fetch('EVENT_USER_LOGIN')
+                
+                if File.exist?(leaderboard_file)
+                  File.readlines(leaderboard_file).each do |line|
+                    line = line.strip
+                    next if line.empty?
+                    
+                    if line.include?("[@#{user_login}]")
+                      # Update this user's count
+                      if match = line.match(/\| (\d+) \|/)
+                        new_count = match[1].to_i + 1
+                        updated_line = line.sub(/\| \d+ \|/, "| #{new_count} |")
+                        leaderboard_lines << updated_line
+                        user_found = true
+                      else
+                        leaderboard_lines << line
+                      end
+                    else
+                      leaderboard_lines << line
+                    end
+                  end
+                end
+                
+                # If user not found, add them with count 1
+                unless user_found
+                  leaderboard_lines << "| 1 | [@#{user_login}](https://github.com/#{user_login}) |"
+                end
+                
+                # Sort by count (descending) and keep top 20
+                sorted_lines = leaderboard_lines.sort_by do |line|
+                  if match = line.match(/\| (\d+) \|/)
+                    -match[1].to_i # negative for descending sort
+                  else
+                    0
+                  end
+                end[0..19]
+                
+                File.write(leaderboard_file, sorted_lines.join("\n") + "\n")
+                
+              rescue StandardError => e
+                # don't exit if local file updates fail, just continue
+              end
+
               
 
               #
               # Game over thanks for playing.
               # ---------------------------------------
               if game.over?
-                # add label = end
-                #@octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
-                game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
-                issues&.each do |issue|
-                  break if issue.title.start_with? 'chess|new'
-                  if game_stats[:moves] == 0
-                    game_stats[:end_time] = issue.created_at
-                  end
-                  game_stats[:moves] += 1
-                  if ENV.fetch('REPOSITORY') == 'timburgan/timburgan'
-                    game_stats[:players].push "@#{issue.user.login}"
-                  else
-                    game_stats[:players].push "#{issue.user.login}"
-                  end
-                  game_stats[:start_time] = issue.created_at
-                end
-                game_stats[:players] = game_stats[:players]&.uniq
-                hours = (game_stats[:start_time] - game_stats[:end_time]).to_i.abs / 3600
-                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. That game had #{game_stats[:moves]} moves, #{game_stats[:players]&.length} players, and went for #{hours} hours. Let's play again at https://github.com/timburgan.\n\nPlayers that game: #{game_stats[:players].join(', ')}")
+                # Simplified game over message to avoid API calls
+                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. Let's play again at https://github.com/timburgan.")
               end
           end
 
@@ -437,21 +473,19 @@ jobs:
 
           new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
 
-          if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
-              i = 0
-              issues.each do |issue|
-                break if issue.title.start_with? 'chess|new'
-                if issue.title.start_with? 'chess|move|'
-                  from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
-                  to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
-                  who = issue.user.login
-                  i += 1
-                  new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
-                end
-                break if i >= 4
+          # Read recent moves from local file instead of API calls to avoid rate limiting
+          begin
+            recent_moves_file = "chess_games/recent_moves.txt"
+            if File.exist?(recent_moves_file)
+              recent_moves = File.readlines(recent_moves_file).map(&:strip).reject(&:empty?)
+              recent_moves[1..4]&.each do |move_line| # Skip first line (current move) and show next 4
+                new_readme.concat "#{move_line}\n"
               end
-          else
+            else
               new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
+            end
+          rescue StandardError => e
+            new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
 
@@ -463,13 +497,19 @@ jobs:
             | ----- | --- |
           HTML
 
-          if issues.present?
-              moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("timburgan")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
-              moves.each do |move|
-                new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
+          # Read leaderboard from local file instead of API calls to avoid rate limiting
+          begin
+            leaderboard_file = "chess_games/leaderboard.txt"
+            if File.exist?(leaderboard_file)
+              leaderboard_lines = File.readlines(leaderboard_file).map(&:strip).reject(&:empty?)
+              leaderboard_lines.each do |leaderboard_line|
+                new_readme.concat "#{leaderboard_line}\n"
               end
-          else
+            else
               new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
+            end
+          rescue StandardError => e
+            new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
 

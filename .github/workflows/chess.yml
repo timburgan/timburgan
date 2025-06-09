@@ -27,14 +27,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-      # We <3 Ruby, so let's use it + Octokit to ease the
-      # scripting and API interactions.
-
-      #
-      # I see your :eyes: :). This is all band-aids and stick tape.
-      # Yep... I log like it's 1995 with random "puts" in places.
-      #
-
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.3
@@ -44,7 +36,6 @@ jobs:
         gem install activesupport -v 8.0.2 -N --silent
         gem install octokit -v 10.0.0 -N --silent
         gem install chess -v 0.4.0 -N --silent
-
 
     - name: Play
       run: |
@@ -56,7 +47,6 @@ jobs:
           require 'chess'
 
           def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e = nil)
-            # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
             @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
             @octokit.close_issue(repo_nwo, issue_num)
             if e.present?
@@ -81,12 +71,8 @@ jobs:
             'eyes'
           )
 
-
-          #
           # Parse the issue title.
-          # ------------------------
           begin
-              # validate we can parse title Chess|new|e3c2|1
               title_split = '${{ github.event.issue.title }}'.split('|')
               CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER')
               CHESS_GAME_TITLE = "#{title_split&.first}#{CHESS_GAME_NUM}"
@@ -101,17 +87,13 @@ jobs:
               exit(0)
           end
 
-
-
           GAME_DATA_PATH = "chess_games/chess.pgn"
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
           game_content_raw = nil
 
-          #
           # Get the contents of the game board.
-          # ---------------------------------------
           begin
               game_content_raw = @octokit.contents(
                 ENV.fetch('REPOSITORY'),
@@ -127,9 +109,7 @@ jobs:
             if valid_new_game_request(nil)
               game = Chess::Game.new
             else
-              #
               # Game is in progress. Load the game board.
-              # ---------------------------------------
               begin
                   ## Load the current game
                   File.write TMP_FILENAME, game_content
@@ -158,21 +138,14 @@ jobs:
             end
           end
 
-
-
           if CHESS_GAME_CMD == 'move'
-
-              #
               # Share the play. Exit if user just had the prior move.
-              # Check using local data instead of API calls to avoid rate limiting.
-              #-------------------
-
               begin
                 last_mover_file = "chess_games/last_mover.txt"
                 if File.exist?(last_mover_file) && ENV.fetch('REPOSITORY') == 'timburgan/timburgan'
                   last_mover = File.read(last_mover_file).strip
                   if last_mover == ENV.fetch('EVENT_USER_LOGIN')
-                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)"
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn."
                     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, nil)
                     exit(0)
                   end
@@ -181,23 +154,16 @@ jobs:
                 # don't exit, if file can't be read. Allow play to continue.
               end
 
-
-
-              #
               # Perform Move
-              # ---------------------------------------
               begin
-                  game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
+                  game.move(CHESS_USER_MOVE)
               rescue Chess::IllegalMoveError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
 
-
-              #
               # Save the game board.
-              # ---------------------------------------
               begin
                   @octokit.create_contents(
                     ENV.fetch('REPOSITORY'),
@@ -213,9 +179,7 @@ jobs:
                   exit(0)
               end
 
-              #
               # Update local data files to avoid API rate limiting
-              # ---------------------------------------
               begin
                 # Update last mover
                 File.write("chess_games/last_mover.txt", ENV.fetch('EVENT_USER_LOGIN'))
@@ -229,7 +193,7 @@ jobs:
                 if File.exist?(recent_moves_file)
                   existing_moves = File.readlines(recent_moves_file).map(&:strip).reject(&:empty?)
                 end
-                updated_moves = [new_move] + existing_moves[0..3] # Keep only 4 previous + 1 new = 5 total
+                updated_moves = [new_move] + existing_moves[0..3]
                 File.write(recent_moves_file, updated_moves.join("\n") + "\n")
                 
                 # Update leaderboard
@@ -267,7 +231,7 @@ jobs:
                 # Sort by count (descending) and keep top 20
                 sorted_lines = leaderboard_lines.sort_by do |line|
                   if match = line.match(/\| (\d+) \|/)
-                    -match[1].to_i # negative for descending sort
+                    -match[1].to_i
                   else
                     0
                   end
@@ -281,7 +245,6 @@ jobs:
 
               # Commit local file changes to repository
               begin
-                # Configure git for the action
                 `git config --global user.email 'action@github.com'`
                 `git config --global user.name 'GitHub Action'`
                 `git add chess_games/`
@@ -291,36 +254,21 @@ jobs:
                 # don't exit if git operations fail
               end
 
-              
-
-              #
               # Game over thanks for playing.
-              # ---------------------------------------
               if game.over?
-                # Simplified game over message to avoid API calls
-                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. Let's play again at https://github.com/timburgan.")
+                @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing.")
               end
           end
 
-
-
-          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan\n\nAsk a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/timburgan)")          
+          @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")          
           @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
 
-
-
-          #
           # Update timburgan/timburgan/README.md
-          # ---------------------------------------
-
-          # visually represent the board
-          # generate new comment links
-          #   - and "what possible valid moves are for each piece"
 
           cols = ('a'..'h').to_a
           rows = (1..8).to_a
 
-          # list squares on the board - format a1, a2, a3, b1, b2, b3 etc
+          # list squares on the board
           squares = []
           cols.each do |col|
             rows.each do |row|
@@ -328,10 +276,8 @@ jobs:
             end
           end
 
-          # combine squares with where they  can MOVE to
+          # combine squares with where they can MOVE to
           next_move_combos = squares.map { |from| { from: from, to: squares } }
-          puts "next_move_combos"
-          puts next_move_combos
 
           fake_game = if CHESS_GAME_CMD == 'move'
                         File.write TMP_FILENAME, game.pgn.to_s
@@ -354,9 +300,8 @@ jobs:
               begin
                 fake_game_tmp.move move_command
               rescue Chess::IllegalMoveError => e
-                # puts "move: #{move_command} (bad)"
+                # invalid move
               else
-                # puts "move: #{move_command} (ok)"
                 existing_move = good_moves.find { |move| move[:from] == square[:from] }
                 if existing_move.nil?
                   good_moves.push({ from: square[:from], to: [to] })
@@ -367,29 +312,28 @@ jobs:
             end
           end
 
-
-          game_state =  case game.status.to_s
-                        when 'in_progress'
-                          'Game is in progress.'
-                        when 'white_won'
-                          'Game won by white (hollow) with a checkmate.'
-                        when 'black_won'
-                          'Game won by black (solid) with a checkmate.'
-                        when 'white_won_resign'
-                          'Game won by white (hollow) by resign.'
-                        when 'black_won_resign'
-                          'Game won by black (solid) by resign.'
-                        when 'stalemate'
-                          'Game was a draw due to stalemate.'
-                        when 'insufficient_material'
-                          'Game was a draw due to insufficient material to checkmate.'
-                        when 'fifty_rule_move'
-                          'Game was a draw due to fifty rule move.'
-                        when 'threefold_repetition'
-                          'Game was a draw due to threshold repetition.'
-                        else
-                          'Game terminated. Something went wrong.'
-                        end
+          game_state = case game.status.to_s
+                       when 'in_progress'
+                         'Game is in progress.'
+                       when 'white_won'
+                         'Game won by white (hollow) with a checkmate.'
+                       when 'black_won'
+                         'Game won by black (solid) with a checkmate.'
+                       when 'white_won_resign'
+                         'Game won by white (hollow) by resign.'
+                       when 'black_won_resign'
+                         'Game won by black (solid) by resign.'
+                       when 'stalemate'
+                         'Game was a draw due to stalemate.'
+                       when 'insufficient_material'
+                         'Game was a draw due to insufficient material to checkmate.'
+                       when 'fifty_rule_move'
+                         'Game was a draw due to fifty rule move.'
+                       when 'threefold_repetition'
+                         'Game was a draw due to threshold repetition.'
+                       else
+                         'Game terminated. Something went wrong.'
+                       end
 
           new_readme = <<~HTML
 
@@ -422,18 +366,8 @@ jobs:
             g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
             h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
 
-            # a = game.board[board[:"#{row}"][:a]]
-            # b = game.board[board[:"#{row}"][:b]]
-            # c = game.board[board[:"#{row}"][:c]]
-            # d = game.board[board[:"#{row}"][:d]]
-            # e = game.board[board[:"#{row}"][:e]]
-            # f = game.board[board[:"#{row}"][:f]]
-            # g = game.board[board[:"#{row}"][:g]]
-            # h = game.board[board[:"#{row}"][:h]]
-
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
-
 
           if game.over?
             new_readme.concat <<~HTML
@@ -454,7 +388,6 @@ jobs:
               new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
             end
           end
-
 
           new_readme.concat <<~HTML
 
@@ -484,7 +417,7 @@ jobs:
             recent_moves_file = "chess_games/recent_moves.txt"
             if File.exist?(recent_moves_file)
               recent_moves = File.readlines(recent_moves_file).map(&:strip).reject(&:empty?)
-              recent_moves[1..4]&.each do |move_line| # Skip first line (current move) and show next 4
+              recent_moves[1..4]&.each do |move_line|
                 new_readme.concat "#{move_line}\n"
               end
             else
@@ -493,7 +426,6 @@ jobs:
           rescue StandardError => e
             new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
-
 
           new_readme.concat <<~HTML
 
@@ -518,11 +450,7 @@ jobs:
             new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
-
-
-          #
           # Update the game with next moves.
-          # ---------------------------------------
           begin
               current_readme_sha = @octokit.contents(
                 ENV.fetch('REPOSITORY'),

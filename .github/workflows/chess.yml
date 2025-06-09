@@ -4,6 +4,11 @@ on:
   issues:
     types: [opened]
 
+# Prevent parallel executions and queue moves to avoid race conditions
+concurrency:
+  group: chess-game
+  cancel-in-progress: false
+
 jobs:
   move:
     runs-on: ubuntu-latest
@@ -26,6 +31,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
 
     - uses: ruby/setup-ruby@v1
       with:
@@ -91,46 +97,41 @@ jobs:
           TMP_FILENAME = "/tmp/chess.pgn"
           game = nil
           game_content = nil
-          game_content_raw = nil
 
-          # Get the contents of the game board.
+          # Load game state from local files only (local-first approach)
           begin
-              game_content_raw = @octokit.contents(
-                ENV.fetch('REPOSITORY'),
-                path: GAME_DATA_PATH
-              )
-
-              game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.blank?
+              if File.exist?(GAME_DATA_PATH)
+                game_content = File.read(GAME_DATA_PATH)
+              end
           rescue StandardError => e
               # no file exists... so no game... so... go ahead and create it
               game = Chess::Game.new
           else
-            # Load existing game from content, unless this is a new game request
+            # Load existing game from local content, unless this is a new game request
             if valid_new_game_request(nil)
               game = Chess::Game.new
-            else
-              # Game is in progress. Load the game board.
+            elsif game_content.present?
+              # Game is in progress. Load the game board from local file.
               begin
-                  ## Load the current game
+                  ## Load the current game from local file
                   File.write TMP_FILENAME, game_content
                   game = Chess::Game.load_pgn TMP_FILENAME
               rescue StandardError => e
-                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
+                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be loaded: #{GAME_DATA_PATH}"
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
               end
+            else
+              # No existing game file, create new game
+              game = Chess::Game.new
             end
           end
 
-          if valid_new_game_request(game) && game_content_raw.present?
+          # Handle new game request - delete local file if needed
+          if valid_new_game_request(game) && File.exist?(GAME_DATA_PATH)
             begin
-              @octokit.delete_contents(
-                ENV.fetch('REPOSITORY'),
-                GAME_DATA_PATH,
-                "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
-                game_content_raw&.sha,
-                branch: 'master',
-              )
+              File.delete(GAME_DATA_PATH)
+              game = Chess::Game.new
             rescue StandardError => e
                 comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
                 error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -154,83 +155,24 @@ jobs:
                 # don't exit, if file can't be read. Allow play to continue.
               end
 
-              # Perform Move with retry logic for race conditions
-              max_retries = 2
-              retry_count = 0
-              
-              while retry_count <= max_retries
-                begin
-                  # Reload game state on retry to handle race conditions
-                  if retry_count > 0
-                    puts "Retrying move after race condition (attempt #{retry_count + 1})"
-                    
-                    # Reload the current game state
-                    begin
-                      current_game_content_raw = @octokit.contents(
-                        ENV.fetch('REPOSITORY'),
-                        path: GAME_DATA_PATH
-                      )
-                      current_game_content = Base64.decode64(current_game_content_raw&.content.to_s) unless current_game_content_raw&.content.blank?
-                      File.write TMP_FILENAME, current_game_content
-                      game = Chess::Game.load_pgn TMP_FILENAME
-                      game_content_raw = current_game_content_raw
-                    rescue StandardError => reload_error
-                      puts "Failed to reload game state: #{reload_error}"
-                      break
-                    end
-                  end
-
-                  # Attempt the move
-                  game.move(CHESS_USER_MOVE)
-                  
-                  # Save the game board
-                  @octokit.create_contents(
-                    ENV.fetch('REPOSITORY'),
-                    GAME_DATA_PATH,
-                    "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-                    game.pgn.to_s,
-                    branch: 'master',
-                    sha:    game_content_raw&.sha
-                  )
-                  
-                  # Success - break out of retry loop
-                  break
-                  
-                rescue Chess::IllegalMoveError => e
-                  if retry_count == 0
-                    # On first attempt, this might be due to stale game state, so retry
-                    retry_count += 1
-                    next
-                  else
-                    # After retry, the move is genuinely invalid
-                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
-                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                    exit(0)
-                  end
-                rescue Octokit::UnprocessableEntity => e
-                  if e.message.include?('does not match') && retry_count < max_retries
-                    # SHA conflict - retry with fresh game state
-                    retry_count += 1
-                    next
-                  elsif e.message.include?('does not match')
-                    # Exhausted retries
-                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Multiple people are making moves at the same time! Please try again in a moment."
-                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                    exit(0)
-                  else
-                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
-                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                    exit(0)
-                  end
-                rescue StandardError => e
-                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
-                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                  exit(0)
-                end
+              # Attempt the move on local game state
+              begin
+                game.move(CHESS_USER_MOVE)
+              rescue Chess::IllegalMoveError => e
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move!"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
+              rescue StandardError => e
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't process move. Sorry."
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
               end
 
-              # Update local data files to avoid API rate limiting
+              # Update all local data files atomically
               begin
+                # Save the updated game state to local PGN file
+                File.write(GAME_DATA_PATH, game.pgn.to_s)
+                
                 # Update last mover
                 File.write("chess_games/last_mover.txt", ENV.fetch('EVENT_USER_LOGIN'))
                 
@@ -287,19 +229,12 @@ jobs:
                 File.write(leaderboard_file, sorted_lines.join("\n") + "\n")
                 
               rescue StandardError => e
-                # don't exit if local file updates fail, just continue
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update local game files. Sorry."
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
               end
 
-              # Commit local file changes to repository
-              begin
-                system('git config --global user.email "action@github.com"')
-                system('git config --global user.name "GitHub Action"')
-                system('git add chess_games/')
-                system("git commit -m \"#{ENV.fetch('EVENT_USER_LOGIN')} updated game files\"")
-                system('git push')
-              rescue StandardError => e
-                # don't exit if git operations fail
-              end
+
 
               # Game over thanks for playing.
               if game.over?
@@ -309,6 +244,15 @@ jobs:
 
           @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "@#{ENV.fetch('EVENT_USER_LOGIN')} Done. View back at https://github.com/timburgan")          
           @octokit.close_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'))
+
+          # Save current game state to local PGN file (for both moves and new games)
+          begin
+            File.write(GAME_DATA_PATH, game.pgn.to_s)
+          rescue StandardError => e
+            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game state. Sorry."
+            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+            exit(0)
+          end
 
           # Update timburgan/timburgan/README.md
 
@@ -492,24 +436,30 @@ jobs:
             new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
 
-          # Update the game with next moves.
+          # Generate and save README.md locally
           begin
-              current_readme_sha = @octokit.contents(
-                ENV.fetch('REPOSITORY'),
-                path: 'README.md'
-              )&.sha
-
-              @octokit.create_contents(
-                ENV.fetch('REPOSITORY'),
-                'README.md',
-                "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-                new_readme,
-                branch: 'master',
-                sha:    current_readme_sha
-              )
+              File.write('README.md', new_readme)
           rescue StandardError => e
-              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update render of the game board. Move *was* saved, however."
+              comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update README.md locally. Move *was* saved, however."
               error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
               exit(0)
+          end
+
+          # Atomic commit: add all changes and push in single operation
+          begin
+            system('git config --global user.email "action@github.com"')
+            system('git config --global user.name "GitHub Action"')
+            system('git add .')
+            commit_message = if CHESS_GAME_CMD == 'move'
+                              "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}"
+                            else
+                              "#{ENV.fetch('EVENT_USER_LOGIN')} #{CHESS_GAME_CMD} game"
+                            end
+            system("git commit -m \"#{commit_message}\"")
+            system('git push')
+          rescue StandardError => e
+            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't commit changes to repository. Sorry."
+            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+            exit(0)
           end
         EORUBY

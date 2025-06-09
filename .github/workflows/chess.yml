@@ -154,17 +154,36 @@ jobs:
                 # don't exit, if file can't be read. Allow play to continue.
               end
 
-              # Perform Move
-              begin
-                  game.move(CHESS_USER_MOVE)
-              rescue Chess::IllegalMoveError => e
-                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
-                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                  exit(0)
-              end
+              # Perform Move with retry logic for race conditions
+              max_retries = 2
+              retry_count = 0
+              
+              while retry_count <= max_retries
+                begin
+                  # Reload game state on retry to handle race conditions
+                  if retry_count > 0
+                    puts "Retrying move after race condition (attempt #{retry_count + 1})"
+                    
+                    # Reload the current game state
+                    begin
+                      current_game_content_raw = @octokit.contents(
+                        ENV.fetch('REPOSITORY'),
+                        path: GAME_DATA_PATH
+                      )
+                      current_game_content = Base64.decode64(current_game_content_raw&.content.to_s) unless current_game_content_raw&.content.blank?
+                      File.write TMP_FILENAME, current_game_content
+                      game = Chess::Game.load_pgn TMP_FILENAME
+                      game_content_raw = current_game_content_raw
+                    rescue StandardError => reload_error
+                      puts "Failed to reload game state: #{reload_error}"
+                      break
+                    end
+                  end
 
-              # Save the game board.
-              begin
+                  # Attempt the move
+                  game.move(CHESS_USER_MOVE)
+                  
+                  # Save the game board
                   @octokit.create_contents(
                     ENV.fetch('REPOSITORY'),
                     GAME_DATA_PATH,
@@ -173,10 +192,41 @@ jobs:
                     branch: 'master',
                     sha:    game_content_raw&.sha
                   )
-              rescue StandardError => e
+                  
+                  # Success - break out of retry loop
+                  break
+                  
+                rescue Chess::IllegalMoveError => e
+                  if retry_count == 0
+                    # On first attempt, this might be due to stale game state, so retry
+                    retry_count += 1
+                    next
+                  else
+                    # After retry, the move is genuinely invalid
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
+                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                    exit(0)
+                  end
+                rescue Octokit::UnprocessableEntity => e
+                  if e.message.include?('does not match') && retry_count < max_retries
+                    # SHA conflict - retry with fresh game state
+                    retry_count += 1
+                    next
+                  elsif e.message.include?('does not match')
+                    # Exhausted retries
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Multiple people are making moves at the same time! Please try again in a moment."
+                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                    exit(0)
+                  else
+                    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
+                    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                    exit(0)
+                  end
+                rescue StandardError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
                   exit(0)
+                end
               end
 
               # Update local data files to avoid API rate limiting

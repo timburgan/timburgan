@@ -1,5 +1,5 @@
+| E8 to E7 | [@alidarcan](https://github.com/alidarcan) |
 | C7 to C8 | [@timburgan](https://github.com/timburgan) |
 | B8 to B4 | [@chrismochinski](https://github.com/chrismochinski) |
 | F1 to E2 | [@ravmax-rdl](https://github.com/ravmax-rdl) |
 | E7 to E4 | [@bravo-phantom](https://github.com/bravo-phantom) |
-| A5 to C7 | [@asmunck](https://github.com/asmunck) |

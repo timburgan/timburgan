@@ -40,32 +40,7 @@ Raise an [issue](https://github.com/timburgan/timburgan/issues), and include the
 | E7 to E4 | [@bravo-phantom](https://github.com/bravo-phantom) |
 | A5 to C7 | [@asmunck](https://github.com/asmunck) |
 
-**Top 20 Players, Last 30 Days**
-
-| Moves | Who |
-| ----- | --- |
-| 245 | [@JRetza](https://github.com/JRetza) |
-| 189 | [@michaelprimo](https://github.com/michaelprimo) |
-| 156 | [@JohnyP36](https://github.com/JohnyP36) |
-| 134 | [@simonberner](https://github.com/simonberner) |
-| 98 | [@houhoulis](https://github.com/houhoulis) |
-| 67 | [@donno2048](https://github.com/donno2048) |
-| 54 | [@Nomes77](https://github.com/Nomes77) |
-| 45 | [@Mmark94](https://github.com/Mmark94) |
-| 43 | [@N-NeelPatel](https://github.com/N-NeelPatel) |
-| 39 | [@automainint](https://github.com/automainint) |
-| 32 | [@ApoorvTyagi](https://github.com/ApoorvTyagi) |
-| 28 | [@cosmoglint](https://github.com/cosmoglint) |
-| 24 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
-| 21 | [@mishmanners](https://github.com/mishmanners) |
-| 18 | [@dpuenteramirez](https://github.com/dpuenteramirez) |
-| 15 | [@rayssagomees](https://github.com/rayssagomees) |
-| 12 | [@rajesh545862](https://github.com/rajesh545862) |
-| 9 | [@ak811](https://github.com/ak811) |
-| 6 | [@DalpatRathore](https://github.com/DalpatRathore) |
-| 3 | [@shpatrickguo](https://github.com/shpatrickguo) |
-
-**Top 20 Players, All time**
+**Top 20 Leaderboard: Most moves across all games, except me.**
 
 | Moves | Who |
 | ----- | --- |

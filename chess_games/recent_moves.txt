@@ -1,5 +1,5 @@
+| C8 to A6 | [@alezfps](https://github.com/alezfps) |
 | E8 to D8 | [@frainfreeze](https://github.com/frainfreeze) |
 | E3 to C5 | [@SEEWON](https://github.com/SEEWON) |
 | E7 to E8 | [@shpatrickguo](https://github.com/shpatrickguo) |
 | A6 to C8 | [@ChunhThanhDe](https://github.com/ChunhThanhDe) |
-| G6 to F5 | [@VizDataWorks](https://github.com/VizDataWorks) |

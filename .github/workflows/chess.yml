@@ -429,7 +429,34 @@ jobs:
 
           new_readme.concat <<~HTML
 
-            **Top 20 Leaderboard: Most moves across all games, except me.**
+            **Top 20 Players, Last 30 Days**
+
+            | Moves | Who |
+            | ----- | --- |
+          HTML
+
+          # Read 30-days leaderboard from local file
+          begin
+            leaderboard_30_days_file = "chess_games/leaderboard_30_days.txt"
+            if File.exist?(leaderboard_30_days_file)
+              leaderboard_30_days_lines = File.readlines(leaderboard_30_days_file).map(&:strip).reject(&:empty?)
+              if leaderboard_30_days_lines.any?
+                leaderboard_30_days_lines.each do |leaderboard_line|
+                  new_readme.concat "#{leaderboard_line}\n"
+                end
+              else
+                new_readme.concat "| ¯\\_(ツ)_/¯ | No moves in the last 30 days. |\n"
+              end
+            else
+              new_readme.concat "| ¯\\_(ツ)_/¯ | No moves in the last 30 days. |\n"
+            end
+          rescue StandardError => e
+            new_readme.concat "| ¯\\_(ツ)_/¯ | No moves in the last 30 days. |\n"
+          end
+
+          new_readme.concat <<~HTML
+
+            **Top 20 Players, All time**
 
             | Moves | Who |
             | ----- | --- |

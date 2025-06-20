@@ -1,5 +1,5 @@
+| E2 to D3 | [@Ephrimgnanam](https://github.com/Ephrimgnanam) |
 | F2 to E1 | [@Ianyliu](https://github.com/Ianyliu) |
 | F1 to E2 | [@daemon-node-byte](https://github.com/daemon-node-byte) |
 | F3 to F2 | [@Ephrimgnanam](https://github.com/Ephrimgnanam) |
 | D7 to G7 | [@Neerajdec2005](https://github.com/Neerajdec2005) |
-| F7 to E6 | [@WajahatAliMirPro](https://github.com/WajahatAliMirPro) |

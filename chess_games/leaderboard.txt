@@ -12,7 +12,7 @@
 | 493 | [@cosmoglint](https://github.com/cosmoglint) |
 | 461 | [@jatin-pahuja](https://github.com/jatin-pahuja) |
 | 424 | [@mishmanners](https://github.com/mishmanners) |
-| 368 | [@dpuenteramirez](https://github.com/dpuenteramirez) |
+| 369 | [@dpuenteramirez](https://github.com/dpuenteramirez) |
 | 340 | [@rayssagomees](https://github.com/rayssagomees) |
 | 312 | [@rajesh545862](https://github.com/rajesh545862) |
 | 309 | [@ak811](https://github.com/ak811) |

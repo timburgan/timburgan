@@ -1,5 +1,5 @@
+| E8 to D8 | [@massarin](https://github.com/massarin) |
 | E7 to D8 | [@DrCheeseFace](https://github.com/DrCheeseFace) |
 | B8 to C6 | [@LoRdSoban](https://github.com/LoRdSoban) |
 | G5 to E7 | [@JRetza](https://github.com/JRetza) |
 | H7 to H6 | [@ETAModder](https://github.com/ETAModder) |
-| C1 to G5 | [@JRetza](https://github.com/JRetza) |

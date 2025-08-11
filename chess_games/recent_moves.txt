@@ -1,5 +1,5 @@
+| G8 to F6 | [@kernc](https://github.com/kernc) |
 | D1 to G4 | [@dpuenteramirez](https://github.com/dpuenteramirez) |
 | B8 to D7 | [@dinesh-dk007](https://github.com/dinesh-dk007) |
 | F1 to B5 | [@JRetza](https://github.com/JRetza) |
 | C6 to D5 | [@sakhouski](https://github.com/sakhouski) |
-| E4 to D5 | [@JRetza](https://github.com/JRetza) |

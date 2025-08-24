@@ -1,5 +1,5 @@
+| A8 to D8 | [@dpuenteramirez](https://github.com/dpuenteramirez) |
 | D8 to B6 | [@JRetza](https://github.com/JRetza) |
 | G8 to F6 | [@naelcodes](https://github.com/naelcodes) |
 | C7 to D8 | [@JRetza](https://github.com/JRetza) |
 | C8 to B7 | [@houhoulis](https://github.com/houhoulis) |
-| F4 to C7 | [@JRetza](https://github.com/JRetza) |

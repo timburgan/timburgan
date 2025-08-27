@@ -1,5 +1,5 @@
+| B8 to D7 | [@ParallelVoid](https://github.com/ParallelVoid) |
 | C1 to F4 | [@JRetza](https://github.com/JRetza) |
 | C8 to A6 | [@houhoulis](https://github.com/houhoulis) |
 | D1 to C1 | [@JRetza](https://github.com/JRetza) |
 | F8 to E8 | [@anaberst](https://github.com/anaberst) |
-| C1 to H6 | [@JRetza](https://github.com/JRetza) |

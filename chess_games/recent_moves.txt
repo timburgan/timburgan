@@ -1,5 +1,0 @@
-| H4 to E7 | [@JRetza](https://github.com/JRetza) |
-| E8 to F8 | [@anaberst](https://github.com/anaberst) |
-| C4 to F7 | [@JRetza](https://github.com/JRetza) |
-| D8 to E8 | [@anaberst](https://github.com/anaberst) |
-| E7 to E8 | [@JRetza](https://github.com/JRetza) |

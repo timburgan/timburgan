@@ -1,5 +1,5 @@
+| D3 to E4 | [@JRetza](https://github.com/JRetza) |
 | H6 to H5 | [@alexsagar](https://github.com/alexsagar) |
 | F1 to D3 | [@JRetza](https://github.com/JRetza) |
 | B8 to C6 | [@houhoulis](https://github.com/houhoulis) |
 | D8 to C7 | [@JRetza](https://github.com/JRetza) |
-| A7 to A6 | [@samael-0](https://github.com/samael-0) |

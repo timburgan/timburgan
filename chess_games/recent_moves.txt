@@ -1,5 +1,5 @@
+| H3 to C3 | [@JRetza](https://github.com/JRetza) |
 | E6 to D5 | [@dokson](https://github.com/dokson) |
 | C3 to D5 | [@JRetza](https://github.com/JRetza) |
 | A6 to A5 | [@dokson](https://github.com/dokson) |
 | H1 to H3 | [@JRetza](https://github.com/JRetza) |
-| H7 to H6 | [@dokson](https://github.com/dokson) |

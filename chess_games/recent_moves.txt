@@ -1,5 +1,5 @@
+| E2 to D1 | [@mr-zerotrace](https://github.com/mr-zerotrace) |
 | A3 to C1 | [@nitinscodehub](https://github.com/nitinscodehub) |
 | D1 to E2 | [@mr-zerotrace](https://github.com/mr-zerotrace) |
 | E7 to A3 | [@nitinscodehub](https://github.com/nitinscodehub) |
 | A4 to B5 | [@mr-zerotrace](https://github.com/mr-zerotrace) |
-| B6 to B5 | [@nitinscodehub](https://github.com/nitinscodehub) |

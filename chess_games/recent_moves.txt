@@ -1,5 +1,5 @@
+| E1 to G1 | [@JRetza](https://github.com/JRetza) |
 | A6 to A5 | [@Lv-0](https://github.com/Lv-0) |
 | F1 to E2 | [@JRetza](https://github.com/JRetza) |
 | A7 to A8 | [@rashid-ai24](https://github.com/rashid-ai24) |
 | E2 to G3 | [@JRetza](https://github.com/JRetza) |
-| A8 to A7 | [@nitinscodehub](https://github.com/nitinscodehub) |

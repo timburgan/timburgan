@@ -1,5 +1,5 @@
+| A4 to C6 | [@JRetza](https://github.com/JRetza) |
 | C7 to B7 | [@neighborstan](https://github.com/neighborstan) |
 | B4 to D6 | [@JRetza](https://github.com/JRetza) |
 | D7 to C7 | [@neighborstan](https://github.com/neighborstan) |
 | D2 to B4 | [@JRetza](https://github.com/JRetza) |
-| G8 to G6 | [@neighborstan](https://github.com/neighborstan) |

@@ -1,5 +1,5 @@
+| E4 to D5 | [@JRetza](https://github.com/JRetza) |
 | D6 to D5 | [@Undiquo](https://github.com/Undiquo) |
 | F1 to B5 | [@JRetza](https://github.com/JRetza) |
 | B8 to C6 | [@BinaryBhaskar](https://github.com/BinaryBhaskar) |
 | B1 to C3 | [@JRetza](https://github.com/JRetza) |
-| D7 to D6 | [@fedi41-prog](https://github.com/fedi41-prog) |

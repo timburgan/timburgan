@@ -1,5 +1,5 @@
+| G4 to H5 | [@JRetza](https://github.com/JRetza) |
 | E7 to G8 | [@karutoz](https://github.com/karutoz) |
 | G2 to G4 | [@JRetza](https://github.com/JRetza) |
 | G8 to E7 | [@JosueMonteiroUchoaAlves](https://github.com/JosueMonteiroUchoaAlves) |
 | H2 to H3 | [@JRetza](https://github.com/JRetza) |
-| A5 to H5 | [@howznguyen](https://github.com/howznguyen) |

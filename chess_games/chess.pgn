@@ -4,8 +4,8 @@
 [Round ""]
 [White ""]
 [Black ""]
-[Result "*"]
+[Result "1-0"]
 
 1. e4 e6 2. d4 c6 3. Bd3 g6 4. Nf3 Bd6 5. e5 a6 6. exd6 f6 7. c4 Qa5+ 8. Bd2
 Qh5 9. h3 Ne7 10. g4 Ng8 11. gxh5 c5 12. Rg1 a5 13. hxg6 Ra6 14. g7 cxd4 15.
-gxh8=q Ra8 *
+gxh8=q Ra8 16. Qxg8# 1-0

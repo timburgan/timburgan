@@ -127,21 +127,46 @@ jobs:
             end
           end
 
-          # Handle new game request - delete local file if needed and ensure clean state
-          if valid_new_game_request(game)
+          # Handle new game request - safe behavior when a game is in progress
+          # Determine if the issue requested a new game
+          requested_new = title_split&.second == 'new'
+
+          if requested_new
+            # If there is existing game content and the game is not over, do NOT start a new game.
+            if game_content.present?
+              begin
+                # Try to load the in-repo game to inspect status. If load fails, allow new game (safer fallback).
+                File.write TMP_FILENAME, game_content
+                current_game = Chess::Game.load_pgn TMP_FILENAME
+              rescue StandardError
+                current_game = nil
+              end
+
+              if current_game && !current_game.over?
+                # Gracefully respond: add a comment and close the issue without changing game files.
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} A game is currently in progress — please finish it before starting a new one. If you believe this is a mistake, contact a repo maintainer."
+                # Use Octokit to add comment and close the issue (error_notification wraps this behavior).
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text)
+                # exit without error so workflow ends cleanly
+                exit(0)
+              end
+            end
+
+            # If we get here, either there's no in-progress game or the existing game is over (safe to create)
             if File.exist?(GAME_DATA_PATH)
               begin
                 File.delete(GAME_DATA_PATH)
               rescue StandardError => e
-                  comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
-                  error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                  exit(0)
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
               end
             end
+
             # Always create a fresh game for new game requests
             game = Chess::Game.new
-            
-            # Clear supporting files for clean new game state
+
+            # Clear supporting files for clean new game state (best-effort)
             begin
               File.write("chess_games/last_mover.txt", "")
               File.write("chess_games/recent_moves.txt", "")
@@ -149,6 +174,7 @@ jobs:
               # Don't exit on failure to clear these files, they're not critical
             end
           end
+
 
           if CHESS_GAME_CMD == 'move'
               # Share the play. Exit if user just had the prior move.

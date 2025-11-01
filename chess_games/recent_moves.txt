@@ -1,5 +1,5 @@
+| B8 to A8 | [@Michael-Steenkamp](https://github.com/Michael-Steenkamp) |
 | B5 to A4 | [@anaberst](https://github.com/anaberst) |
 | F8 to B8 | [@neozmmv](https://github.com/neozmmv) |
 | C6 to B5 | [@tuan2090](https://github.com/tuan2090) |
 | F7 to F8 | [@JRetza](https://github.com/JRetza) |
-| C7 to C6 | [@houhoulis](https://github.com/houhoulis) |

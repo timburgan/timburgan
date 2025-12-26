@@ -1,5 +1,5 @@
+| A7 to A8 | [@I21b](https://github.com/I21b) |
 | C8 to D8 | [@Captune](https://github.com/Captune) |
 | A6 to A7 | [@I21b](https://github.com/I21b) |
 | D8 to C8 | [@Captune](https://github.com/Captune) |
 | A5 to A6 | [@I21b](https://github.com/I21b) |
-| E8 to D8 | [@Captune](https://github.com/Captune) |

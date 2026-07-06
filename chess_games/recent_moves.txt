@@ -1,5 +1,5 @@
+| C2 to C1 | [@s7d4007](https://github.com/s7d4007) |
 | C4 to E3 | [@yashsuthar00](https://github.com/yashsuthar00) |
 | C1 to E3 | [@Sakif16](https://github.com/Sakif16) |
 | A8 to B8 | [@cnr-cbr](https://github.com/cnr-cbr) |
 | D2 to C2 | [@yashsuthar00](https://github.com/yashsuthar00) |
-| E5 to C4 | [@Khurram-Devs](https://github.com/Khurram-Devs) |

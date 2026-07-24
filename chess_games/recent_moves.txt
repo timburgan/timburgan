@@ -1,5 +1,5 @@
+| D6 to D7 | [@jbigler](https://github.com/jbigler) |
 | C3 to B5 | [@henriquermend](https://github.com/henriquermend) |
 | B5 to B4 | [@Pranav-MSK](https://github.com/Pranav-MSK) |
 | E1 to G1 | [@houhoulis](https://github.com/houhoulis) |
 | D8 to D6 | [@KaiCryan](https://github.com/KaiCryan) |
-| D5 to D6 | [@olishiz](https://github.com/olishiz) |

@@ -1,5 +1,5 @@
+| E1 to E6 | [@aloisduvoye-source](https://github.com/aloisduvoye-source) |
 | F7 to F6 | [@AlexMcVay](https://github.com/AlexMcVay) |
 | C6 to D6 | [@ethembeldagli](https://github.com/ethembeldagli) |
 | H7 to H6 | [@houhoulis](https://github.com/houhoulis) |
 | H2 to H3 | [@tiagosfneves](https://github.com/tiagosfneves) |
-| F6 to G7 | [@kishore-prakash](https://github.com/kishore-prakash) |

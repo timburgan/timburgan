@@ -4,6 +4,10 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: write
+  issues: write
+
 # Prevent parallel executions and queue moves to avoid race conditions
 concurrency:
   group: chess-game
@@ -20,17 +24,9 @@ jobs:
         echo "${{ github.event_name }}"
         exit 1
 
-    - name: Set env vars
-      run: |
-        echo "${{ github.event_name }}"
-        echo "REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
-        echo "EVENT_ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
-        echo "EVENT_USER_LOGIN=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
-
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
 
     - uses: ruby/setup-ruby@v1
@@ -44,8 +40,14 @@ jobs:
         gem install chess -v 0.4.0 -N --silent
 
     - name: Play
+      env:
+        EVENT_ISSUE_TITLE: ${{ github.event.issue.title }}
+        EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+        EVENT_USER_LOGIN: ${{ github.event.issue.user.login }}
+        REPOSITORY: ${{ github.repository }}
+        OCTOKIT_TOKEN: ${{ github.token }}
       run: |
-        ruby <<- EORUBY
+        ruby <<'EORUBY'
           require 'active_support'
           require 'active_support/core_ext/object'
           require 'active_support/core_ext/array'
@@ -63,12 +65,12 @@ jobs:
           end
 
           def valid_new_game_request(game)
-            '${{ github.event.issue.title }}'.split('|')&.second == 'new' &&
+            CHESS_GAME_CMD == 'new' &&
             (ENV.fetch('EVENT_USER_LOGIN') == 'timburgan' || game&.over?)
           end
 
           # Authenticate using GITHUB_TOKEN
-          @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
+          @octokit = Octokit::Client.new(access_token: ENV.fetch('OCTOKIT_TOKEN'))
           @octokit.auto_paginate = true
           # Show we've got eyes on the triggering comment.
           @octokit.create_issue_reaction(
@@ -79,14 +81,21 @@ jobs:
 
           # Parse the issue title.
           begin
-              title_split = '${{ github.event.issue.title }}'.split('|')
-              CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER')
-              CHESS_GAME_TITLE = "#{title_split&.first}#{CHESS_GAME_NUM}"
-              CHESS_GAME_CMD   = title_split&.second.to_s
-              CHESS_USER_MOVE  = title_split&.third.to_s
-              raise StandardError, 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
-              raise StandardError, 'CHESS_USER_MOVE is blank' if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
-              raise StandardError, 'new|move are the only allowed commands' unless ['new', 'move'].include?(CHESS_GAME_CMD)
+              title = ENV.fetch('EVENT_ISSUE_TITLE')
+
+              if title == 'chess|new'
+                CHESS_GAME_NUM  = ENV.fetch('EVENT_ISSUE_NUMBER')
+                CHESS_GAME_CMD  = 'new'
+                CHESS_USER_MOVE = ''
+              elsif (match = title.match(/\Achess\|move\|([a-h][1-8][a-h][1-8])\|([1-9]\d*)\z/))
+                CHESS_GAME_NUM  = match[2]
+                CHESS_GAME_CMD  = 'move'
+                CHESS_USER_MOVE = match[1]
+              else
+                raise StandardError, 'invalid chess issue title'
+              end
+
+              CHESS_GAME_TITLE = "chess#{CHESS_GAME_NUM}"
           rescue StandardError => e
               comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
               error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -461,16 +470,32 @@ jobs:
 
           # Atomic commit: add all changes and push in single operation
           begin
-            system('git config --global user.email "action@github.com"')
-            system('git config --global user.name "GitHub Action"')
-            system('git add .')
+            system('git', 'config', '--global', 'user.email', 'action@github.com', exception: true)
+            system('git', 'config', '--global', 'user.name', 'GitHub Action', exception: true)
+            changed_paths = [
+              'README.md',
+              'chess_games/last_mover.txt',
+              'chess_games/recent_moves.txt',
+              'chess_games/leaderboard.txt'
+            ]
+            if File.exist?(GAME_DATA_PATH) ||
+               system('git', 'ls-files', '--error-unmatch', GAME_DATA_PATH, out: File::NULL, err: File::NULL)
+              changed_paths << GAME_DATA_PATH
+            end
+            system(
+              'git',
+              'add',
+              '--',
+              *changed_paths,
+              exception: true
+            )
             commit_message = if CHESS_GAME_CMD == 'move'
                               "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}"
                             else
                               "#{ENV.fetch('EVENT_USER_LOGIN')} #{CHESS_GAME_CMD} game"
                             end
-            system("git commit -m \"#{commit_message}\"")
-            system('git push')
+            system('git', 'commit', '-m', commit_message, exception: true)
+            system('git', 'push', exception: true)
           rescue StandardError => e
             comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't commit changes to repository. Sorry."
             error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)

@@ -1,5 +1,0 @@
-| D4 to D8 | [@mirawer](https://github.com/mirawer) |
-| G1 to H2 | [@aloisduvoye-source](https://github.com/aloisduvoye-source) |
-| E4 to E7 | [@timburgan](https://github.com/timburgan) |
-| G2 to G1 | [@WusuXcuh](https://github.com/WusuXcuh) |
-| A5 to A6 | [@kronosguy](https://github.com/kronosguy) |

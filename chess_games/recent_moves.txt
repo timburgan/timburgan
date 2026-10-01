@@ -1,5 +1,5 @@
+| A6 to D3 | [@ZeusCodex](https://github.com/ZeusCodex) |
 | B5 to A7 | [@noisywhite](https://github.com/noisywhite) |
 | C8 to A6 | [@houhoulis](https://github.com/houhoulis) |
 | F3 to H2 | [@Pranav-MSK](https://github.com/Pranav-MSK) |
 | C7 to H2 | [@Gigaberg](https://github.com/Gigaberg) |
-| C3 to B5 | [@mraldev](https://github.com/mraldev) |
